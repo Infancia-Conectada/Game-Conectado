@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>TechSolutions</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Início</a></li>
+                    <li><a href="/services" class="nav-link active">Serviços</a></li>
+                    <li><a href="/about" class="nav-link">Sobre</a></li>
+                    <li><a href="/#testimonials" class="nav-link">Depoimentos</a></li>
+                    <li><a href="/#contact" class="nav-link">Contato</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section Services -->
+    <section class="hero hero-services">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Nossos Serviços</h1>
+                <p class="hero-description">Soluções tecnológicas completas para impulsionar seu negócio no mundo digital.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Services -->
+    <section class="main-services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Serviços Principais</h2>
+                <p class="section-subtitle">Oferecemos soluções completas e personalizadas para cada necessidade</p>
+            </div>
+            <div class="services-detailed-grid">
+                <% services.forEach(service => { %>
+                <div class="service-detailed-card">
+                    <div class="service-header">
+                        <div class="service-icon-large"><%= service.icon %></div>
+                        <div class="service-meta">
+                            <h3 class="service-title-large"><%= service.title %></h3>
+                            <div class="service-price-large"><%= service.price %></div>
+                        </div>
+                    </div>
+                    <p class="service-description-detailed"><%= service.description %></p>
+                    
+                    <div class="service-features">
+                        <h4>O que está incluso:</h4>
+                        <ul class="features-list">
+                            <% if(service.id === 1) { %>
+                                <li>Design responsivo e moderno</li>
+                                <li>Otimização para SEO</li>
+                                <li>Painel administrativo</li>
+                                <li>Integração com redes sociais</li>
+                                <li>Certificado SSL incluído</li>
+                                <li>3 meses de suporte gratuito</li>
+                            <% } else if(service.id === 2) { %>
+                                <li>App nativo para iOS e Android</li>
+                                <li>Interface intuitiva e moderna</li>
+                                <li>Integração com APIs</li>
+                                <li>Push notifications</li>
+                                <li>Analytics integrados</li>
+                                <li>6 meses de suporte</li>
+                            <% } else if(service.id === 3) { %>
+                                <li>Análise completa da infraestrutura</li>
+                                <li>Relatório detalhado</li>
+                                <li>Recomendações personalizadas</li>
+                                <li>Suporte na implementação</li>
+                                <li>Treinamento da equipe</li>
+                                <li>Follow-up mensal</li>
+                            <% } %>
+                        </ul>
+                    </div>
+                    
+                    <div class="service-process">
+                        <h4>Nosso Processo:</h4>
+                        <div class="process-steps">
+                            <span class="process-step">1. Análise</span>
+                            <span class="process-step">2. Planejamento</span>
+                            <span class="process-step">3. Desenvolvimento</span>
+                            <span class="process-step">4. Entrega</span>
+                        </div>
+                    </div>
+                    
+                    <div class="service-actions">
+                        <button class="btn btn-primary service-btn">Solicitar Orçamento</button>
+                        <button class="btn btn-outline service-btn">Mais Detalhes</button>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Services -->
+    <section class="additional-services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Serviços Adicionais</h2>
+                <p class="section-subtitle">Complementos para potencializar ainda mais sua presença digital</p>
+            </div>
+            <div class="additional-services-grid">
+                <div class="additional-service">
+                    <div class="additional-icon">🔍</div>
+                    <h4>SEO & Marketing Digital</h4>
+                    <p>Otimização para motores de busca e estratégias de marketing digital para aumentar sua visibilidade online.</p>
+                    <span class="additional-price">A partir de R$ 800/mês</span>
+                </div>
+                <div class="additional-service">
+                    <div class="additional-icon">🛡️</div>
+                    <h4>Segurança & Backup</h4>
+                    <p>Implementação de medidas de segurança avançadas e sistemas de backup automático para proteger seus dados.</p>
+                    <span class="additional-price">A partir de R$ 400/mês</span>
+                </div>
+                <div class="additional-service">
+                    <div class="additional-icon">📊</div>
+                    <h4>Analytics & Relatórios</h4>
+                    <p>Configuração de ferramentas de análise e criação de relatórios personalizados para acompanhar seu crescimento.</p>
+                    <span class="additional-price">A partir de R$ 300/mês</span>
+                </div>
+                <div class="additional-service">
+                    <div class="additional-icon">🎓</div>
+                    <h4>Treinamento & Capacitação</h4>
+                    <p>Treinamento personalizado para sua equipe dominar as ferramentas e sistemas implementados.</p>
+                    <span class="additional-price">A partir de R$ 150/hora</span>
+                </div>
+                <div class="additional-service">
+                    <div class="additional-icon">⚡</div>
+                    <h4>Otimização de Performance</h4>
+                    <p>Análise e otimização de performance para garantir que sua aplicação seja rápida e eficiente.</p>
+                    <span class="additional-price">A partir de R$ 1.200</span>
+                </div>
+                <div class="additional-service">
+                    <div class="additional-icon">🔄</div>
+                    <h4>Manutenção & Suporte</h4>
+                    <p>Planos de manutenção contínua e suporte técnico especializado para manter tudo funcionando perfeitamente.</p>
+                    <span class="additional-price">A partir de R$ 500/mês</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Como Trabalhamos</h2>
+                <p class="section-subtitle">Nosso processo testado e aprovado para garantir o sucesso do seu projeto</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-item">
+                    <div class="process-number">01</div>
+                    <div class="process-content">
+                        <h4 class="process-title">Descoberta & Análise</h4>
+                        <p class="process-description">
+                            Entendemos suas necessidades, objetivos e desafios. Realizamos uma análise completa 
+                            do seu negócio e da concorrência para criar a estratégia ideal.
+                        </p>
+                        <ul class="process-activities">
+                            <li>Reunião inicial de briefing</li>
+                            <li>Análise de requisitos</li>
+                            <li>Pesquisa de mercado</li>
+                            <li>Definição de escopo</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">02</div>
+                    <div class="process-content">
+                        <h4 class="process-title">Planejamento & Design</h4>
+                        <p class="process-description">
+                            Criamos wireframes, protótipos e o design visual. Definimos a arquitetura técnica 
+                            e o cronograma detalhado do projeto.
+                        </p>
+                        <ul class="process-activities">
+                            <li>Criação de wireframes</li>
+                            <li>Design visual</li>
+                            <li>Prototipagem</li>
+                            <li>Aprovação do cliente</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">03</div>
+                    <div class="process-content">
+                        <h4 class="process-title">Desenvolvimento</h4>
+                        <p class="process-description">
+                            Nossos desenvolvedores especialistas transformam o design em código, 
+                            seguindo as melhores práticas e mantendo você sempre informado do progresso.
+                        </p>
+                        <ul class="process-activities">
+                            <li>Codificação frontend/backend</li>
+                            <li>Integração de sistemas</li>
+                            <li>Testes contínuos</li>
+                            <li>Revisões semanais</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">04</div>
+                    <div class="process-content">
+                        <h4 class="process-title">Testes & Entrega</h4>
+                        <p class="process-description">
+                            Realizamos testes rigorosos em diferentes dispositivos e navegadores. 
+                            Após sua aprovação, fazemos o deploy e fornecemos treinamento completo.
+                        </p>
+                        <ul class="process-activities">
+                            <li>Testes de qualidade</li>
+                            <li>Correções finais</li>
+                            <li>Deploy em produção</li>
+                            <li>Treinamento e documentação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Planos de Manutenção</h2>
+                <p class="section-subtitle">Escolha o plano que melhor se adapta às suas necessidades</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h4 class="pricing-title">Básico</h4>
+                        <div class="pricing-price">R$ 299<span>/mês</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ Monitoramento 24/7</li>
+                        <li>✅ Backup semanal</li>
+                        <li>✅ Suporte por email</li>
+                        <li>✅ Atualizações de segurança</li>
+                        <li>❌ Suporte prioritário</li>
+                        <li>❌ Backup diário</li>
+                    </ul>
+                    <button class="btn btn-outline pricing-btn">Escolher Plano</button>
+                </div>
+                <div class="pricing-card pricing-featured">
+                    <div class="pricing-badge">Mais Popular</div>
+                    <div class="pricing-header">
+                        <h4 class="pricing-title">Profissional</h4>
+                        <div class="pricing-price">R$ 599<span>/mês</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ Monitoramento 24/7</li>
+                        <li>✅ Backup diário</li>
+                        <li>✅ Suporte prioritário</li>
+                        <li>✅ Atualizações de segurança</li>
+                        <li>✅ Relatórios mensais</li>
+                        <li>✅ Otimização de performance</li>
+                    </ul>
+                    <button class="btn btn-primary pricing-btn">Escolher Plano</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h4 class="pricing-title">Enterprise</h4>
+                        <div class="pricing-price">R$ 999<span>/mês</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ Tudo do Profissional</li>
+                        <li>✅ Gerente dedicado</li>
+                        <li>✅ SLA garantido</li>
+                        <li>✅ Consultoria estratégica</li>
+                        <li>✅ Desenvolvimento customizado</li>
+                        <li>✅ Suporte telefônico</li>
+                    </ul>
+                    <button class="btn btn-outline pricing-btn">Escolher Plano</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <p class="section-subtitle">Esclarecemos as principais dúvidas sobre nossos serviços</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4 class="faq-question">Qual o prazo médio para desenvolvimento de um website?</h4>
+                    <p class="faq-answer">
+                        O prazo varia conforme a complexidade, mas websites padrão ficam prontos entre 15 a 30 dias. 
+                        Projetos mais complexos podem levar de 2 a 3 meses.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h4 class="faq-question">Vocês oferecem garantia nos serviços?</h4>
+                    <p class="faq-answer">
+                        Sim! Oferecemos 3 meses de garantia para correções de bugs e 6 meses de suporte técnico 
+                        gratuito em todos os projetos.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h4 class="faq-question">É possível fazer alterações durante o desenvolvimento?</h4>
+                    <p class="faq-answer">
+                        Claro! Nosso processo inclui revisões semanais onde você pode solicitar ajustes. 
+                        Alterações maiores podem afetar prazo e custo.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h4 class="faq-question">Vocês trabalham com pagamento parcelado?</h4>
+                    <p class="faq-answer">
+                        Sim, oferecemos várias opções de pagamento, incluindo parcelamento em até 6x sem juros 
+                        para projetos acima de R$ 5.000.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para começar seu projeto?</h2>
+                <p class="cta-description">
+                    Entre em contato conosco e receba um orçamento personalizado sem compromisso. 
+                    Nossa equipe está pronta para transformar suas ideias em realidade!
+                </p>
+                <div class="cta-buttons">
+                    <a href="/#contact" class="btn btn-primary">Solicitar Orçamento</a>
+                    <a href="/about" class="btn btn-secondary">Conhecer Nossa Equipe</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TechSolutions</h3>
+                    <p>Transformando ideias em soluções digitais desde 2024.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/services">Serviços</a></li>
+                        <li><a href="/about">Sobre</a></li>
+                        <li><a href="/#contact">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>contato@techsolutions.com.br</p>
+                    <p>(11) 99999-9999</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <%= currentYear %> TechSolutions. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

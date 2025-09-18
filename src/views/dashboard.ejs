@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Overlay de Transição -->
+        <div class="transition-overlay" id="transition">
+            <div>Carregando...</div>
+        </div>
+
+        <!-- Display de Moedas -->
+        <div class="coins-display" id="coinsDisplay" style="display: none;">
+            💰 <span id="coinAmount">150</span> moedas
+        </div>
+
+        <!-- Tela Inicial -->
+        <div class="screen active initial-screen" id="initialScreen">
+            <div class="game-logo">CARD GAME</div>
+            <button class="start-button" onclick="showScreen('menu')">COMEÇAR JOGO</button>
+        </div>
+
+        <!-- Menu Principal -->
+        <div class="screen menu-screen" id="menuScreen">
+            <button class="profile-button" onclick="showScreen('profile')">👤 Perfil</button>
+            <div class="menu-buttons">
+                <button class="menu-button" onclick="showScreen('game')">🎮 JOGAR</button>
+                <button class="menu-button" onclick="showScreen('inventory')">🎒 INVENTÁRIO</button>
+                <button class="menu-button" onclick="showScreen('shop')">🏪 LOJA</button>
+            </div>
+        </div>
+
+        <!-- Tela de Jogo -->
+        <div class="screen game-screen" id="gameScreen">
+            <button class="back-button" onclick="showScreen('menu')">← Voltar</button>
+            <div class="game-area">
+                <div class="game-info">
+                    <h2 style="color: white; margin-bottom: 10px;">Batalha de Cartas</h2>
+                    <p style="color: #ccc;">Pontuação: Você 1 x 0 Oponente</p>
+                </div>
+                <div class="cards-area">
+                    <div class="card" style="background: #ff6b6b;">
+                        <span style="font-size: 0.8rem; font-weight: bold;">Dragão</span>
+                    </div>
+                    <div style="color: white; font-size: 1.5rem; margin: 0 20px;">VS</div>
+                    <div class="card" style="background: #4ecdc4;">
+                        <span style="font-size: 0.8rem; font-weight: bold;">Goblin</span>
+                    </div>
+                </div>
+                <div style="color: white; text-align: center;">
+                    <p>Escolha sua carta e item (opcional)</p>
+                    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                        <div class="card" style="width: 60px; height: 90px;">🐉</div>
+                        <div class="card" style="width: 60px; height: 90px;">🗡️</div>
+                        <div class="card" style="width: 60px; height: 90px;">🛡️</div>
+                        <div class="card" style="width: 60px; height: 90px;">⚡</div>
+                        <div class="card" style="width: 60px; height: 90px;">🧙</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventário -->
+        <div class="screen inventory-screen" id="inventoryScreen">
+            <button class="back-button" onclick="showScreen('menu')">← Voltar</button>
+            <h2 style="color: white; text-align: center; margin-bottom: 20px;">INVENTÁRIO</h2>
+            <div style="text-align: center; color: white; margin-bottom: 20px;">
+                <p>Cartas: 47/100 | Deck: 18/20</p>
+            </div>
+            <div class="inventory-grid" id="inventoryGrid">
+                <!-- Cartas serão geradas dinamicamente -->
+            </div>
+            <div style="text-align: center;">
+                <button class="menu-button" style="margin-top: 20px;">Configurar Deck</button>
+            </div>
+        </div>
+
+        <!-- Loja -->
+        <div class="screen shop-screen" id="shopScreen">
+            <button class="back-button" onclick="showScreen('menu')">← Voltar</button>
+            <h2 style="color: white; text-align: center; margin-bottom: 30px;">LOJA</h2>
+            <div class="shop-items">
+                <div class="shop-item" onclick="buyItem('booster')">
+                    <h3>📦 Booster Normal</h3>
+                    <p>5 cartas aleatórias</p>
+                    <div class="price">💰 50 moedas</div>
+                </div>
+                <div class="shop-item" onclick="buyItem('premium')">
+                    <h3>✨ Booster Premium</h3>
+                    <p>5 cartas com raridade maior</p>
+                    <div class="price">💰 120 moedas</div>
+                </div>
+                <div class="shop-item" onclick="buyItem('themed')">
+                    <h3>🎨 Booster Temático</h3>
+                    <p>5 cartas de fogo</p>
+                    <div class="price">💰 80 moedas</div>
+                </div>
+                <div class="shop-item" onclick="buyItem('special')">
+                    <h3>⭐ Carta da Semana</h3>
+                    <p>Dragão Anciático Lendário</p>
+                    <div class="price">💰 200 moedas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfil -->
+        <div class="screen profile-screen" id="profileScreen">
+            <button class="back-button" onclick="showScreen('menu')">← Voltar</button>
+            <div class="profile-info">
+                <div class="avatar">👤</div>
+                <h2>Jogador123</h2>
+                <p style="margin: 10px 0; color: #bdc3c7;">Nível 7</p>
+                <div style="margin: 20px 0;">
+                    <p><strong>Duelos:</strong> 45</p>
+                    <p><strong>Vitórias:</strong> 28 (62%)</p>
+                    <p><strong>Moedas:</strong> 150</p>
+                </div>
+                <button class="menu-button" style="margin-top: 20px;">Editar Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

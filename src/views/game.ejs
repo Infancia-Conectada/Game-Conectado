@@ -6,6 +6,244 @@
     <title>Infância Conectada</title>
     <link rel="stylesheet" href="/css/header-infancia.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a2e;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container principal do jogo */
+        .game-container {
+            width: 1200px;
+            height: 700px;
+            position: relative;
+            border: 3px solid #16213e;
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+        }
+
+        /* Tela de Loading */
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-logo {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #00d4ff 0%, #0099cc 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 100%);
+            border-radius: 4px;
+            width: 0%;
+            animation: loading 3s ease-in-out forwards;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Animação de transição - Portas */
+        .door-transition {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .door-left, .door-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .door-left {
+            left: 0;
+            transform: translateX(-100%);
+            border-right: 3px solid #00d4ff;
+        }
+
+        .door-right {
+            right: 0;
+            transform: translateX(100%);
+            border-left: 3px solid #00d4ff;
+        }
+
+        .door-transition.active .door-left {
+            transform: translateX(0);
+        }
+
+        .door-transition.active .door-right {
+            transform: translateX(0);
+        }
+
+        /* Menu Principal */
+        .main-menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .main-menu.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Botões superiores */
+        .top-buttons {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 10;
+        }
+
+        .profile-btn, .tutorial-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #00d4ff;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .profile-btn:hover, .tutorial-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+        }
+
+        /* Menu central */
+        .menu-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 212, 255, 0.1);
+            border: 3px solid #00d4ff;
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-btn {
+            width: 250px;
+            height: 60px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 30px;
+            color: #00d4ff;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Animações */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+
+
 </head>
 <body>
     <header class="header">
@@ -115,6 +353,139 @@
             </div>
         </div>
     </header>
+
+    <body>
+        <div class="game-container">
+            <!-- Tela de Loading -->
+            <div class="loading-screen" id="loadingScreen">
+                <div class="loading-logo">⚔️</div>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+                <div class="loading-text">Carregando...</div>
+            </div>
+    
+            <!-- Transição das Portas -->
+            <div class="door-transition" id="doorTransition">
+                <div class="door-left"></div>
+                <div class="door-right"></div>
+            </div>
+    
+            <!-- Menu Principal -->
+            <div class="main-menu" id="mainMenu">
+                <!-- Botões superiores -->
+                <div class="top-buttons">
+                    <button class="profile-btn" onclick="handleMenuClick('perfil')">
+                        PERFIL
+                    </button>
+                    <button class="tutorial-btn" onclick="handleMenuClick('tutorial')">
+                        TUTORIAL
+                    </button>
+                </div>
+    
+                <!-- Menu central -->
+                <div class="menu-center">
+                    <div class="menu-options">
+                        <button class="menu-btn" onclick="handleMenuClick('jogar')">Jogar</button>
+                        <button class="menu-btn" onclick="handleMenuClick('inventario')">Inventário</button>
+                        <button class="menu-btn" onclick="handleMenuClick('amuleto')">Amuleto</button>
+                        <button class="menu-btn" onclick="handleMenuClick('loja')">Loja</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            // Controle do estado do jogo
+            let gameState = 'loading';
+            let isTransitioning = false;
+    
+            // Função para mostrar transição de porta
+            function showDoorTransition(callback) {
+                if (isTransitioning) return;
+                
+                isTransitioning = true;
+                const doorTransition = document.getElementById('doorTransition');
+                
+                // Ativar transição
+                doorTransition.classList.add('active');
+                
+                // Aguardar fechamento completo
+                setTimeout(() => {
+                    if (callback) callback();
+                    
+                    // Aguardar 1 segundo e abrir as portas
+                    setTimeout(() => {
+                        doorTransition.classList.remove('active');
+                        
+                        // Aguardar abertura completa
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 800);
+                    }, 1000);
+                }, 800);
+            }
+    
+            // Função para lidar com cliques no menu
+            function handleMenuClick(option) {
+                console.log(`Clicou em: ${option}`);
+                
+                showDoorTransition(() => {
+                    // Aqui você pode implementar a lógica para cada opção
+                    switch(option) {
+                        case 'jogar':
+                            console.log('Iniciando jogo...');
+                            break;
+                        case 'inventario':
+                            console.log('Abrindo inventário...');
+                            break;
+                        case 'amuleto':
+                            console.log('Abrindo amuletos...');
+                            break;
+                        case 'loja':
+                            console.log('Abrindo loja...');
+                            break;
+                        case 'perfil':
+                            console.log('Abrindo perfil...');
+                            break;
+                        case 'tutorial':
+                            console.log('Abrindo tutorial...');
+                            break;
+                    }
+                });
+            }
+    
+            // Inicialização do jogo
+            window.addEventListener('load', () => {
+                // Simular loading por 3 segundos
+                setTimeout(() => {
+                    gameState = 'menu';
+                    
+                    // Primeira transição de porta
+                    showDoorTransition(() => {
+                        // Esconder tela de loading
+                        document.getElementById('loadingScreen').style.display = 'none';
+                        
+                        // Mostrar menu principal
+                        const mainMenu = document.getElementById('mainMenu');
+                        mainMenu.classList.add('active', 'fade-in');
+                    });
+                }, 3000);
+            });
+    
+            // Prevenir cliques durante transições
+            document.addEventListener('click', (e) => {
+                if (isTransitioning) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+        </script>
+
+
+
+    
     <script src="/js/header-infancia.js"></script>
 </body>
 </html>

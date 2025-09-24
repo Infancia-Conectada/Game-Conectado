@@ -125,11 +125,13 @@
             </div>
             <div class="loading-text">Carregando...</div>
         </div>
+
         <!-- Transição das Portas -->
         <div class="door-transition" id="doorTransition">
             <div class="door-left"></div>
             <div class="door-right"></div>
         </div>
+
         <!-- Menu Principal -->
         <div class="main-menu" id="mainMenu">
             <div class="top-buttons">
@@ -140,12 +142,92 @@
                     TUTORIAL
                 </button>
             </div>
+
             <div class="menu-center">
                 <div class="menu-options">
                     <button class="menu-btn" onclick="handleMenuClick('jogar')">Jogar</button>
                     <button class="menu-btn" onclick="handleMenuClick('inventario')">Inventário</button>
                     <button class="menu-btn" onclick="handleMenuClick('amuleto')">Amuleto</button>
                     <button class="menu-btn" onclick="handleMenuClick('loja')">Loja</button>
+                </div>
+            </div>
+        </div>    
+        <!-- Tela de Inventário -->
+        <div class="inventory-screen" id="inventoryScreen">
+            <div class="inventory-header">
+                <h1>inventário</h1>
+                <div class="inventory-info">INVENTÁRIO</div>
+            </div>
+
+            <!-- Seção P1: Cartas do Deck -->
+            <div class="deck-section">
+                <div class="deck-label">
+                    <span class="deck-indicator">P1</span>
+                    <span>cartas do deck</span>
+                </div>
+                <div class="deck-grid" id="deckGrid">
+                    <!-- 20 slots para cartas do deck -->
+                </div>
+            </div>
+
+            <!-- Seção Principal -->
+            <div class="inventory-main">
+                <!-- P2: Visualização da Carta Selecionada -->
+                <div class="card-preview-section">
+                    <div class="preview-label">P2</div>
+                    <div class="card-preview" id="cardPreview">
+                        <div class="preview-placeholder">
+                            Selecione uma carta para visualizar
+                        </div>
+                    </div>
+                </div>
+
+                <!-- P3: Botões de Ação -->
+                <div class="action-buttons-section">
+                    <div class="action-label">P3</div>
+                    <div class="action-buttons">
+                        <button class="action-btn" id="addRemoveBtn" onclick="handleAddRemove()" disabled>
+                            ADICIONAR
+                        </button>
+                        <button class="action-btn" id="recycleBtn" onclick="handleRecycle()" disabled>
+                            RECICLAR
+                        </button>
+                        <button class="action-btn menu-btn-inv" onclick="returnToMenu()">
+                            voltar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- P4: Inventário de Cartas -->
+                <div class="inventory-cards-section">
+                    <div class="inventory-label">
+                        <div class="inventory-indicator">P4</div>
+                        <div class="inventory-navigation">
+                            <button class="nav-btn" onclick="scrollInventory(-1)">▲</button>
+                            <button class="nav-btn" onclick="scrollInventory(1)">▼</button>
+                        </div>
+                    </div>
+                    <div class="inventory-grid" id="inventoryGrid">
+                        <!-- Cartas do inventário aparecerão aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- P5: Setas de Navegação entre Decks -->
+            <div class="deck-navigation">
+                <span>P5: setinhas que alteram entre os decks</span>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação de Reciclagem -->
+        <div class="recycle-modal" id="recycleModal">
+            <div class="modal-content">
+                <h3>Confirmar Reciclagem</h3>
+                <p>Deseja reciclar esta carta?</p>
+                <p class="coins-reward">Você receberá: <span id="recycleCoins">0</span> moedas</p>
+                <div class="modal-buttons">
+                    <button class="modal-btn confirm" onclick="confirmRecycle()">Confirmar</button>
+                    <button class="modal-btn cancel" onclick="closeRecycleModal()">Cancelar</button>
                 </div>
             </div>
         </div>

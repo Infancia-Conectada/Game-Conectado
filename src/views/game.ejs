@@ -125,14 +125,15 @@
             </div>
             <div class="loading-text">Carregando...</div>
         </div>
+
         <!-- Transição das Portas -->
         <div class="door-transition" id="doorTransition">
             <div class="door-left"></div>
             <div class="door-right"></div>
         </div>
+
         <!-- Menu Principal -->
         <div class="main-menu" id="mainMenu">
-            <!-- Botões superiores -->
             <div class="top-buttons">
                 <button class="profile-btn" onclick="handleMenuClick('perfil')">
                     PERFIL
@@ -141,7 +142,7 @@
                     TUTORIAL
                 </button>
             </div>
-            <!-- Menu central -->
+
             <div class="menu-center">
                 <div class="menu-options">
                     <button class="menu-btn" onclick="handleMenuClick('jogar')">Jogar</button>
@@ -151,8 +152,178 @@
                 </div>
             </div>
         </div>
+
+        <!-- Tela do Jogo -->
+        <div class="game-screen" id="gameScreen">
+            <!-- Mesa de Jogo (Fundo) -->
+            <div class="game-table" id="gameTable">
+                <div class="game-header">
+                    <div class="game-status" id="gameStatus">PRE-JOGAR</div>
+                    <div class="player-positions">
+                        <div class="player-circle opponent">oponente</div>
+                        <div class="player-circle player">jogador</div>
+                    </div>
+                </div>
+
+                <!-- Área do Jogo -->
+                <div class="game-area">
+                    <!-- Deck de Cenário e Informações -->
+                    <div class="scenario-section">
+                        <div class="deck-info">
+                            <span>deck de cenário:</span>
+                            <span>1) atual 2) deck 3) descarte</span>
+                        </div>
+                        <div class="scenario-cards">
+                            <div class="card-slot current-scenario" id="currentScenario">
+                                <div class="card-back"></div>
+                            </div>
+                            <div class="card-slot scenario-deck">
+                                <div class="card-back"></div>
+                            </div>
+                            <div class="card-slot scenario-discard">
+                                <div class="card-back"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Área Central de Combate -->
+                    <div class="combat-section" id="combatSection">
+                        <div class="combat-display">
+                            <div class="monster-combat left">
+                                <div class="monster-title">monstro</div>
+                                <div class="combat-stats">
+                                    <div class="stat-line">
+                                        <span id="playerAttackCalc">2 + 1 + 1 + 0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>dano+item+cenario+elemento</span>
+                                    </div>
+                                    <div class="final-stat">
+                                        <span class="stat-value" id="playerFinalAttack">4</span>
+                                        <span class="stat-label">ATAQUE</span>
+                                    </div>
+                                </div>
+                                <div class="combat-stats">
+                                    <div class="stat-line">
+                                        <span id="playerDefenseCalc">2 + 1 + 0 + 1</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>vida+item+cenario+amuleto</span>
+                                    </div>
+                                    <div class="final-stat">
+                                        <span class="stat-value" id="playerFinalDefense">4</span>
+                                        <span class="stat-label">DEFESA</span>
+                                    </div>
+                                </div>
+                                <div class="monster-title">monstro</div>
+                            </div>
+
+                            <div class="combat-center">
+                                <div class="combat-cards-display">
+                                    <div class="combat-card player-card" id="playerCombatCard">
+                                        <div class="card-back"></div>
+                                    </div>
+                                    <div class="combat-card ai-card" id="aiCombatCard">
+                                        <div class="card-back"></div>
+                                    </div>
+                                </div>
+                                <div class="combat-arrows">
+                                    <div class="arrow-down"></div>
+                                    <div class="arrow-up"></div>
+                                </div>
+                            </div>
+
+                            <div class="monster-combat right">
+                                <div class="monster-title">monstro</div>
+                                <div class="combat-stats">
+                                    <div class="stat-line">
+                                        <span id="aiAttackCalc">2 + 1 + 1 + 0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>vida+item+cenario+amuleto</span>
+                                    </div>
+                                    <div class="final-stat">
+                                        <span class="stat-value" id="aiFinalAttack">4</span>
+                                        <span class="stat-label">ATAQUE</span>
+                                    </div>
+                                </div>
+                                <div class="combat-stats">
+                                    <div class="stat-line">
+                                        <span id="aiDefenseCalc">2 + 1 + 0 + 1</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>dano+item+cenario+elemento</span>
+                                    </div>
+                                    <div class="final-stat">
+                                        <span class="stat-value" id="aiFinalDefense">4</span>
+                                        <span class="stat-label">DEFESA</span>
+                                    </div>
+                                </div>
+                                <div class="monster-title">monstro</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Área de Seleção de Cartas -->
+                    <div class="selection-section" id="selectionSection">
+                        <div class="selection-area">
+                            <div class="selected-cards-display">
+                                <div class="selected-card-slot" id="selectedMonsterSlot">
+                                    <div class="card-back"></div>
+                                </div>
+                                <div class="selected-card-slot" id="selectedItemSlot">
+                                    <div class="card-back"></div>
+                                </div>
+                            </div>
+                            <div class="selection-label">cartas selecionadas</div>
+                        </div>
+                        <button class="select-btn" id="selectButton" onclick="confirmSelection()">
+                            selecionar
+                        </button>
+                    </div>
+
+                    <!-- Botão Prosseguir -->
+                    <div class="continue-section" id="continueSection">
+                        <button class="continue-btn" id="continueButton" onclick="continueGame()">
+                            prosseguir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mão do Jogador -->
+                <div class="player-hand" id="playerHand">
+                    <!-- Cartas da mão aparecerão aqui -->
+                </div>
+            </div>
+
+            <!-- Seleção de Deck e Amuleto (Popup) -->
+            <div class="deck-selection-overlay" id="deckSelection">
+                <div class="deck-selection-box">
+                    <div class="deck-selection-content">
+                        <div class="selection-info">
+                            <div class="selection-text">deck: 1</div>
+                            <div class="selection-text">amuleto: nenhum</div>
+                        </div>
+                        <button class="confirm-btn" onclick="confirmDeckSelection()">
+                            confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado Final -->
+        <div class="game-result-overlay" id="gameResult">
+            <div class="result-box">
+                <div class="result-title" id="resultTitle">VITORIA</div>
+                <div class="result-coins">moedas recebidas: <span id="coinsEarned">12</span></div>
+                <button class="result-confirm-btn" onclick="finishGame()">
+                    confirmar
+                </button>
+            </div>
+        </div>
     </div>
     <script src="/js/game.js"></script>
     <script src="/js/header-infancia.js"></script>
-</body>
+</body> 
 </html>

@@ -1,84 +1,65 @@
-// Controle do estado do jogo
-let gameState = 'loading';
-let isTransitioning = false;
+// Elementos
+const loadingScreen = document.getElementById('loading-screen');
+const menuScreen = document.getElementById('menu-screen');
+const transition = document.getElementById('transition');
+const menuOptions = document.querySelectorAll('.menu-option');
+const tooltip = document.getElementById('menu-tooltip');
+const tooltipText = document.getElementById('tooltip-text');
 
-// Função para mostrar transição de porta
-function showDoorTransition(callback) {
-    if (isTransitioning) return;
+// Textos do tooltip
+const tooltipTexts = {
+    jogar: 'Jogar',
+    inventario: 'Inventário',
+    loja: 'Loja',
+    perfil: 'Perfil'
+};
+
+// Função para mudar de tela com transição
+function changeScreen(fromScreen, toScreen) {
+    transition.classList.add('active', 'closing');
     
-    isTransitioning = true;
-    const doorTransition = document.getElementById('doorTransition');
-    
-    // Ativar transição
-    doorTransition.classList.add('active');
-    
-    // Aguardar fechamento completo
     setTimeout(() => {
-        if (callback) callback();
+        fromScreen.classList.remove('active');
         
-        // Aguardar 1 segundo e abrir as portas
         setTimeout(() => {
-            doorTransition.classList.remove('active');
+            transition.classList.remove('closing');
+            transition.classList.add('opening');
+            toScreen.classList.add('active');
             
-            // Aguardar abertura completa
             setTimeout(() => {
-                isTransitioning = false;
-            }, 800);
+                transition.classList.remove('active', 'opening');
+            }, 1000);
         }, 1000);
-    }, 800);
-}
-
-// Função para lidar com cliques no menu
-function handleMenuClick(option) {
-    console.log(`Clicou em: ${option}`);
-    
-    showDoorTransition(() => {
-        // Aqui você pode implementar a lógica para cada opção
-        switch(option) {
-            case 'jogar':
-                console.log('Iniciando jogo...');
-                break;
-            case 'inventario':
-                console.log('Abrindo inventário...');
-                break;
-            case 'amuleto':
-                console.log('Abrindo amuletos...');
-                break;
-            case 'loja':
-                console.log('Abrindo loja...');
-                break;
-            case 'perfil':
-                console.log('Abrindo perfil...');
-                break;
-            case 'tutorial':
-                console.log('Abrindo tutorial...');
-                break;
-        }
-    });
+    }, 1000);
 }
 
 // Inicialização do jogo
-window.addEventListener('load', () => {
-    // Simular loading por 3 segundos
+function initGame() {
+    // Aguarda 3 segundos do loading
     setTimeout(() => {
-        gameState = 'menu';
-        
-        // Primeira transição de porta
-        showDoorTransition(() => {
-            // Esconder tela de loading
-            document.getElementById('loadingScreen').style.display = 'none';
-            
-            // Mostrar menu principal
-            const mainMenu = document.getElementById('mainMenu');
-            mainMenu.classList.add('active', 'fade-in');
-        });
+        changeScreen(loadingScreen, menuScreen);
     }, 3000);
+}
+
+// Event listeners para as opções do menu
+menuOptions.forEach(option => {
+    option.addEventListener('mouseenter', () => {
+        const optionName = option.getAttribute('data-option');
+        tooltipText.textContent = tooltipTexts[optionName];
+        tooltip.classList.add('visible');
+    });
+    
+    option.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+    });
+    
+    option.addEventListener('click', () => {
+        const optionName = option.getAttribute('data-option');
+        console.log(`Navegando para: ${optionName}`);
+        // Aqui você pode adicionar a lógica para navegar para outras telas
+        // changeScreen(menuScreen, outraTela);
+    });
 });
 
-// Prevenir cliques durante transições
-document.addEventListener('click', (e) => {
-    if (isTransitioning) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-}, true);
+// Inicia o jogo quando a página carregar
+window.addEventListener('load', initGame);

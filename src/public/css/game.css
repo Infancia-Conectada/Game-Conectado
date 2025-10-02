@@ -142,30 +142,49 @@ body {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 20px;
-    padding: 50px;
     width: 100%;
     height: 100%;
 }
 
 .menu-option {
     cursor: pointer;
-    transition: transform 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
+    position: absolute;
+    display: block;
 }
 
-.menu-option:hover {
-    transform: scale(1.05);
+.menu-option-perfil {
+    width: 180px;
+    height: 320px;
+    left: 30px;
+    top: 62px;
 }
 
-.menu-option img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+.menu-option-jogar {
+    width: 280px;
+    height: 280px;
+    left: 300px;
+    bottom: 380px;
+}
+
+.menu-option-inventario {
+    width: 430px;
+    height: 380px;
+    left: 160px;
+    bottom: 0;
+}
+
+.menu-option-tutorial {
+    width: 200px;
+    height: 200px;
+    right: 355px;
+    top: 27px;
+}
+
+.menu-option-loja {
+    width: 340px;
+    height: 680px;
+    right: 0;
+    bottom: 0;
 }
 
 /* Tooltip */
@@ -174,7 +193,7 @@ body {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(15, 23, 42, 0.8);
     color: white;
     padding: 15px 30px;
     border-radius: 10px;

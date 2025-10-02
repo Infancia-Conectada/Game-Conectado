@@ -8,7 +8,7 @@ const tooltipText = document.getElementById('tooltip-text');
 
 // Textos do tooltip
 const tooltipTexts = {
-    jogar: 'Nova Partida',
+    jogar: 'Jogar',
     inventario: 'Inventário',
     loja: 'Loja',
     perfil: 'Perfil',

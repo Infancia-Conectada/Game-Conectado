@@ -40,9 +40,7 @@ body {
 /* Loading Screen */
 #loading-screen {
     flex-direction: column;
-    background-image: url("../img/background/loading.png");
-    background-position: center;
-    background-size: cover;
+    background: url("../img/background/loading.png") center/cover;
 }
 
 .loading-bar {
@@ -83,18 +81,19 @@ body {
 
 .door {
     position: absolute;
-    width: 50%;
+    width: 61%;
     height: 100%;
-    background: linear-gradient(90deg, #1a1a1a 0%, #2d2d2d 100%);
     top: 0;
 }
 
 .door-left {
     left: -50%;
+    background: url("../img/transicao/PORTA1A.png") center/cover;
 }
 
 .door-right {
     right: -50%;
+    background: url("../img/transicao/PORTA2.png") center/cover;
 }
 
 .transition.closing .door-left {
@@ -119,7 +118,7 @@ body {
 }
 
 @keyframes closeDoorRight {
-    0% { right: -50%; }
+    0% { right: -60%; }
     100% { right: 0%; }
 }
 
@@ -130,12 +129,12 @@ body {
 
 @keyframes openDoorRight {
     0% { right: 0%; }
-    100% { right: -50%; }
+    100% { right: -60%; }
 }
 
 /* Menu Screen */
 #menu-screen {
-    background: url('https://via.placeholder.com/1000x600/3e2723/FFFFFF?text=Menu+Background') center/cover;
+    background: url('../img/background/menu.png') center/cover;
 }
 
 .menu-background {
@@ -154,6 +153,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
 }
 
 .menu-option:hover {

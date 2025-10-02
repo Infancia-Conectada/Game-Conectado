@@ -8,10 +8,11 @@ const tooltipText = document.getElementById('tooltip-text');
 
 // Textos do tooltip
 const tooltipTexts = {
-    jogar: 'Jogar',
+    jogar: 'Nova Partida',
     inventario: 'Inventário',
     loja: 'Loja',
-    perfil: 'Perfil'
+    perfil: 'Perfil',
+    tutorial: 'Tutorial'
 };
 
 // Função para mudar de tela com transição
@@ -35,7 +36,6 @@ function changeScreen(fromScreen, toScreen) {
 
 // Inicialização do jogo
 function initGame() {
-    // Aguarda 3 segundos do loading
     setTimeout(() => {
         changeScreen(loadingScreen, menuScreen);
     }, 3000);

@@ -63,5 +63,59 @@ menuOptions.forEach(option => {
     });
 });
 
+// Adicione este código ao seu arquivo menu.js
+document.addEventListener('DOMContentLoaded', function () {
+  const perfilOption = document.querySelector('.menu-option-perfil');
+  const lojaOption = document.querySelector('.menu-option-loja');
+  const inventarioOption = document.querySelector('.menu-option-inventario');
+  const tutorialOption = document.querySelector('.menu-option-tutorial');
+  const jogarOption = document.querySelector('.menu-option-jogar');
+  const menuScreen = document.getElementById('menu-screen');
+
+  if (perfilOption && menuScreen) {
+    perfilOption.addEventListener('mouseover', function () {
+      menuScreen.style.background = "url('../img/background/menu-botao-perfil.png') center/cover";
+    });
+    perfilOption.addEventListener('mouseout', function () {
+      menuScreen.style.background = "url('../img/background/menu.png') center/cover";
+    });
+  }
+  if (lojaOption && menuScreen) {
+    lojaOption.addEventListener('mouseover', function () {
+      menuScreen.style.background = "url('../img/background/menu-botao-loja.png') center/cover";
+    });
+    lojaOption.addEventListener('mouseout', function () {
+      menuScreen.style.background = "url('../img/background/menu.png') center/cover";
+    });
+  }
+  if (inventarioOption && menuScreen) {
+    inventarioOption.addEventListener('mouseover', function () {
+      menuScreen.style.background = "url('../img/background/menu-botao-inventario.png') center/cover";
+    });
+    inventarioOption.addEventListener('mouseout', function () {
+      menuScreen.style.background = "url('../img/background/menu.png') center/cover";
+    });
+  }
+  if (tutorialOption && menuScreen) {
+    tutorialOption.addEventListener('mouseover', function () {
+      menuScreen.style.background = "url('../img/background/menu-botao-tutorial.png') center/cover";
+    });
+    tutorialOption.addEventListener('mouseout', function () {
+      menuScreen.style.background = "url('../img/background/menu.png') center/cover";
+    });
+  }
+  if (jogarOption && menuScreen) {
+    jogarOption.addEventListener('mouseover', function () {
+      menuScreen.style.background = "url('../img/background/menu-botao-jogar.png') center/cover";
+    });
+    jogarOption.addEventListener('mouseout', function () {
+      menuScreen.style.background = "url('../img/background/menu.png') center/cover";
+    });
+  }
+});
+
 // Inicia o jogo quando a página carregar
-window.addEventListener('load', initGame);
+// window.addEventListener('load', initGame);
+initGame();
+
+// a gente fez isso pra ignorar o tempo de loading mas devemos ajustar depois (remover)

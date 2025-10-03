@@ -135,6 +135,7 @@ body {
 /* Menu Screen */
 #menu-screen {
     background: url('../img/background/menu.png') center/cover;
+    transition: background 0.3s ease-in-out;
 }
 
 .menu-background {
@@ -182,9 +183,9 @@ body {
 
 .menu-option-loja {
     width: 340px;
-    height: 680px;
+    height: 560px;
     right: 0;
-    bottom: 0;
+    bottom: 120px;
 }
 
 /* Tooltip */

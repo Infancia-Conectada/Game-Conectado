@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infância Conectada</title>
     <link rel="stylesheet" href="/css/header-infancia.css">
-    <link rel="stylesheet" href="/css/game.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/inventario.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -147,9 +148,95 @@
                 <span id="tooltip-text"></span>
             </div>
         </div>
-    </div>
 
-    <script src="/js/game.js"></script>
+
+
+        <!-- Tela de Inventário -->
+        <div id="inventory-screen" class="screen">
+            <div class="inventory-header">
+                <h2>INVENTÁRIO</h2>
+            </div>
+
+            <div class="inventory-container">
+                <!-- Área do Deck (P1) -->
+                <div class="deck-area">
+                    <!-- Setas de navegação entre decks -->
+                    <div class="deck-navigation">
+                        <button class="deck-arrow deck-arrow-left">◀</button>
+                        <div class="deck-indicator">
+                            <span id="deck-number">P1</span>
+                        </div>
+                        <button class="deck-arrow deck-arrow-right">▶</button>
+                    </div>
+
+                    <!-- Cartas do deck (20 cartas em 2 linhas de 10) -->
+                    <div class="deck-cards">
+                        <div class="deck-row">
+                            <!-- 10 cartas primeira linha -->
+                        </div>
+                        <div class="deck-row">
+                            <!-- 10 cartas segunda linha -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container inferior: Visualização + Inventário + Botões -->
+                <div class="bottom-container">
+                    <!-- Visualização da carta (P2) -->
+                    <div class="card-preview">
+                        <img id="preview-image" src="https://via.placeholder.com/300x400/2dd4bf/FFFFFF?text=P2" alt="Carta Selecionada">
+                    </div>
+
+                    <!-- Barra de scroll vertical (P5) -->
+                    <div class="inventory-scroll">
+                        <button class="scroll-arrow scroll-up">▲</button>
+                        <div class="scroll-bar"></div>
+                        <button class="scroll-arrow scroll-down">▼</button>
+                    </div>
+
+                    <!-- Inventário de cartas (P4) -->
+                    <div class="inventory-grid-container">
+                        <div class="inventory-label">
+                            <span>P4</span>
+                        </div>
+                        <div class="inventory-grid">
+                            <!-- 24 cartas visíveis (4 linhas de 6) -->
+                        </div>
+                    </div>
+
+                    <!-- Botão Voltar (P3) -->
+                    <div class="inventory-actions">
+                        <button id="btn-back" class="btn-voltar">voltar</button>
+                    </div>
+                </div>
+
+                <!-- Botões de ação (P3) -->
+                <div class="action-buttons">
+                    <button id="btn-add-remove" class="action-btn" disabled>ADICIONAR</button>
+                    <button id="btn-recycle" class="action-btn">RECICLAR</button>
+                </div>
+            </div>
+
+            <!-- Modal de confirmação de reciclagem -->
+            <div id="recycle-modal" class="modal">
+                <div class="modal-content">
+                    <h3>Confirmar Reciclagem</h3>
+                    <p>Você receberá <span id="coins-amount">50</span> moedas ao reciclar esta carta.</p>
+                    <div class="modal-buttons">
+                        <button id="btn-confirm-recycle" class="modal-btn btn-confirm">Confirmar</button>
+                        <button id="btn-cancel-recycle" class="modal-btn btn-cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
     <script src="/js/header-infancia.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/inventario.js"></script>
 </body> 
 </html>

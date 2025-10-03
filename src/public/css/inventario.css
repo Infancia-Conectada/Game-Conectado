@@ -1,0 +1,374 @@
+/* ========== INVENTORY SCREEN ========== */
+#inventory-screen {
+    background: linear-gradient(135deg, #2c5364 0%, #203a43 50%, #0f2027 100%);
+    flex-direction: column;
+    padding: 0;
+}
+
+.inventory-header {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.inventory-header h2 {
+    color: #ddd;
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.inventory-container {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Área do Deck (P1) */
+.deck-area {
+    width: 100%;
+}
+
+.deck-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.deck-arrow {
+    background-color: rgba(45, 212, 191, 0.3);
+    border: 2px solid #2dd4bf;
+    color: #2dd4bf;
+    padding: 5px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.deck-arrow:hover {
+    background-color: #2dd4bf;
+    color: #0f2027;
+}
+
+.deck-indicator {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 30px;
+    border-radius: 8px;
+    border: 2px solid #2dd4bf;
+}
+
+.deck-indicator span {
+    color: #2dd4bf;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.deck-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.deck-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.card-slot {
+    width: 50px;
+    height: 70px;
+    background-color: rgba(45, 212, 191, 0.3);
+    border: 2px solid #2dd4bf;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-slot.empty {
+    opacity: 0.5;
+}
+
+.card-slot:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+}
+
+.card-slot.selected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+}
+
+/* Container inferior */
+.bottom-container {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Visualização da carta (P2) */
+.card-preview {
+    width: 250px;
+    height: 100%;
+    background: rgba(45, 212, 191, 0.1);
+    border: 3px solid #2dd4bf;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.card-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+}
+
+/* Barra de scroll (P5) */
+.inventory-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 0;
+}
+
+.scroll-arrow {
+    background-color: rgba(45, 212, 191, 0.3);
+    border: 2px solid #2dd4bf;
+    color: #2dd4bf;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.scroll-arrow:hover {
+    background-color: #2dd4bf;
+    color: #0f2027;
+}
+
+.scroll-bar {
+    width: 30px;
+    flex: 1;
+    background-color: rgba(45, 212, 191, 0.2);
+    border: 2px solid #2dd4bf;
+    border-radius: 15px;
+    position: relative;
+}
+
+/* Inventário (P4) */
+.inventory-grid-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.inventory-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(45, 212, 191, 0.8);
+    padding: 5px 12px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.inventory-label span {
+    color: #0f2027;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.inventory-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px;
+    background: rgba(45, 212, 191, 0.1);
+    border: 3px solid #2dd4bf;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.inventory-slot {
+    background-color: rgba(45, 212, 191, 0.3);
+    border: 2px solid #2dd4bf;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+.inventory-slot.empty {
+    opacity: 0.3;
+}
+
+.inventory-slot:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+}
+
+.inventory-slot.selected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+}
+
+/* Botão Voltar */
+.inventory-actions {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 10px;
+}
+
+.btn-voltar {
+    background-color: rgba(139, 92, 246, 0.3);
+    border: 2px solid #8b5cf6;
+    color: #8b5cf6;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: lowercase;
+}
+
+.btn-voltar:hover {
+    background-color: #8b5cf6;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Botões de ação (P3) */
+.action-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 0 10px;
+}
+
+.action-btn {
+    background-color: rgba(45, 212, 191, 0.3);
+    border: 2px solid #2dd4bf;
+    color: #2dd4bf;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.action-btn:hover:not(:disabled) {
+    background-color: #2dd4bf;
+    color: #0f2027;
+    transform: translateY(-2px);
+}
+
+.action-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Modal de reciclagem */
+.modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #2c5364 0%, #203a43 100%);
+    padding: 30px;
+    border-radius: 15px;
+    border: 3px solid #2dd4bf;
+    text-align: center;
+    min-width: 300px;
+}
+
+.modal-content h3 {
+    color: #2dd4bf;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.modal-content p {
+    color: #ddd;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.modal-content #coins-amount {
+    color: #fbbf24;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm {
+    background-color: rgba(34, 197, 94, 0.3);
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+.btn-confirm:hover {
+    background-color: #22c55e;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: rgba(239, 68, 68, 0.3);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn-cancel:hover {
+    background-color: #ef4444;
+    color: white;
+}

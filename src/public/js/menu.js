@@ -55,9 +55,11 @@ menuOptions.forEach(option => {
     
     option.addEventListener('click', () => {
         const optionName = option.getAttribute('data-option');
-        console.log(`Navegando para: ${optionName}`);
-        // Aqui você pode adicionar a lógica para navegar para outras telas
-        // changeScreen(menuScreen, outraTela);
+        if (optionName === 'inventario') {
+            changeScreen(menuScreen, inventoryScreen);
+            initializeDeckCards();
+            initializeInventory();
+        }
     });
 });
 

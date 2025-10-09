@@ -189,32 +189,36 @@
 
                 <!-- Container inferior: Visualização + Inventário + Botões -->
                 <div class="bottom-container">
-                    <!-- Visualização da carta (P2) -->
+                    <!-- Visualização da carta -->
                     <div class="card-preview">
-                        <img id="preview-image" src="../public/img/costas-individual-semcor.png" alt="Carta Selecionada">
+                        <img id="preview-image" src="../img/costas-individual-semcor.png" alt="Carta Selecionada">
                     </div>
-                    <!-- Barra de scroll vertical (P5) -->
-                    <div class="inventory-scroll">
-                        <button class="scroll-arrow scroll-up">▲</button>
-                        <div class="scroll-bar"></div>
-                        <button class="scroll-arrow scroll-down">▼</button>
-                    </div>
-                    <!-- Inventário de cartas (P4) -->
-                    <div class="inventory-grid-container">
-                        <div class="inventory-grid">
-                            <!-- 24 cartas visíveis (4 linhas de 6) -->
+                    <div class="bottom-container-right">
+                        <!-- Botões de ação -->
+                        <div class="action-buttons">
+                            <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Botao Reciclar"></button>
+                            <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Botao Reciclar"></button>
+                            <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Botao Reciclar"></button>
+                        </div>
+                        <div class="bottom-container-down">
+                            <!-- Barra de scroll vertical -->
+                            <div class="inventory-scroll">
+                                <button class="scroll-arrow scroll-up">▲</button>
+                                <div class="scroll-bar"></div>
+                                <button class="scroll-arrow scroll-down">▼</button>
+                            </div>
+                            <!-- Inventário de cartas) -->
+                            <div class="inventory-grid-container">
+                                <div class="inventory-grid">
+                                    <!-- 24 cartas visíveis (4 linhas de 6) -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botão Voltar  -->
+                        <div class="inventory-actions">
+                            <button id="btn-back" class="btn-voltar">voltar</button>
                         </div>
                     </div>
-                    <!-- Botão Voltar  -->
-                    <div class="inventory-actions">
-                        <button id="btn-back" class="btn-voltar">voltar</button>
-                    </div>
-                </div>
-
-                <!-- Botões de ação (P3) -->
-                <div class="action-buttons">
-                    <button id="btn-add-remove" class="action-btn" disabled>ADICIONAR</button>
-                    <button id="btn-recycle" class="action-btn">RECICLAR</button>
                 </div>
             </div>
 

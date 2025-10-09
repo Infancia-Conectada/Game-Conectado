@@ -15,7 +15,7 @@
     gap: 15px;
 }
 
-/* Área do Deck (P1) */
+/* Área do Deck  */
 .deck-area {
     display: flex;
     height: 158px;
@@ -78,21 +78,15 @@
     position: relative;
     padding-left: 70px;
     padding-right: 70px;
-    background-color: red;
-    opacity: 0.7;
 }
 
-/* Visualização da carta (P2) */
+/* Visualização da carta */
 .card-preview {
-    width: 250px;
+    width: 325px;
     height: 100%;
-    background: rgba(45, 212, 191, 0.1);
-    border: 3px solid #2dd4bf;
-    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
 }
 
 .card-preview img {
@@ -101,7 +95,45 @@
     border-radius: 8px;
 }
 
-/* Barra de scroll (P5) */
+.bottom-container-right {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+.bottom-container-down {
+    display: flex;
+    flex-direction: flex;
+    gap: 15px
+}
+/* Botões */
+#btn-add-remove {
+    width: 73px;
+}
+
+#btn-recycle {
+    width: 159px;
+}
+
+#btn-amuleto {
+    width: 187px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 0 10px;
+    height: 60px;
+}
+
+.action-btn {
+    cursor: pointer;
+    border-radius: 16px;
+    display: flex;
+}
+
+/* Barra de scroll */
 .inventory-scroll {
     display: flex;
     flex-direction: column;
@@ -205,38 +237,6 @@
     background-color: #8b5cf6;
     color: white;
     transform: translateY(-2px);
-}
-
-/* Botões de ação (P3) */
-.action-buttons {
-    display: flex;
-    justify-content: flex-start;
-    gap: 15px;
-    padding: 0 10px;
-}
-
-.action-btn {
-    background-color: rgba(45, 212, 191, 0.3);
-    border: 2px solid #2dd4bf;
-    color: #2dd4bf;
-    padding: 12px 30px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-}
-
-.action-btn:hover:not(:disabled) {
-    background-color: #2dd4bf;
-    color: #0f2027;
-    transform: translateY(-2px);
-}
-
-.action-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
 }
 
 /* Modal de reciclagem */

@@ -1,6 +1,6 @@
 /* ========== INVENTORY SCREEN ========== */
 #inventory-screen {
-    background: url("../img/background/inventario.png") center/cover;
+    background: url("../img/background/inventario-molde.png") center/cover;
     flex-direction: column;
     padding: 0;
 }
@@ -8,6 +8,7 @@
 .inventory-container {
     flex: 1;
     width: 100%;
+    height: 100%;
     padding: 20px;
     padding-top: 64px;
     display: flex;
@@ -72,6 +73,7 @@
 /* Container inferior */
 .bottom-container {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     flex: 1;
     min-height: 0;
@@ -82,11 +84,11 @@
 
 /* Visualização da carta */
 .card-preview {
-    width: 325px;
+    width: 380px;
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
 .card-preview img {
@@ -95,15 +97,21 @@
     border-radius: 8px;
 }
 
+.bottom-container-left {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+}
 .bottom-container-right {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
     width: 100%;
 }
 .bottom-container-down {
     display: flex;
-    flex-direction: flex;
+    flex-direction: column;
     gap: 15px
 }
 /* Botões */
@@ -211,32 +219,6 @@
 .inventory-slot.selected {
     border-color: #fbbf24;
     box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
-}
-
-/* Botão Voltar */
-.inventory-actions {
-    display: flex;
-    align-items: flex-end;
-    padding-bottom: 10px;
-}
-
-.btn-voltar {
-    background-color: rgba(139, 92, 246, 0.3);
-    border: 2px solid #8b5cf6;
-    color: #8b5cf6;
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    text-transform: lowercase;
-}
-
-.btn-voltar:hover {
-    background-color: #8b5cf6;
-    color: white;
-    transform: translateY(-2px);
 }
 
 /* Modal de reciclagem */

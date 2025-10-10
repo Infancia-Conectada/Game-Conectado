@@ -99,18 +99,22 @@ body {
     background: url("../img/transicao/PORTA2.png") center/cover;
 }
 
+/*  porta esquerda fechando  */
 .transition.closing .door-left {
     animation: closeDoorLeft 1s ease-in-out forwards;
 }
 
+/*  porta direita fechando  */
 .transition.closing .door-right {
     animation: closeDoorRight 1s ease-in-out forwards;
 }
 
+/*  porta esquerda abrindo  */
 .transition.opening .door-left {
     animation: openDoorLeft 1s ease-in-out forwards;
 }
 
+/*  porta direita abrindo  */
 .transition.opening .door-right {
     animation: openDoorRight 1s ease-in-out forwards;
 }

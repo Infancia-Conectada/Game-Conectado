@@ -84,11 +84,10 @@
 
 /* Visualização da carta */
 .card-preview {
-    width: 380px;
-    height: 400px;
     display: flex;
     justify-content: center;
     align-items: start;
+    width: 270px;
 }
 
 .card-preview img {
@@ -110,8 +109,9 @@
 }
 .bottom-container-down {
     display: flex;
-    flex-direction: column;
-    gap: 15px
+    flex-direction: row;
+    gap: 15px;
+    height: 400px;
 }
 /* Botões */
 #btn-add-remove {
@@ -157,7 +157,7 @@
     padding: 5px 10px;
     font-size: 14px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 20px;
     transition: all 0.3s ease;
 }
 

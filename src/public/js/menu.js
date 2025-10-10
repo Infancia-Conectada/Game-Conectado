@@ -118,5 +118,4 @@ document.addEventListener('DOMContentLoaded', function () {
 // Inicia o jogo quando a página carregar
 // window.addEventListener('load', initGame);
 initGame();
-
 // a gente fez isso pra ignorar o tempo de loading mas devemos ajustar depois (remover)

@@ -37,8 +37,8 @@ function changeScreen(fromScreen, toScreen) {
 // Inicialização do jogo
 function initGame() {
     setTimeout(() => {
-       // changeScreen(loadingScreen, menuScreen);
-       changeScreen(loadingScreen, inventoryScreen);
+       changeScreen(loadingScreen, menuScreen);
+       // changeScreen(loadingScreen, inventoryScreen);
     }, 3000);
 }
 
@@ -60,6 +60,13 @@ menuOptions.forEach(option => {
             changeScreen(menuScreen, inventoryScreen);
             initializeDeckCards();
             initializeInventory();
+        }
+    });
+    
+    option.addEventListener('click', () => {
+        const optionName = option.getAttribute('data-option');
+        if (optionName === 'jogar') {
+            changeScreen(menuScreen, gameScreen);
         }
     });
 });

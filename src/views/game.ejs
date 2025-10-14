@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/menu.css">
     <link rel="stylesheet" href="/css/inventario.css">
     <link rel="stylesheet" href="/css/jogo.css">
+    <link rel="stylesheet" href="/css/modal.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/robotech-gp" rel="stylesheet">
 </head>
@@ -150,13 +151,24 @@
                 <span id="tooltip-text"></span>
             </div>
         </div>
+        <!-- Modal de Confirmação para Jogar -->
+        <div id="play-confirmation-modal" class="confirmation-modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <h2>Pronto para começar?</h2>
+                <div class="modal-buttons">
+                    <button id="btn-confirm-play-game" class="modal-btn btn-confirm">Jogar</button>
+                    <button id="btn-cancel-play-game" class="modal-btn btn-cancel">Voltar</button>
+                </div>
+            </div>
+        </div>
         <!-- Tela de Jogo -->
         <div id="game-screen" class="screen">
             <div class="game-background">
-                <img src="../img/background/jogo.png" alt="Background" class="bg-image">
+                <img src="../img/background/JOGAR-NEUTRO.png" alt="Background" class="bg-image">
             </div>
             <div class="game-overlay">
-                <img src="../img/game-board.png" alt="Game Board" class="board-image">
+                <img src="../img/JOGAR-MESA.png" alt="Game Board" class="board-image">
             </div>
             <!-- Área de Jogadores -->
             <div class="player-info opponent-info">

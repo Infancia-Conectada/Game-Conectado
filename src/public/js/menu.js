@@ -1,5 +1,8 @@
 // Elementos
 const gameScreen = document.getElementById('game-screen');
+const storeScreen = document.getElementById('store-screen');
+const profileScreen = document.getElementById('profile-screen');
+const tutorialScreen = document.getElementById('tutorial-screen');
 const loadingScreen = document.getElementById('loading-screen');
 const menuScreen = document.getElementById('menu-screen');
 const transition = document.getElementById('transition');
@@ -53,16 +56,26 @@ menuOptions.forEach(option => {
     option.addEventListener('mouseleave', () => {
         tooltip.classList.remove('visible');
     });
-    
     option.addEventListener('click', () => {
         const optionName = option.getAttribute('data-option');
-        if (optionName === 'inventario') {
-            changeScreen(menuScreen, inventoryScreen);
-            //initializeDeckCards();
-            //initializeInventory();
-        }
-        if (optionName === 'jogar') {
-            changeScreen(menuScreen, gameScreen);
+        switch(optionName) {
+            case 'jogar':
+                changeScreen(menuScreen, gameScreen); // Tela do jogo
+                break;
+            case 'inventario':
+                changeScreen(menuScreen, inventoryScreen);
+                initializeDeckCards();
+                initializeInventory();
+                break;
+            case 'loja':
+                changeScreen(menuScreen, storeScreen); // Tela da loja
+                break;
+            case 'perfil':
+                changeScreen(menuScreen, profileScreen); // Tela do perfil
+                break;
+            case 'tutorial':
+                changeScreen(menuScreen, tutorialScreen); // Tela do tutorial
+                break;
         }
     });
 });

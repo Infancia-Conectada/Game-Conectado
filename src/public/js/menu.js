@@ -1,4 +1,5 @@
 // Elementos
+const gameScreen = document.getElementById('game-screen');
 const loadingScreen = document.getElementById('loading-screen');
 const menuScreen = document.getElementById('menu-screen');
 const transition = document.getElementById('transition');
@@ -38,7 +39,6 @@ function changeScreen(fromScreen, toScreen) {
 function initGame() {
     setTimeout(() => {
        changeScreen(loadingScreen, menuScreen);
-       // changeScreen(loadingScreen, inventoryScreen);
     }, 3000);
 }
 
@@ -58,13 +58,9 @@ menuOptions.forEach(option => {
         const optionName = option.getAttribute('data-option');
         if (optionName === 'inventario') {
             changeScreen(menuScreen, inventoryScreen);
-            initializeDeckCards();
-            initializeInventory();
+            //initializeDeckCards();
+            //initializeInventory();
         }
-    });
-    
-    option.addEventListener('click', () => {
-        const optionName = option.getAttribute('data-option');
         if (optionName === 'jogar') {
             changeScreen(menuScreen, gameScreen);
         }

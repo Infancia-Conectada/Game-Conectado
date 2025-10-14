@@ -126,7 +126,7 @@ body {
 
 @keyframes closeDoorRight {
     0% { right: -60%; }
-    100% { right: 0%; }
+    100% { right: -1.4%; }
 }
 
 @keyframes openDoorLeft {
@@ -135,7 +135,7 @@ body {
 }
 
 @keyframes openDoorRight {
-    0% { right: 0%; }
+    0% { right: -1.4%; }
     100% { right: -60%; }
 }
 

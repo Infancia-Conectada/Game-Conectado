@@ -41,7 +41,7 @@ function changeScreen(fromScreen, toScreen) {
 // Inicialização do jogo
 function initGame() {
     setTimeout(() => {
-       changeScreen(loadingScreen, menuScreen);
+       changeScreen(loadingScreen, gameScreen);
     }, 3000);
 }
 

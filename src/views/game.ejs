@@ -198,7 +198,7 @@
                 <div class="hand-cards" id="player-hand-container"></div>
             </div>
             <!-- Botão de Confirmação -->
-            <button id="btn-confirm-play" class="confirm-button hidden">CONFIRMAR</button>
+            <button id="btn-confirm-play" class="confirm-button hidden"><img src="../img/inputs/botao-continuar.png" alt="Continuar"></button>
         </div>
         <!-- Popup de Seleção de Deck e Amuleto -->
         <div id="deck-selection-modal" class="deck-selection-modal">
@@ -294,10 +294,14 @@
                     <div class="bottom-container-right">
                         <!-- Botões de ação -->
                         <div class="action-buttons">
-                            <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar/Remover"></button>
-                            <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Reciclar"></button>
-                            <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Menu de Amuletos"></button>
-                            <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Loja"></button>
+                            <div class="action-buttons-1">
+                                <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar/Remover"></button>
+                                <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Reciclar"></button>
+                            </div>
+                            <div class="action-buttons-2">
+                                <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Menu de Amuletos"></button>
+                                <button id="btn-loja" class="action-btn"><img src="../img/inputs/botao-loja.png" alt="Loja"></button>
+                            </div>
                         </div>
                         <div class="bottom-container-down">
                             <!-- Barra de scroll vertical -->
@@ -363,7 +367,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Modal de confirmação de reciclagem -->
             <div id="recycle-modal" class="modal">
                 <div class="modal-content">
@@ -376,11 +379,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
     </div>
     <script src="/js/header-infancia.js"></script>
     <script src="/js/menu.js"></script>

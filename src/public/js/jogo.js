@@ -52,71 +52,217 @@ function createDeck(deckNumber, cardCount = 20) {
 // Abrir modal de seleção
 function openDeckSelectionModal() {
     deckSelectionModal.classList.add('active');
-    gameState.selectedDeck = null;
-    gameState.selectedAmulet = null;
-    resetModalSelections();
+    
+    // Para teste: seleciona automaticamente o primeiro deck e amuleto
+    setTimeout(() => {
+        const firstDeck = document.querySelector('.deck-option[data-deck="1"]');
+        const firstAmulet = document.querySelector('.amulet-option[data-amulet="amulet1"]');
+        
+        if (firstDeck) {
+            firstDeck.classList.add('selected');
+            gameState.selectedDeck = '1';
+        }
+        
+        if (firstAmulet) {
+            firstAmulet.classList.add('selected');
+            gameState.selectedAmulet = 'amulet1';
+        }
+        
+        updateSelectionStatus();
+    }, 100);
 }
 
 // Fechar modal de seleção
 function closeDeckSelectionModal() {
-    deckSelectionModal.classList.remove('active');
+    if (deckSelectionModal) {
+        // Primeiro reseta as seleções
+        resetModalSelections();
+        
+        // Remove a classe active com uma pequena animação
+        deckSelectionModal.style.opacity = '0';
+        
+        // Espera a animação terminar antes de esconder o modal
+        setTimeout(() => {
+            deckSelectionModal.classList.remove('active');
+            deckSelectionModal.style.opacity = '';
+        }, 300);
+        
+        // Reseta o estado do jogo relacionado ao modal
+        gameState.selectedDeck = null;
+        gameState.selectedAmulet = null;
+    }
 }
 
 // Resetar seleções do modal
 function resetModalSelections() {
+    // Remove a seleção visual dos decks e amuletos
     document.querySelectorAll('.deck-option, .amulet-option').forEach(option => {
         option.classList.remove('selected');
+        // Remove qualquer estilo inline que possa ter sido adicionado
+        option.style.border = '';
+        option.style.transform = '';
     });
+    
+    // Reseta o estado de seleção
+    gameState.selectedDeck = null;
+    gameState.selectedAmulet = null;
+    
+    // Reseta qualquer feedback visual adicional que possa existir
+    const modalContent = deckSelectionModal.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.querySelectorAll('.error-message').forEach(msg => msg.remove());
+    }
 }
 
 // Selecionar deck
 function selectDeck(deckNumber) {
+    // Remove seleção anterior
     document.querySelectorAll('.deck-option').forEach(option => {
         option.classList.remove('selected');
+        option.style.transform = '';
     });
-    document.querySelector(`[data-deck="${deckNumber}"]`).classList.add('selected');
-    gameState.selectedDeck = deckNumber;
+    
+    // Adiciona nova seleção
+    const selectedDeck = document.querySelector(`[data-deck="${deckNumber}"]`);
+    if (selectedDeck) {
+        selectedDeck.classList.add('selected');
+        selectedDeck.style.transform = 'translateY(-5px) scale(1.05)';
+        gameState.selectedDeck = deckNumber;
+        
+        // Atualiza feedback visual
+        updateSelectionStatus();
+    }
 }
 
 // Selecionar amuleto
 function selectAmulet(amuletId) {
+    // Remove seleção anterior
     document.querySelectorAll('.amulet-option').forEach(option => {
         option.classList.remove('selected');
+        option.style.transform = '';
     });
-    document.querySelector(`[data-amulet="${amuletId}"]`).classList.add('selected');
-    gameState.selectedAmulet = amuletId;
+    
+    // Adiciona nova seleção
+    const selectedAmulet = document.querySelector(`[data-amulet="${amuletId}"]`);
+    if (selectedAmulet) {
+        selectedAmulet.classList.add('selected');
+        selectedAmulet.style.transform = 'translateY(-5px) scale(1.05)';
+        gameState.selectedAmulet = amuletId;
+        
+        // Atualiza feedback visual
+        updateSelectionStatus();
+    }
+}
+
+//Função auxiliar para atualizar o status da seleção
+function updateSelectionStatus() {
+    const btnConfirm = document.getElementById('btn-confirm-selection');
+    if (btnConfirm) {
+        // Para teste: sempre habilita o botão
+        btnConfirm.removeAttribute('disabled');
+        btnConfirm.style.opacity = '1';
+        
+        // Define valores padrão para teste se nada estiver selecionado
+        if (!gameState.selectedDeck) {
+            gameState.selectedDeck = '1'; // Seleciona o primeiro deck por padrão
+        }
+        if (!gameState.selectedAmulet) {
+            gameState.selectedAmulet = 'amulet1'; // Seleciona o primeiro amuleto por padrão
+        }
+    }
+    
+    // Remove mensagens de erro anteriores
+    const errorMessages = document.querySelectorAll('.selection-error');
+    errorMessages.forEach(msg => msg.remove());
+    
+    // Mostra o progresso da seleção
+    const modalContent = deckSelectionModal.querySelector('.modal-content');
+    if (modalContent) {
+        const statusText = document.createElement('div');
+        statusText.className = 'selection-status';
+        statusText.style.color = '#fff';
+        statusText.style.marginTop = '10px';
+        statusText.innerHTML = `
+            Deck: ${gameState.selectedDeck ? '✅' : '❌'}<br>
+            Amuleto: ${gameState.selectedAmulet ? '✅' : '❌'}
+        `;
+        
+        // Remove status anterior se existir
+        const oldStatus = modalContent.querySelector('.selection-status');
+        if (oldStatus) oldStatus.remove();
+        
+        modalContent.appendChild(statusText);
+    }
 }
 
 // Inicializar o jogo
 function initializeGame() {
+    // Validação da seleção
     if (!gameState.selectedDeck || !gameState.selectedAmulet) {
-        alert('Por favor, selecione um deck e um amuleto!');
+        const modalContent = deckSelectionModal.querySelector('.modal-content');
+        
+        // Remove mensagens de erro anteriores
+        modalContent.querySelectorAll('.error-message').forEach(msg => msg.remove());
+        
+        // Adiciona mensagem de erro
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        errorMessage.style.color = '#ff4444';
+        errorMessage.style.marginTop = '10px';
+        errorMessage.innerHTML = '⚠️ Por favor, selecione um deck e um amuleto para continuar!';
+        modalContent.appendChild(errorMessage);
+        
+        // Efeito de shake no modal
+        modalContent.style.animation = 'shake 0.5s';
+        setTimeout(() => modalContent.style.animation = '', 500);
         return;
     }
 
+    // Fecha o modal com animação
     closeDeckSelectionModal();
 
-    // Criar os baralhos
-    gameState.playerDeck = shuffleArray(createDeck(gameState.selectedDeck));
-    gameState.opponentDeck = shuffleArray(createDeck('opponent'));
-    gameState.centralDeck = shuffleArray(createDeck('central'));
+    // Inicia animação de carregamento
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = `
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Preparando o jogo...</div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
 
-    // Revelar primeira carta do baralho central
-    gameState.revealedCard = gameState.centralDeck.shift();
-    displayCentralBoard();
+    // Usa setTimeout para dar tempo para a animação do modal fechar
+    setTimeout(() => {
+        // Criar os baralhos
+        gameState.playerDeck = shuffleArray(createDeck(gameState.selectedDeck));
+        gameState.opponentDeck = shuffleArray(createDeck('opponent'));
+        gameState.centralDeck = shuffleArray(createDeck('central'));
 
-    // Cada jogador compra 5 cartas
-    for (let i = 0; i < 5; i++) {
-        if (gameState.playerDeck.length > 0) {
-            gameState.playerHand.push(gameState.playerDeck.shift());
+        // Revelar primeira carta do baralho central
+        gameState.revealedCard = gameState.centralDeck.shift();
+        displayCentralBoard();
+
+        // Cada jogador compra 5 cartas
+        for (let i = 0; i < 5; i++) {
+            if (gameState.playerDeck.length > 0) {
+                gameState.playerHand.push(gameState.playerDeck.shift());
+            }
         }
-    }
 
-    gameState.gameStarted = true;
-    displayPlayerHand();
+        gameState.gameStarted = true;
+        displayPlayerHand();
 
-    // Transição para tela de jogo
-    changeScreen(menuScreen, gameScreen);
+        // Remove o overlay de carregamento
+        setTimeout(() => {
+            loadingOverlay.style.opacity = '0';
+            setTimeout(() => {
+                loadingOverlay.remove();
+                // Transição para tela de jogo
+                changeScreen(menuScreen, gameScreen);
+            }, 500);
+        }, 1000);
+    }, 500);
 }
 
 // ========== EXIBIÇÃO ==========
@@ -184,9 +330,80 @@ function updateConfirmButton() {
 
 // ========== EVENT LISTENERS ==========
 
-// Botão Jogar no menu
-jogarOption.addEventListener('click', () => {
-    openDeckSelectionModal();
+document.addEventListener('DOMContentLoaded', () => {
+    // Event listeners só serão adicionados após o DOM estar completamente carregado
+    const deckOptions = document.querySelectorAll('.deck-option');
+    const amuletOptions = document.querySelectorAll('.amulet-option');
+    
+    // Adiciona evento para fechar o modal ao clicar no overlay
+    if (deckSelectionModal) {
+        const modalOverlay = deckSelectionModal.querySelector('.modal-overlay');
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    closeDeckSelectionModal();
+                }
+            });
+        }
+    }
+    
+    if (btnConfirmSelection) {
+        btnConfirmSelection.addEventListener('click', initializeGame);
+    }
+    
+    if (btnCancelSelection) {
+        btnCancelSelection.addEventListener('click', closeDeckSelectionModal);
+    }
+    
+    deckOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const deckNumber = option.dataset.deck;
+            selectDeck(deckNumber);
+            
+            // Adiciona efeito sonoro (opcional)
+            const selectSound = new Audio('../sounds/select.mp3');
+            selectSound.volume = 0.5;
+            selectSound.play().catch(() => {}); // Ignora erro se o som não existir
+        });
+        
+        // Adiciona efeito hover
+        option.addEventListener('mouseenter', () => {
+            if (!option.classList.contains('selected')) {
+                option.style.transform = 'translateY(-3px)';
+            }
+        });
+        
+        option.addEventListener('mouseleave', () => {
+            if (!option.classList.contains('selected')) {
+                option.style.transform = '';
+            }
+        });
+    });
+    
+    amuletOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const amuletId = option.dataset.amulet;
+            selectAmulet(amuletId);
+            
+            // Adiciona efeito sonoro (opcional)
+            const selectSound = new Audio('../sounds/select.mp3');
+            selectSound.volume = 0.5;
+            selectSound.play().catch(() => {}); // Ignora erro se o som não existir
+        });
+        
+        // Adiciona efeito hover
+        option.addEventListener('mouseenter', () => {
+            if (!option.classList.contains('selected')) {
+                option.style.transform = 'translateY(-3px)';
+            }
+        });
+        
+        option.addEventListener('mouseleave', () => {
+            if (!option.classList.contains('selected')) {
+                option.style.transform = '';
+            }
+        });
+    });
 });
 
 // Seleção de deck

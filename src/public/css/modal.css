@@ -1,4 +1,5 @@
-.confirmation-modal {
+.confirmation-modal,
+.deck-selection-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -6,13 +7,18 @@
     width: 100%;
     height: 100%;
     z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.confirmation-modal.active {
+.confirmation-modal.active,
+.deck-selection-modal.active {
     display: block;
+    opacity: 1;
 }
 
-.confirmation-modal .modal-overlay {
+.confirmation-modal .modal-overlay,
+.deck-selection-modal .modal-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -66,4 +72,125 @@
 .confirmation-modal .btn-cancel {
     background-color: #f44336;
     color: white;
+}
+
+/* Estilos para deck e amuleto */
+.deck-selection,
+.amulet-selection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.deck-option,
+.amulet-option {
+    position: relative;
+    width: 150px;
+    height: 200px;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+.deck-option:hover,
+.amulet-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.deck-option.selected,
+.amulet-option.selected {
+    border-color: #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+    transform: translateY(-5px);
+}
+
+.deck-option::after,
+.amulet-option::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7) 100%);
+    border-radius: 7px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.deck-option:hover::after,
+.amulet-option:hover::after,
+.deck-option.selected::after,
+.amulet-option.selected::after {
+    opacity: 1;
+}
+
+/* Animação de shake para erro */
+@keyframes shake {
+    0%, 100% { transform: translate(-50%, -50%); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-52%, -50%); }
+    20%, 40%, 60%, 80% { transform: translate(-48%, -50%); }
+}
+
+/* Estilos para loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #fff;
+    border-top: 5px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.loading-text {
+    color: #fff;
+    font-family: 'Robotech GP', sans-serif;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilo para mensagem de erro */
+.error-message {
+    background-color: rgba(255, 68, 68, 0.1);
+    border: 1px solid #ff4444;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: 'Robotech GP', sans-serif;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -41,7 +41,7 @@ function changeScreen(fromScreen, toScreen) {
 // Inicialização do jogo
 function initGame() {
     setTimeout(() => {
-       changeScreen(loadingScreen, gameScreen);
+       changeScreen(loadingScreen, menuScreen);
     }, 3000);
 }
 
@@ -60,7 +60,10 @@ menuOptions.forEach(option => {
         const optionName = option.getAttribute('data-option');
         switch(optionName) {
             case 'jogar':
-                changeScreen(menuScreen, gameScreen); // Tela do jogo
+                const deckSelectionModal = document.getElementById('deck-selection-modal');
+                if (deckSelectionModal) {
+                    deckSelectionModal.classList.add('active');
+                }
                 break;
             case 'inventario':
                 changeScreen(menuScreen, inventoryScreen);

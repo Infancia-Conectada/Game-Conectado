@@ -134,7 +134,54 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Configuração dos event listeners do jogo
+document.addEventListener('DOMContentLoaded', function() {
+    const confirmPlayGameBtn = document.getElementById('btn-confirm-play-game');
+    const cancelPlayGameBtn = document.getElementById('btn-cancel-play-game');
+    const playConfirmationModal = document.getElementById('play-confirmation-modal');
+    const deckSelectionModal = document.getElementById('deck-selection-modal');
+    const btnConfirmSelection = document.getElementById('btn-confirm-selection');
+    const btnCancelSelection = document.getElementById('btn-cancel-selection');
+
+    // Botão Jogar do modal de confirmação
+    if (confirmPlayGameBtn) {
+        confirmPlayGameBtn.addEventListener('click', function() {
+            playConfirmationModal.classList.remove('active');
+            if (deckSelectionModal) {
+                setTimeout(() => {
+                    deckSelectionModal.classList.add('active');
+                }, 300);
+            }
+        });
+    }
+
+    // Botão Voltar do modal de confirmação
+    if (cancelPlayGameBtn) {
+        cancelPlayGameBtn.addEventListener('click', function() {
+            playConfirmationModal.classList.remove('active');
+        });
+    }
+
+    // Botão Confirmar da seleção de deck
+    if (btnConfirmSelection) {
+        btnConfirmSelection.addEventListener('click', function() {
+            deckSelectionModal.classList.remove('active');
+            if (typeof initializeGame === 'function') {
+                initializeGame();
+            }
+        });
+    }
+
+    // Botão Cancelar da seleção de deck
+    if (btnCancelSelection) {
+        btnCancelSelection.addEventListener('click', function() {
+            deckSelectionModal.classList.remove('active');
+            setTimeout(() => {
+                playConfirmationModal.classList.add('active');
+            }, 300);
+        });
+    }
+});
+
 // Inicia o jogo quando a página carregar
-// window.addEventListener('load', initGame);
 initGame();
-// a gente fez isso pra ignorar o tempo de loading mas devemos ajustar depois (remover)

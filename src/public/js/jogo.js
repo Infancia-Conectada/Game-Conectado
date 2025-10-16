@@ -253,13 +253,13 @@ function initializeGame() {
         gameState.gameStarted = true;
         displayPlayerHand();
 
-        // Remove o overlay de carregamento
+        // Remove o overlay de carregamento e muda para a tela do jogo
         setTimeout(() => {
             loadingOverlay.style.opacity = '0';
             setTimeout(() => {
                 loadingOverlay.remove();
-                // Transição para tela de jogo
-                changeScreen(menuScreen, gameScreen);
+                menuScreen.classList.remove('active');
+                gameScreen.classList.add('active');
             }, 500);
         }, 1000);
     }, 500);
@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const amuletOptions = document.querySelectorAll('.amulet-option');
     
     // Adiciona evento para fechar o modal ao clicar no overlay
+    
     if (deckSelectionModal) {
         const modalOverlay = deckSelectionModal.querySelector('.modal-overlay');
         if (modalOverlay) {
@@ -348,7 +349,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (btnConfirmSelection) {
-        btnConfirmSelection.addEventListener('click', initializeGame);
+        btnConfirmSelection.addEventListener('click', () => {
+            console.log('Confirm button clicked'); // Debug log
+            initializeGame();
+        });
     }
     
     if (btnCancelSelection) {
@@ -418,11 +422,6 @@ document.querySelectorAll('.amulet-option').forEach(option => {
     option.addEventListener('click', () => {
         selectAmulet(option.dataset.amulet);
     });
-});
-
-// Confirmar seleção (deck + amuleto)
-btnConfirmSelection.addEventListener('click', () => {
-    initializeGame();
 });
 
 // Cancelar seleção

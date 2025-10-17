@@ -1,15 +1,6 @@
 // ========== ELEMENTOS DO DOM ==========
-const gameScreen = document.getElementById('game-screen');
-const menuScreen = document.getElementById('menu-screen');
-const jogarOption = document.querySelector('.menu-option-jogar');
-const deckSelectionModal = document.getElementById('deck-selection-modal');
-const btnConfirmSelection = document.getElementById('btn-confirm-selection');
-const btnCancelSelection = document.getElementById('btn-cancel-selection');
-const playerHandContainer = document.getElementById('player-hand-container');
-const confirmPlayButton = document.getElementById('btn-confirm-play');
-const revealedCardSlot = document.getElementById('revealed-card-slot');
-const deckPileSlot = document.getElementById('deck-pile-slot');
-const discardPileSlot = document.getElementById('discard-pile-slot');
+//let gameScreen = document.getElementById('game-screen');
+//let menuScreen = document.getElementById('menu-screen');
 
 // ========== ESTADO DO JOGO ==========
 let gameState = {
@@ -87,8 +78,71 @@ function selectAmulet(amuletId) {
     gameState.selectedAmulet = amuletId;
 }
 
+// Animação de compra de carta
+async function animateDrawCard(from, to, delay = 0) {
+    return new Promise(resolve => {
+        const card = document.createElement('div');
+        card.className = 'card-animation';
+        
+        // Posição inicial
+        const fromRect = from.getBoundingClientRect();
+        const toRect = to.getBoundingClientRect();
+        
+        // Calcular o ponto médio para o arco da animação
+        const midX = (fromRect.left + toRect.left) / 2;
+        const midY = Math.min(fromRect.top, toRect.top) - 100; // Arco para cima
+        console.log("inicio");
+        card.style.top = `${fromRect.top}px`;
+        card.style.left = `${fromRect.left}px`;
+        card.style.transition = 'none';
+        
+        document.body.appendChild(card);
+        
+        // Força um reflow para garantir que a transição inicial seja aplicada
+        card.getBoundingClientRect();
+        
+        // Adiciona um pequeno delay aleatório para tornar a animação mais natural
+        setTimeout(() => {
+            card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            console.log("settimeout");
+            
+            // Primeira parte da animação - subindo em arco
+            card.style.transform = `translate(${midX - fromRect.left}px, ${midY - fromRect.top}px) rotate(180deg)`;
+            
+            setTimeout(() => {
+                // Segunda parte da animação - descendo para a posição final
+                card.style.transform = `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top + 70}px) rotate(360deg)`;
+                
+                card.addEventListener('transitionend', () => {
+                    card.remove();
+                    resolve();
+                }, { once: true });
+            }, 250);
+        }, delay);
+    });
+}
+
+// Função para comprar cartas até ter 5 na mão
+async function drawCardsUntilFull() {
+        console.log("drawCardsUntilFull");
+    const cardsNeeded = 5 - gameState.playerHand.length;
+    
+    if (cardsNeeded <= 0) return;
+    
+    for (let i = 0; i < cardsNeeded; i++) {
+        if (gameState.playerDeck.length > 0) {
+            const card = gameState.playerDeck.shift();
+            gameState.playerHand.push(card);
+            await animateDrawCard(playerDeckElement, playerHandContainer, 2000);
+        }
+    }
+    
+    updateDeckCounts();
+    displayPlayerHand();
+}
+
 // Inicializar o jogo
-function initializeGame() {
+async function initializeGame() {
     if (!gameState.selectedDeck || !gameState.selectedAmulet) {
         alert('Por favor, selecione um deck e um amuleto!');
         return;
@@ -101,22 +155,31 @@ function initializeGame() {
     gameState.opponentDeck = shuffleArray(createDeck('opponent'));
     gameState.centralDeck = shuffleArray(createDeck('central'));
 
+    // Atualizar contadores dos decks
+    updateDeckCounts();
+
+    // Transição para tela de jogo
+    changeScreen(menuScreen, gameScreen);
+
+    // Espera a transição das portas terminar (3 segundos) + 2 segundos adicionais
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     // Revelar primeira carta do baralho central
     gameState.revealedCard = gameState.centralDeck.shift();
     displayCentralBoard();
 
-    // Cada jogador compra 5 cartas
-    for (let i = 0; i < 5; i++) {
-        if (gameState.playerDeck.length > 0) {
-            gameState.playerHand.push(gameState.playerDeck.shift());
-        }
-    }
-
+    // Inicia o jogo
     gameState.gameStarted = true;
-    displayPlayerHand();
-
-    // Transição para tela de jogo
-    changeScreen(menuScreen, gameScreen);
+    
+    // Compra as cartas iniciais com animação
+    await drawCardsUntilFull();
+    
+    // Adiciona listener para auto-compra quando necessário
+    setInterval(() => {
+        if (gameState.gameStarted && gameState.playerHand.length < 5) {
+            drawCardsUntilFull();
+        }
+    }, 1000);
 }
 
 // ========== EXIBIÇÃO ==========
@@ -144,14 +207,22 @@ function displayPlayerHand() {
     
     gameState.playerHand.forEach((card, index) => {
         const cardElement = document.createElement('div');
-        cardElement.classList.add('hand-card', 'half');
+        cardElement.classList.add('hand-card');
         cardElement.dataset.index = index;
         cardElement.style.backgroundImage = `url(${card.image})`;
         cardElement.title = card.name;
         
+        // Adiciona a carta já selecionada se estiver no array de selecionadas
+        if (gameState.playerSelectedCards.includes(index)) {
+            cardElement.classList.add('selected');
+        }
+        
         cardElement.addEventListener('click', () => toggleCardSelection(index, cardElement));
         
-        playerHandContainer.appendChild(cardElement);
+        // Adiciona um pequeno delay na entrada de cada carta
+        setTimeout(() => {
+            playerHandContainer.appendChild(cardElement);
+        }, index * 50);
     });
 }
 
@@ -164,6 +235,9 @@ function toggleCardSelection(index, cardElement) {
         if (gameState.playerSelectedCards.length < 2) {
             gameState.playerSelectedCards.push(index);
             cardElement.classList.add('selected');
+            
+            // Adiciona som de seleção (opcional)
+            // playCardSelectSound();
         }
     } else {
         gameState.playerSelectedCards.splice(cardIndex, 1);
@@ -171,6 +245,21 @@ function toggleCardSelection(index, cardElement) {
     }
     
     updateConfirmButton();
+}
+
+// Atualizar contadores dos decks
+function updateDeckCounts() {
+    // Atualizar contador do deck do jogador
+    const playerDeckCount = document.querySelector('.player-bottom-deck .deck-count');
+    if (playerDeckCount) {
+        playerDeckCount.textContent = gameState.playerDeck.length;
+    }
+
+    // Atualizar contador do deck do oponente
+    const opponentDeckCount = document.querySelector('.opponent-deck .deck-count');
+    if (opponentDeckCount) {
+        opponentDeckCount.textContent = gameState.opponentDeck.length;
+    }
 }
 
 // Atualizar estado do botão confirmar
@@ -186,6 +275,7 @@ function updateConfirmButton() {
 
 // Botão Jogar no menu
 jogarOption.addEventListener('click', () => {
+    console.log("clickar abre modal");
     openDeckSelectionModal();
 });
 

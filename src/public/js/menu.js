@@ -1,15 +1,3 @@
-// Elementos
-const gameScreen = document.getElementById('game-screen');
-const storeScreen = document.getElementById('store-screen');
-const profileScreen = document.getElementById('profile-screen');
-const tutorialScreen = document.getElementById('tutorial-screen');
-const loadingScreen = document.getElementById('loading-screen');
-const menuScreen = document.getElementById('menu-screen');
-const transition = document.getElementById('transition');
-const menuOptions = document.querySelectorAll('.menu-option');
-const tooltip = document.getElementById('menu-tooltip');
-const tooltipText = document.getElementById('tooltip-text');
-
 // Textos do tooltip
 const tooltipTexts = {
     jogar: 'Jogar',
@@ -21,28 +9,33 @@ const tooltipTexts = {
 
 // Função para mudar de tela com transição
 function changeScreen(fromScreen, toScreen) {
-    transition.classList.add('active', 'closing');
-    
-    setTimeout(() => {
-        fromScreen.classList.remove('active');
+    return new Promise((resolve) => {
+        transition.classList.add('active', 'closing');
         
         setTimeout(() => {
-            transition.classList.remove('closing');
-            transition.classList.add('opening');
-            toScreen.classList.add('active');
+            fromScreen.classList.remove('active');
             
             setTimeout(() => {
-                transition.classList.remove('active', 'opening');
+                transition.classList.remove('closing');
+                transition.classList.add('opening');
+                toScreen.classList.add('active');
+                
+                setTimeout(() => {
+                    transition.classList.remove('active', 'opening');
+                    resolve();
+                }, 1000);
             }, 1000);
         }, 1000);
-    }, 1000);
+    });
 }
 
-// Inicialização do jogo
-function initGame() {
-    setTimeout(() => {
-       changeScreen(loadingScreen, inventoryScreen);
-    }, 3000);
+// Função para remover event listeners antigos
+function cleanupModalListeners() {
+    const newBtnConfirm = btnConfirmPlay.cloneNode(true);
+    const newBtnCancel = btnCancelPlay.cloneNode(true);
+    btnConfirmPlay.parentNode.replaceChild(newBtnConfirm, btnConfirmPlay);
+    btnCancelPlay.parentNode.replaceChild(newBtnCancel, btnCancelPlay);
+    return [newBtnConfirm, newBtnCancel];
 }
 
 // Event listeners para as opções do menu
@@ -56,11 +49,25 @@ menuOptions.forEach(option => {
     option.addEventListener('mouseleave', () => {
         tooltip.classList.remove('visible');
     });
-    option.addEventListener('click', () => {
+    option.addEventListener('click', async () => {
         const optionName = option.getAttribute('data-option');
         switch(optionName) {
             case 'jogar':
-                changeScreen(menuScreen, gameScreen); // Tela do jogo
+                // Limpa os event listeners antigos
+                const [newBtnConfirm, newBtnCancel] = cleanupModalListeners();
+                
+                // Mostra o modal
+                playConfirmationModal.classList.add('active');
+                
+                // Adiciona novos event listeners
+                newBtnConfirm.addEventListener('click', async () => {
+                    playConfirmationModal.classList.remove('active');
+                    await changeScreen(menuScreen, gameScreen);
+                });
+                
+                newBtnCancel.addEventListener('click', () => {
+                    playConfirmationModal.classList.remove('active');
+                });
                 break;
             case 'inventario':
                 changeScreen(menuScreen, inventoryScreen);
@@ -131,6 +138,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+
+// Inicialização do jogo
+function initGame() {
+    setTimeout(() => {
+       changeScreen(loadingScreen,menuScreen);
+    }, 3000);
+}
 // Inicia o jogo quando a página carregar
 // window.addEventListener('load', initGame);
 initGame();

@@ -1,18 +1,3 @@
-const inventoryScreen = document.getElementById('inventory-screen');
-// Elementos do inventário
-const deckCards = document.querySelector('.deck-cards');
-const inventoryGrid = document.querySelector('.inventory-grid');
-const cardPreview = document.getElementById('preview-image');
-const deckNumber = document.getElementById('deck-number');
-const btnAddRemove = document.getElementById('btn-add-remove');
-const btnRecycle = document.getElementById('btn-recycle');
-const btnBack = document.getElementById('btn-back');
-const deckArrowLeft = document.querySelector('.deck-arrow-left');
-const deckArrowRight = document.querySelector('.deck-arrow-right');
-const recycleModal = document.getElementById('recycle-modal');
-const btnConfirmRecycle = document.getElementById('btn-confirm-recycle');
-const btnCancelRecycle = document.getElementById('btn-cancel-recycle');
-const coinsAmount = document.getElementById('coins-amount');
 
 // Estado do jogo
 let currentDeck = 1;
@@ -201,27 +186,6 @@ btnConfirmRecycle.addEventListener('click', () => {
 
 btnCancelRecycle.addEventListener('click', () => {
     recycleModal.classList.remove('active');
-});
-
-// Navegação entre decks
-deckArrowLeft.addEventListener('click', () => {
-    currentDeck = currentDeck === 1 ? 3 : currentDeck - 1;
-    deckNumber.textContent = `P${currentDeck}`;
-    renderDeck();
-    selectedCard = null;
-    selectedType = null;
-    cardPreview.src = 'https://via.placeholder.com/300x400/2dd4bf/FFFFFF?text=P2';
-    updateButtons();
-});
-
-deckArrowRight.addEventListener('click', () => {
-    currentDeck = currentDeck === 3 ? 1 : currentDeck + 1;
-    deckNumber.textContent = `P${currentDeck}`;
-    renderDeck();
-    selectedCard = null;
-    selectedType = null;
-    cardPreview.src = 'https://via.placeholder.com/300x400/2dd4bf/FFFFFF?text=P2';
-    updateButtons();
 });
 
 // Scroll do inventário

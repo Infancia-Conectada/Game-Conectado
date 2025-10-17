@@ -133,7 +133,7 @@ async function drawCardsUntilFull() {
         if (gameState.playerDeck.length > 0) {
             const card = gameState.playerDeck.shift();
             gameState.playerHand.push(card);
-            await animateDrawCard(playerDeckElement, playerHandContainer, 2000);
+            await animateDrawCard(playerDeckElement, playerHandContainer, 1);
         }
     }
     

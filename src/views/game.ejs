@@ -151,21 +151,10 @@
                 <span id="tooltip-text"></span>
             </div>
         </div>
-        <!-- Modal de Confirmação para Jogar -->
-        <div id="play-confirmation-modal" class="confirmation-modal">
-            <div class="modal-overlay"></div>
-            <div class="modal-content">
-                <h2>Pronto para começar?</h2>
-                <div class="modal-buttons">
-                    <button id="btn-confirm-play-game" class="modal-btn btn-confirm">Jogar</button>
-                    <button id="btn-cancel-play-game" class="modal-btn btn-cancel">Voltar</button>
-                </div>
-            </div>
-        </div>
         <!-- Tela de Jogo -->
         <div id="game-screen" class="screen">
             <div class="game-background">
-                <img src="../img/background/JOGAR-NEUTRO.png" alt="Background" class="bg-image">
+                <img src="../img/background/JOGAR-AGUA.png" alt="Background" class="bg-image">
             </div>
             <div class="game-overlay">
                 <img src="../img/background/JOGAR-MESA.png" alt="Game Board" class="board-image">
@@ -181,18 +170,29 @@
                     <img src="../img/avatar-player.png" alt="Jogador">
                 </div>
             </div>
+            <!-- Área dos Baralhos -->
+            <div class="player-deck-area opponent-deck-area">
+                <div class="player-deck opponent-deck">
+                    <div class="deck-count">20</div>
+                </div>
+                <div class="player-discard opponent-discard"></div>
+            </div>
+            <div class="player-deck-area player-bottom-deck-area">
+                <div class="player-deck player-bottom-deck">
+                    <div class="deck-count">20</div>
+                </div>
+                <div class="player-discard player-bottom-discard"></div>
+            </div>
             <!-- Área Central - Baralho Central -->
             <div class="central-board">
-                <div class="pile-container">
-                    <div class="pile revealed-card">
-                        <div class="card-stack" id="revealed-card-slot"></div>
-                    </div>
-                    <div class="pile deck-pile">
-                        <div class="card-stack" id="deck-pile-slot"></div>
-                    </div>
-                    <div class="pile discard-pile">
-                        <div class="card-stack" id="discard-pile-slot"></div>
-                    </div>
+                <div class="pile revealed-card">
+                    <div class="card-stack" id="revealed-card-slot"></div>
+                </div>
+                <div class="pile deck-pile">
+                    <div class="card-stack" id="deck-pile-slot"></div>
+                </div>
+                <div class="pile discard-pile">
+                    <div class="card-stack" id="discard-pile-slot"></div>
                 </div>
             </div>
             <!-- Mão do Jogador -->
@@ -200,7 +200,7 @@
                 <div class="hand-cards" id="player-hand-container"></div>
             </div>
             <!-- Botão de Confirmação -->
-            <button id="btn-confirm-play" class="confirm-button hidden">CONFIRMAR</button>
+            <button id="btn-confirm-play" class="confirm-button hidden"><img src="../img/inputs/botao-continuar.png" alt="Continuar"></button>
         </div>
         <!-- Popup de Seleção de Deck e Amuleto -->
         <div id="deck-selection-modal" class="deck-selection-modal">
@@ -296,10 +296,14 @@
                     <div class="bottom-container-right">
                         <!-- Botões de ação -->
                         <div class="action-buttons">
-                            <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar/Remover"></button>
-                            <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Reciclar"></button>
-                            <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Menu de Amuletos"></button>
-                            <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Loja"></button>
+                            <div class="action-buttons-1">
+                                <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar/Remover"></button>
+                                <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Reciclar"></button>
+                            </div>
+                            <div class="action-buttons-2">
+                                <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Menu de Amuletos"></button>
+                                <button id="btn-loja" class="action-btn"><img src="../img/inputs/botao-loja.png" alt="Loja"></button>
+                            </div>
                         </div>
                         <div class="bottom-container-down">
                             <!-- Barra de scroll vertical -->
@@ -365,7 +369,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Modal de confirmação de reciclagem -->
             <div id="recycle-modal" class="modal">
                 <div class="modal-content">
@@ -378,12 +381,8 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
     </div>
+    <script src="/js/variables.js"></script>
     <script src="/js/header-infancia.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/inventario.js"></script>

@@ -77,28 +77,92 @@
     object-fit: cover;
 }
 
+/* Área dos Baralhos dos Jogadores */
+.player-deck-area {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    gap: 20px;
+}
+
+.opponent-deck-area {
+    top: 120px;
+    right: 420px;
+}
+
+.player-bottom-deck-area {
+    bottom: 120px;
+    right: 420px;
+}
+
+.player-deck, .player-discard {
+    width: 80px;
+    height: 120px;
+    background: url('../img/costas-individual.png') center/cover;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.player-deck:hover, .player-discard:hover {
+    transform: scale(1.05);
+}
+
+.deck-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #2dd4bf;
+    color: #0F172A;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.card-animation {
+    position: fixed;
+    width: 100px;
+    height: 140px;
+    background: url('../img/costas-individual.png') center/cover;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 100;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes cardFloat {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(2deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
 /* Área Central - Baralho Central */
 .central-board {
     position: absolute;
     top: 50%;
-    left: 50%;
+    right: -3%;
     transform: translate(-50%, -50%);
     z-index: 5;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pile-container {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    align-items: center;
+    gap: 20px;
 }
 
 .pile {
-    width: 100px;
-    height: 140px;
+    width: 120px;
+    height: 180px;
     position: relative;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -125,32 +189,30 @@
 }
 
 .revealed-card .card-stack {
-    background-color: rgba(59, 130, 246, 0.3);
-    border-color: #3b82f6;
-    color: #3b82f6;
+    background: url('../img/cenarios/1-AGA.png') center/cover;
+    border: none;
 }
 
 .deck-pile .card-stack {
-    background-color: rgba(168, 85, 247, 0.3);
-    border-color: #a855f7;
-    color: #a855f7;
+    background: url('../img/costas-cenario.png') center/cover;
+    border: none;
 }
 
 .discard-pile .card-stack {
-    background-color: rgba(239, 68, 68, 0.3);
-    border-color: #ef4444;
-    color: #ef4444;
+    background: url('../img/cenarios/1-FGO.png') center/cover;
+    border: none;
 }
 
 /* Mão do Jogador */
 .player-hand {
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 15;
     width: 90%;
     max-width: 1000px;
+    padding-bottom: 20px;
 }
 
 .hand-cards {
@@ -158,6 +220,7 @@
     justify-content: center;
     gap: 15px;
     flex-wrap: nowrap;
+    perspective: 1000px;
 }
 
 .hand-card {
@@ -167,30 +230,27 @@
     border: 2px solid #2dd4bf;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     background-size: cover;
-    background-position: center;
+    background-position: top center;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
     flex-shrink: 0;
+    transform-origin: bottom center;
+    transform: translateY(70px);
 }
 
-.hand-card.half {
-    height: 70px;
-}
-
-.hand-card:hover {
-    transform: translateY(-10px) scale(1.05);
+.hand-card:hover:not(.selected) {
+    transform: translateY(60px) scale(1.05);
     box-shadow: 0 5px 20px rgba(45, 212, 191, 0.4);
 }
 
 .hand-card.selected {
     border-color: #fbbf24;
     box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-    height: 140px;
+    transform: translateY(0) scale(1.05);
     z-index: 20;
 }
 
@@ -239,7 +299,7 @@
 
 /* ========== MODAL DE SELEÇÃO DE DECK E AMULETO ========== */
 .deck-selection-modal {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -259,7 +319,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: -1;
 }
 

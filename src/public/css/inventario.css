@@ -120,19 +120,43 @@
 }
 
 #btn-recycle {
-    width: 159px;
+    width: 167px;
 }
 
 #btn-amuleto {
-    width: 187px;
+    width: 195px;
+}
+
+#btn-loja {
+    width: 130px;
 }
 
 .action-buttons {
     display: flex;
+    position: relative;
     justify-content: center;
-    gap: 15px;
     padding: 0 10px;
     height: 60px;
+    gap: 140px;
+    flex-direction: row;
+}
+
+.action-buttons-1 {
+    gap: 15px;
+    display: flex;
+    position: relative;
+    justify-content: left;
+    height: 100%;
+    width: 255px;
+}
+
+.action-buttons-2 {
+    gap: 15px;
+    display: flex;
+    position: relative;
+    justify-content: right;
+    height: 100%;
+    width: 340px;
 }
 
 .action-btn {
@@ -140,6 +164,8 @@
     border-radius: 16px;
     display: flex;
     width: 160px;
+    background: none;
+    border: none;
 }
 
 /* Barra de scroll */

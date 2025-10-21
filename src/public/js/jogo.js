@@ -5,7 +5,7 @@
 // ========== ESTADO DO JOGO ==========
 let gameState = {
     selectedDeck: null,
-    selectedAmulet: null,
+    // selectedAmulet: null, // Comentado temporariamente
     playerHand: [],
     playerSelectedCards: [],
     playerDeck: [],
@@ -44,7 +44,7 @@ function createDeck(deckNumber, cardCount = 20) {
 function openDeckSelectionModal() {
     deckSelectionModal.classList.add('active');
     gameState.selectedDeck = null;
-    gameState.selectedAmulet = null;
+    // gameState.selectedAmulet = null; // Comentado temporariamente
     resetModalSelections();
 }
 
@@ -55,9 +55,13 @@ function closeDeckSelectionModal() {
 
 // Resetar seleções do modal
 function resetModalSelections() {
-    document.querySelectorAll('.deck-option, .amulet-option').forEach(option => {
+    document.querySelectorAll('.deck-option').forEach(option => {
         option.classList.remove('selected');
     });
+    // Comentado temporariamente
+    /*document.querySelectorAll('.amulet-option').forEach(option => {
+        option.classList.remove('selected');
+    });*/
 }
 
 // Selecionar deck
@@ -67,15 +71,6 @@ function selectDeck(deckNumber) {
     });
     document.querySelector(`[data-deck="${deckNumber}"]`).classList.add('selected');
     gameState.selectedDeck = deckNumber;
-}
-
-// Selecionar amuleto
-function selectAmulet(amuletId) {
-    document.querySelectorAll('.amulet-option').forEach(option => {
-        option.classList.remove('selected');
-    });
-    document.querySelector(`[data-amulet="${amuletId}"]`).classList.add('selected');
-    gameState.selectedAmulet = amuletId;
 }
 
 // Animação de compra de carta
@@ -143,10 +138,15 @@ async function drawCardsUntilFull() {
 
 // Inicializar o jogo
 async function initializeGame() {
-    if (!gameState.selectedDeck || !gameState.selectedAmulet) {
-        alert('Por favor, selecione um deck e um amuleto!');
+    if (!gameState.selectedDeck) {
+        alert('Por favor, selecione um deck!');
         return;
     }
+    // Verificação do amuleto comentada temporariamente
+    /*if (!gameState.selectedAmulet) {
+        alert('Por favor, selecione um amuleto!');
+        return;
+    }*/
 
     closeDeckSelectionModal();
 
@@ -286,12 +286,7 @@ document.querySelectorAll('.deck-option').forEach(option => {
     });
 });
 
-// Seleção de amuleto
-document.querySelectorAll('.amulet-option').forEach(option => {
-    option.addEventListener('click', () => {
-        selectAmulet(option.dataset.amulet);
-    });
-});
+
 
 // Confirmar seleção (deck + amuleto)
 btnConfirmSelection.addEventListener('click', () => {

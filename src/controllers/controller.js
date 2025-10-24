@@ -1,5 +1,5 @@
 // Controller para gerenciar as rotas e lógica da aplicação
-const dataModel = require('../models/dataModel');
+const dataModel = require('./database.js');
 
 class HomeController {
     // Método para renderizar a página inicial (landing page)

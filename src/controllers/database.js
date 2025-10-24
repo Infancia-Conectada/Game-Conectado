@@ -46,6 +46,4 @@ INSERT INTO inventario (id_carta, quantidade) VALUES
 (31, 1),
 (33, 1),
 (35, 1);
-
-
 */

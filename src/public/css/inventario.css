@@ -30,7 +30,7 @@
     width: 863px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 22px;
     position: relative;
     height: 100%;
     margin: 0;
@@ -42,10 +42,7 @@
     height: 68px;
     display: flex;
     justify-content: center;
-    gap: 8px;
-}
-.deck-row-1{
-    margin-bottom: 14px;
+    gap: 22px;
 }
 
 .deck-icon{
@@ -53,9 +50,7 @@
     height: 68px;
     background: url("../img/icones/NENHUM.png") center/cover;
 }
-.deck-icon-1{
-    margin-right: 14px;
-}
+
 .deck-type {
      width: 90px;
     display: flex;
@@ -207,7 +202,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 22px;
     padding: 7px;
     border-radius: 10px;
     overflow: hidden;

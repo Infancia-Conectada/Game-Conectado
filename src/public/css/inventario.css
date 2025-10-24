@@ -250,7 +250,7 @@
     display: flex;
 }
 
-.modal-content {
+.modal-content-inv {
     background: linear-gradient(135deg, #2c5364 0%, #203a43 100%);
     padding: 30px;
     border-radius: 15px;
@@ -259,19 +259,19 @@
     min-width: 300px;
 }
 
-.modal-content h3 {
+.modal-content-inv h3 {
     color: #2dd4bf;
     margin-bottom: 15px;
     font-size: 22px;
 }
 
-.modal-content p {
+.modal-content-inv p {
     color: #ddd;
     margin-bottom: 25px;
     font-size: 16px;
 }
 
-.modal-content #coins-amount {
+.modal-content-inv #coins-amount {
     color: #fbbf24;
     font-weight: bold;
     font-size: 20px;

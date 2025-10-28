@@ -1,23 +1,40 @@
 
+const InventarioModel = require('../models/inventarioModel');
+
 // Estado do jogo
 let currentDeck = 1;
 let selectedCard = null;
 let selectedType = null; // 'deck' ou 'inventory'
-
-// Decks (3 decks de 20 cartas cada)
-const decks = {
-    1: Array(20).fill(null),
-    2: Array(20).fill(null),
-    3: Array(20).fill(null)
-};
-
-// Inventário (100 cartas no total, 24 visíveis por vez)
-const inventory = Array(100).fill(null).map((_, i) => ({
-    id: i + 1,
-    image: `https://via.placeholder.com/50x70/14b8a6/FFFFFF?text=C${i + 1}`
-}));
-
+let inventoryData = [];
+let deckData = [];
+// manter essa linha de comando 
+// let userId = null;
+let userId = 1
 let inventoryScrollPosition = 0;
+const CARDS_PER_PAGE = 24;
+
+// Inicializar interface do inventário
+async function initializeInventoryInterface(userId) {
+    try {
+        // Definir usuário atual
+        this.userId = userId;
+
+        // Buscar dados do banco
+        await refreshData();
+
+        // Inicializar interface
+        initializeDeckCards();
+        initializeInventoryGrid();
+        
+        // Renderizar dados
+        renderDeck();
+        renderInventory();
+        updateButtons();
+
+    } catch (error) {
+        console.error('Erro ao inicializar inventário:', error);
+    }
+}
 
 // Inicializar as cartas do deck
 function initializeDeckCards() {
@@ -27,79 +44,94 @@ function initializeDeckCards() {
         for (let i = 0; i < 10; i++) {
             const cardIndex = rowIndex * 10 + i;
             const card = document.createElement('div');
-            card.classList.add('card-slot', 'empty');
+            card.classList.add('inventory-icon');
             card.dataset.index = cardIndex;
             card.dataset.type = 'deck';
-            
+            card.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
             card.addEventListener('click', () => selectCard(card, 'deck', cardIndex));
             row.appendChild(card);
         }
     });
-    renderDeck();
 }
 
 // Renderizar deck atual
 function renderDeck() {
-    const slots = deckCards.querySelectorAll('.card-slot');
+    const slots = deckCards.querySelectorAll('.deck-icon');
     slots.forEach((slot, index) => {
-        const card = decks[currentDeck][index];
+        const card = deckData[index];
         if (card) {
-            slot.style.backgroundImage = `url(${card.image})`;
+            slot.style.backgroundImage = `url(${card.ico_url})`;
             slot.classList.remove('empty');
         } else {
-            slot.style.backgroundImage = '';
+            slot.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
             slot.classList.add('empty');
         }
         slot.classList.remove('selected');
     });
 }
 
-// Inicializar inventário
-function initializeInventory() {
-    inventoryGrid.innerHTML = '';
-    for (let i = 0; i < 24; i++) {
-        const slot = document.createElement('div');
-        slot.classList.add('inventory-slot');
-        slot.dataset.index = i;
-        slot.dataset.type = 'inventory';
-        
-        slot.addEventListener('click', () => {
-            const actualIndex = inventoryScrollPosition + i;
-            if (inventory[actualIndex]) {
-                selectCard(slot, 'inventory', actualIndex);
-            }
-        });
-        
-        inventoryGrid.appendChild(slot);
-    }
-    renderInventory();
-}
+// Inicializar grid do inventário
+function initializeInventoryGrid() {
+    const rows = deckCards.querySelectorAll('.inventory-row');
+    rows.forEach((row, rowIndex) => {
+        row.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+            const cardIndex = rowIndex * 10 + i;
+            const card = document.createElement('div');
+            card.classList.add('inventory-icon');
+            card.dataset.index = cardIndex;
+            card.dataset.type = 'deck';
+            card.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
+            card.addEventListener('click', () => {
+                const actualIndex = inventoryScrollPosition + index;
+                if (inventoryData[actualIndex]) {
+                    selectCard(icon, 'inventory', actualIndex);
+                }
+            });
+        };
+    });
+};
 
 // Renderizar inventário
 function renderInventory() {
-    const slots = inventoryGrid.querySelectorAll('.inventory-slot');
-    slots.forEach((slot, i) => {
-        const actualIndex = inventoryScrollPosition + i;
-        const card = inventory[actualIndex];
+    console.log('Renderizando inventário com dados:', inventoryData);
+    
+    const icons = inventoryGrid.querySelectorAll('.inventory-icon');
+    console.log('Encontrados ' + icons.length + ' ícones para renderizar');
+
+    icons.forEach((icon, index) => {
+        const actualIndex = inventoryScrollPosition + index;
+        const card = inventoryData[actualIndex];
+        
+        icon.classList.remove('selected');
         
         if (card) {
-            slot.style.backgroundImage = `url(${card.image})`;
-            slot.classList.remove('empty');
+            console.log(`Renderizando carta ${actualIndex}:`, card);
+            icon.style.backgroundImage = `url(${card.ico_url})`;
+            icon.classList.remove('empty');
+            icon.title = card.nome;
+            icon.dataset.cardId = card.id;
         } else {
-            slot.style.backgroundImage = '';
-            slot.classList.add('empty');
+            icon.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
+            icon.classList.add('empty');
+            icon.title = '';
+            icon.dataset.cardId = '';
         }
-        slot.classList.remove('selected');
+    });
+
+    console.log('Inventário atualizado:', {
+        total: inventoryData.length,
+        visible: Math.min(CARDS_PER_PAGE, inventoryData.length - inventoryScrollPosition),
+        icones: icons.length
     });
 }
 
 // Selecionar carta
 function selectCard(element, type, index) {
     // Remover seleção anterior
-    document.querySelectorAll('.card-slot.selected, .inventory-slot.selected').forEach(el => {
+    document.querySelectorAll('.deck-icon.selected, .inventory-icon.selected').forEach(el => {
         el.classList.remove('selected');
     });
-    
     // Adicionar nova seleção
     element.classList.add('selected');
     selectedCard = index;
@@ -107,14 +139,14 @@ function selectCard(element, type, index) {
     
     // Atualizar preview
     if (type === 'deck') {
-        const card = decks[currentDeck][index];
+        const card = deckData[index];
         if (card) {
-            cardPreview.src = card.image;
+            cardPreview.src = card.img_url;
         }
     } else {
-        const card = inventory[index];
+        const card = inventoryData[index];
         if (card) {
-            cardPreview.src = card.image;
+            cardPreview.src = card.img_url;
         }
     }
     
@@ -123,46 +155,60 @@ function selectCard(element, type, index) {
 
 // Atualizar botões
 function updateButtons() {
-    if (selectedCard === null) {
-        btnAddRemove.disabled = true;
-        btnAddRemove.textContent = 'ADICIONAR';
-        btnRecycle.disabled = true;
-    } else if (selectedType === 'deck') {
-        btnAddRemove.disabled = false;
-        btnAddRemove.textContent = 'REMOVER';
-        btnRecycle.disabled = true;
-    } else if (selectedType === 'inventory') {
-        const deckHasSpace = decks[currentDeck].some(card => card === null);
-        btnAddRemove.disabled = !deckHasSpace;
-        btnAddRemove.textContent = 'ADICIONAR';
-        btnRecycle.disabled = false;
-    }
+    const hasSelection = selectedCard !== null;
+    const isDeckSelection = selectedType === 'deck';
+    const deckHasSpace = deckData.length < 20;
+    
+    btnAddRemove.disabled = !hasSelection;
+    btnAddRemove.querySelector('img').src = isDeckSelection ? 
+        '../img/inputs/botao-remover.png' : 
+        '../img/inputs/botao-adicionar.png';
+    
+    btnRecycle.disabled = !hasSelection || isDeckSelection;
 }
 
 // Adicionar/Remover carta
-btnAddRemove.addEventListener('click', () => {
-    if (selectedType === 'deck') {
-        // Remover do deck
-        const card = decks[currentDeck][selectedCard];
-        decks[currentDeck][selectedCard] = null;
-        inventory.push(card);
+btnAddRemove.addEventListener('click', async () => {
+    if (!selectedCard) return;
+
+    try {
+        if (selectedType === 'deck') {
+            // Remover carta do deck
+            const card = deckData[selectedCard];
+            await InventarioModel.removeCartaFromDeck(currentDeck, card.id);
+
+            // Atualizar quantidade no inventário
+            const inventarioCard = inventoryData.find(c => c.id === card.id);
+            if (inventarioCard) {
+                await InventarioModel.updateInventarioQuantidade(inventarioCard.id, inventarioCard.quantidade + 1);
+            } else {
+                // Adicionar nova entrada no inventário
+                await db.query('INSERT INTO inventario (id_user, id_carta, quantidade) VALUES (?, ?, 1)', [userId, card.id]);
+            }
+        } else {
+            // Adicionar carta ao deck
+            const card = inventoryData[selectedCard];
+            if (deckData.length < 20) {
+                await InventarioModel.addCartaToDeck(currentDeck, card.id);
+
+                // Atualizar quantidade no inventário
+                if (card.quantidade > 1) {
+                    await InventarioModel.updateInventarioQuantidade(card.id, card.quantidade - 1);
+                } else {
+                    // Remover do inventário se última carta
+                    await db.query('DELETE FROM inventario WHERE id = ?', [card.id]);
+                }
+            }
+        }
+        
+        // Atualizar interface
+        await refreshData();
         renderDeck();
         renderInventory();
-    } else if (selectedType === 'inventory') {
-        // Adicionar ao deck
-        const emptySlot = decks[currentDeck].findIndex(card => card === null);
-        if (emptySlot !== -1) {
-            decks[currentDeck][emptySlot] = inventory[selectedCard];
-            inventory.splice(selectedCard, 1);
-            renderDeck();
-            renderInventory();
-        }
+        resetSelection();
+    } catch (error) {
+        console.error('Erro ao adicionar/remover carta:', error);
     }
-    
-    selectedCard = null;
-    selectedType = null;
-    cardPreview.src = 'https://via.placeholder.com/300x400/2dd4bf/FFFFFF?text=P2';
-    updateButtons();
 });
 
 // Reciclar carta
@@ -209,22 +255,61 @@ btnBack.addEventListener('click', () => {
     changeScreen(inventoryScreen, menuScreen);
 });
 
-// Event listeners para as opções do menu
-menuOptions.forEach(option => {
-    option.addEventListener('mouseenter', () => {
-        const optionName = option.getAttribute('data-option');
-        tooltipText.textContent = tooltipTexts[optionName];
-        tooltip.classList.add('visible');
+// Funções utilitárias
+async function refreshData() {
+    try {
+        console.log('Buscando dados para usuário:', userId);
+        inventoryData = await InventarioModel.getInventarioByUser(userId);
+        console.log('Dados do inventário:', inventoryData);
+        
+        const deckAtivo = await InventarioModel.getDeckAtivo(userId);
+        console.log('Deck ativo:', deckAtivo);
+        
+        if (deckAtivo) {
+            deckData = await InventarioModel.getCartasDeck(deckAtivo.id);
+            console.log('Cartas do deck:', deckData);
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar dados:', error);
+    }
+}
+
+// Inicializar quando a tela de inventário for mostrada
+document.addEventListener('DOMContentLoaded', () => {
+    const menuInventarioOption = document.querySelector('.menu-option-inventario');
+    if (menuInventarioOption) {
+        menuInventarioOption.addEventListener('click', async () => {
+            await initializeInventoryInterface(userId);
+            // Mudar para a tela de inventário
+            menuScreen.classList.remove('active');
+            inventoryScreen.classList.add('active');
+        });
+    }
+});
+
+function resetSelection() {
+    selectedCard = null;
+    selectedType = null;
+    cardPreview.src = '../img/icones/NENHUM.png';
+    document.querySelectorAll('.deck-icon.selected, .inventory-slot.selected').forEach(el => {
+        el.classList.remove('selected');
     });
-    
-    option.addEventListener('mouseleave', () => {
-        tooltip.classList.remove('visible');
-    });
-    
-    option.addEventListener('click', () => {
-        const optionName = option.getAttribute('data-option');
-        console.log(`Navegando para: ${optionName}`);
-        // Aqui você pode adicionar a lógica para navegar para outras telas
-        // changeScreen(menuScreen, outraTela);
+    updateButtons();
+}
+
+// Event Listeners para seleção de deck
+deckSelectors.forEach((selector, index) => {
+    selector.addEventListener('click', async () => {
+        const deckNum = index + 1;
+        if (currentDeck !== deckNum) {
+            currentDeck = deckNum;
+            await refreshData();
+            renderDeck();
+            resetSelection();
+            
+            // Atualizar visual dos seletores
+            document.querySelector('.deck-selector.active')?.classList.remove('active');
+            selector.classList.add('active');
+        }
     });
 });

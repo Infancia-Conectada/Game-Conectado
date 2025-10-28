@@ -52,7 +52,7 @@
 }
 
 .deck-type {
-     width: 90px;
+    width: 90px;
     display: flex;
     justify-content: right;
     position: relative;
@@ -208,14 +208,21 @@
     overflow: hidden;
 }
 
-.inventory-slot {
-    background-color: rgba(45, 212, 191, 0.3);
+.inventory-row {
+    height: 68px;
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+}
+
+.inventory-icon {
+    width: 68px;
+    height: 68px;
+    background: url("../img/icones/NENHUM.png") center/cover;
     border: 2px solid #2dd4bf;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-size: cover;
-    background-position: center;
 }
 
 .inventory-slot.empty {

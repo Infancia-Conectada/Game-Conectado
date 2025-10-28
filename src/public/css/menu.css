@@ -1,0 +1,226 @@
+@import url('https://fonts.cdnfonts.com/css/robotech-gp');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0F172A;
+    font-family: 'ROBOTECH GP', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+#game-container {
+    position: relative;
+    margin-top: 10px;
+    width: 1200px;
+    height: 800px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Telas */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Loading Screen */
+#loading-screen {
+    flex-direction: column;
+    background: url("../img/background/loading.png") center/cover;
+}
+
+.loading-bar {
+    width: 500px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    margin-top: 30%;
+    /*overflow: hidden;*/
+}
+
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    animation: loadingAnimation 3s ease-in-out forwards;
+}
+
+@keyframes loadingAnimation {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Transição (Portas) */
+.transition {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    display: none;
+}
+
+.transition.active {
+    display: block;
+}
+
+.door {
+    position: absolute;
+    width: 61%;
+    height: 100%;
+    top: 0;
+}
+
+.door-left {
+    left: -50%;
+    background: url("../img/transicao/PORTA1A.png") center/cover;
+}
+
+.door-right {
+    right: -50%;
+    background: url("../img/transicao/PORTA2.png") center/cover;
+}
+
+/*  porta esquerda fechando  */
+.transition.closing .door-left {
+    animation: closeDoorLeft 1s ease-in-out forwards;
+}
+
+/*  porta direita fechando  */
+.transition.closing .door-right {
+    animation: closeDoorRight 1s ease-in-out forwards;
+}
+
+/*  porta esquerda abrindo  */
+.transition.opening .door-left {
+    animation: openDoorLeft 1s ease-in-out forwards;
+}
+
+/*  porta direita abrindo  */
+.transition.opening .door-right {
+    animation: openDoorRight 1s ease-in-out forwards;
+}
+
+@keyframes closeDoorLeft {
+    0% { left: -50%; }
+    100% { left: 0%; }
+}
+
+@keyframes closeDoorRight {
+    0% { right: -60%; }
+    100% { right: -1.4%; }
+}
+
+@keyframes openDoorLeft {
+    0% { left: 0%; }
+    100% { left: -50%; }
+}
+
+@keyframes openDoorRight {
+    0% { right: -1.4%; }
+    100% { right: -60%; }
+}
+
+/* Menu Screen */
+#menu-screen {
+    background: url('../img/background/menu.png') center/cover;
+    transition: background 0.3s ease-in-out;
+}
+
+.menu-background {
+    width: 100%;
+    height: 100%;
+}
+
+.menu-option {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+}
+
+.menu-option-perfil {
+    width: 180px;
+    height: 320px;
+    left: 30px;
+    top: 62px;
+}
+
+.menu-option-jogar {
+    width: 280px;
+    height: 280px;
+    left: 300px;
+    bottom: 380px;
+}
+
+.menu-option-inventario {
+    width: 430px;
+    height: 380px;
+    left: 160px;
+    bottom: 0;
+}
+
+.menu-option-tutorial {
+    width: 200px;
+    height: 200px;
+    right: 355px;
+    top: 27px;
+}
+
+.menu-option-loja {
+    width: 340px;
+    height: 560px;
+    right: 0;
+    bottom: 120px;
+}
+
+/* Tooltip */
+.menu-tooltip {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(15, 23, 42, 0.8);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.menu-tooltip.visible {
+    opacity: 1;
+}
+
+.error-message {
+    text-align: center;
+    color: red;
+    padding: 20px;
+    font-size: 1.2em;
+    height: 100vh;
+    margin: auto;
+    align-content: center;
+}
+
+.hide {
+    display: none !important;
+}

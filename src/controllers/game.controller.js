@@ -4,20 +4,12 @@ const gameController = {
     renderGame: async (req, res) => {
         try {
             // Buscar dados necessários para o jogo
-            const [
-                inventario,
-                cenarios,
-                allCards
-            ] = await Promise.all([
-                gameModel.getInventoryWithCards(),
-            ]);
-
+            const inventario = await gameModel.getInventoryWithCards()
+            console.log(inventario);
             // Renderizar a view com os dados
             res.render('game', {
                 title: 'Game Conectado - Jogo',
                 inventario,
-                cenarios,
-                allCards
             });
         } catch (error) {
             console.error('Erro ao carregar dados do jogo:', error);

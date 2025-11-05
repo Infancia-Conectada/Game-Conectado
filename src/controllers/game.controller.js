@@ -3,13 +3,17 @@ const gameModel = require('../models/game.model');
 const gameController = {
     renderGame: async (req, res) => {
         try {
-            // Buscar dados necessários para o jogo
-            const inventario = await gameModel.getInventoryWithCards()
-            console.log(inventario);
+            // Por enquanto, vamos usar um userId fixo para teste
+            const userId = 1; // TODO: Pegar o userId da sessão
+            const deckId = 1; // TODO: Permitir selecionar diferentes decks
+
+            // Buscar cartas do deck selecionado
+            const deckCards = await gameModel.getDeckCards(userId, deckId);
+            console.log (JSON.stringify(deckCards));
             // Renderizar a view com os dados
             res.render('game', {
                 title: 'Game Conectado - Jogo',
-                inventario,
+                deckCards: deckCards || [], // Garantir que sempre seja um array
             });
         } catch (error) {
             console.error('Erro ao carregar dados do jogo:', error);

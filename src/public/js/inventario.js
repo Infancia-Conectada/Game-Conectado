@@ -76,8 +76,8 @@ function initializeInventoryGrid() {
     const rows = inventoryGrid.querySelectorAll('.inventory-row');
     rows.forEach((row, rowIndex) => {
         row.innerHTML = '';
-        for (let i = 0; i < 6; i++) {
-            const cardIndex = rowIndex * 6 + i;
+        for (let i = 0; i < 7; i++) {
+            const cardIndex = rowIndex * 7 + i;
             const card = document.createElement('div');
             card.classList.add('inventory-icon');
             card.classList.add('empty');

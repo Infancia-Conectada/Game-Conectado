@@ -44,7 +44,8 @@ function initializeDeckCards() {
         for (let i = 0; i < 10; i++) {
             const cardIndex = rowIndex * 10 + i;
             const card = document.createElement('div');
-            card.classList.add('inventory-icon');
+            card.classList.add('deck-icon');
+            card.classList.add('empty');
             card.dataset.index = cardIndex;
             card.dataset.type = 'deck';
             card.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
@@ -72,25 +73,31 @@ function renderDeck() {
 
 // Inicializar grid do inventário
 function initializeInventoryGrid() {
-    const rows = deckCards.querySelectorAll('.inventory-row');
+    const rows = inventoryGrid.querySelectorAll('.inventory-row');
     rows.forEach((row, rowIndex) => {
         row.innerHTML = '';
-        for (let i = 0; i < 10; i++) {
-            const cardIndex = rowIndex * 10 + i;
+        for (let i = 0; i < 6; i++) {
+            const cardIndex = rowIndex * 6 + i;
             const card = document.createElement('div');
             card.classList.add('inventory-icon');
+            card.classList.add('empty');
             card.dataset.index = cardIndex;
-            card.dataset.type = 'deck';
+            card.dataset.type = 'inventory';
             card.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
             card.addEventListener('click', () => {
-                const actualIndex = inventoryScrollPosition + index;
+                const actualIndex = inventoryScrollPosition + cardIndex;
                 if (inventoryData[actualIndex]) {
-                    selectCard(icon, 'inventory', actualIndex);
+                    selectCard(card, 'inventory', actualIndex);
                 }
             });
-        };
+            row.appendChild(card);
+        }
     });
-};
+    
+    console.log('Grid do inventário inicializado com ' + 
+                document.querySelectorAll('.inventory-icon').length + 
+                ' ícones');
+}
 
 // Renderizar inventário
 function renderInventory() {

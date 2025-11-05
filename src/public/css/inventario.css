@@ -219,10 +219,6 @@
     width: 68px;
     height: 68px;
     background: url("../img/icones/NENHUM.png") center/cover;
-    border: 2px solid #2dd4bf;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 .inventory-slot.empty {

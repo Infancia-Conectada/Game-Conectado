@@ -226,13 +226,9 @@
 .hand-card {
     width: 100px;
     height: 140px;
-    background-color: rgba(45, 212, 191, 0.3);
-    border: 2px solid #2dd4bf;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background-size: cover;
-    background-position: top center;
     display: flex;
     justify-content: center;
     align-items: center;

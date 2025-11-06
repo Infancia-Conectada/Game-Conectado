@@ -71,10 +71,8 @@ menuOptions.forEach(option => {
                 break;
             case 'inventario':
                 changeScreen(menuScreen, inventoryScreen);
-                initializeDeckCards();
-                setTimeout(() => {
-                  initializeInventoryGrid();
-                }, 1000);
+                // initializeDeckCards();
+                // initializeInventoryGrid();
                 break;
             case 'loja':
                 changeScreen(menuScreen, storeScreen); // Tela da loja

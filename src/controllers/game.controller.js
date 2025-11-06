@@ -9,10 +9,8 @@ const gameController = {
 
             // Buscar cartas do deck selecionado
             const deckCards = await gameModel.getDeckCards(userId, deckId);
-            console.log (JSON.stringify(deckCards));
             // Renderizar a view com os dados
             res.render('game', {
-                title: 'Game Conectado - Jogo',
                 deckCards: deckCards || [], // Garantir que sempre seja um array
             });
         } catch (error) {

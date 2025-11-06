@@ -49,7 +49,6 @@ const gameModel = {
                 WHERE i.id_usuario = ?
                 ORDER BY tc.elemento, tc.raridade, tc.nome
             `, [userId]);
-            
             return inventory;
         } catch (error) {
             console.error('Erro ao buscar inventário:', error);

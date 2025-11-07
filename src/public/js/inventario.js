@@ -36,48 +36,87 @@ async function initializeInventoryInterface(userId) {
     }
 }
 
+// NÃO É NECESSÁRIO POIS ESTAMOS UTILIZANDO DIRETAMENTE NO EJS
 // Inicializar as cartas do deck
-function initializeDeckCards() {
-    const rows = deckCards.querySelectorAll('.deck-row');
-    rows.forEach((row, rowIndex) => {
-        row.innerHTML = '';
-        for (let i = 0; i < 10; i++) {
-            const cardIndex = rowIndex * 10 + i;
-            const card = document.createElement('div');
-            card.classList.add('deck-icon');
-            card.classList.add('empty');
-            card.dataset.index = cardIndex;
-            card.dataset.type = 'deck';
-            card.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
-            card.addEventListener('click', () => selectCard(card, 'deck', cardIndex));
-            row.appendChild(card);
-        }
-    });
-}
+// function initializeDeckCards() {
+//     const rows = document.querySelectorAll('.deck-row');
+//     if (!rows.length) return; // Verifica se os elementos existem
 
+//     rows.forEach((row, rowIndex) => {
+//         // Limpar row existente
+//         row.innerHTML = '';
+
+//         // Criar 10 slots por linha
+//         for (let i = 0; i < 10; i++) {
+//             const cardIndex = rowIndex * 10 + i;
+//             const card = deckData.find(c => c.deck_card_id === cardIndex);
+            
+//             const slot = document.createElement('div');
+//             slot.classList.add('deck-icon');
+//             if (!card) slot.classList.add('empty');
+//             if (card) slot.classList.add(card.elemento);
+            
+//             slot.dataset.index = cardIndex;
+//             slot.dataset.type = 'deck';
+            
+//             // Definir imagem do card
+//             slot.style.backgroundImage = card ? 
+//                 `url('${card.ico_url}')` : 
+//                 'url("../img/icones/NENHUM.png")';
+            
+//             // Definir tooltip
+//             if (card) {
+//                 slot.title = `${card.nome} (${card.elemento} - ${card.raridade})`;
+//             }
+            
+//             // Adicionar evento de clique
+//             slot.addEventListener('click', () => {
+//                 if (card) selectCard(slot, 'deck', cardIndex);
+//             });
+            
+//             row.appendChild(slot);
+//         }
+//     });
+// }
+
+
+// NÃO É NECESSÁRIO POIS ESTAMOS UTILIZANDO DIRETAMENTE NO EJS
 // Renderizar deck atual
-function renderDeck() {
-    const slots = deckCards.querySelectorAll('.deck-icon');
-    slots.forEach((slot, index) => {
-        const card = deckData[index];
-        if (card) {
-            slot.style.backgroundImage = `url(${card.ico_url})`;
-            slot.classList.remove('empty');
-        } else {
-            slot.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
-            slot.classList.add('empty');
-        }
-        slot.classList.remove('selected');
-    });
-}
+// function renderDeck() {
+//     const slots = document.querySelectorAll('.deck-icon');
+//     if (!slots.length) return; // Verifica se os elementos existem
+
+//     slots.forEach((slot, index) => {
+//         // Remover classes anteriores
+//         slot.classList.remove('selected');
+//         slot.classList.remove(...Array.from(slot.classList)
+//             .filter(c => ['agua', 'fogo', 'terra', 'eletricidade'].includes(c)));
+        
+//         // Buscar carta pelo índice
+//         const card = deckData.find(c => c.deck_card_id === index);
+        
+//         if (card) {
+//             // Atualizar visual do slot com carta
+//             slot.style.backgroundImage = `url('${card.ico_url}')`;
+//             slot.classList.remove('empty');
+//             slot.classList.add(card.elemento);
+//             slot.title = `${card.nome} (${card.elemento} - ${card.raridade})`;
+//         } else {
+//             // Resetar slot vazio
+//             slot.style.backgroundImage = 'url("../img/icones/NENHUM.png")';
+//             slot.classList.add('empty');
+//             slot.title = '';
+//         }
+//     });
+// }
 
 // Inicializar grid do inventário
 function initializeInventoryGrid() {
     const rows = inventoryGrid.querySelectorAll('.inventory-row');
     rows.forEach((row, rowIndex) => {
         row.innerHTML = '';
-        for (let i = 0; i < 6; i++) {
-            const cardIndex = rowIndex * 6 + i;
+        for (let i = 0; i < 7; i++) {
+            const cardIndex = rowIndex * 7 + i;
             const card = document.createElement('div');
             card.classList.add('inventory-icon');
             card.classList.add('empty');

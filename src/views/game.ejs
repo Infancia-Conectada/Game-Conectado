@@ -178,9 +178,9 @@
                 <div class="player-discard opponent-discard"></div>
             </div>
             <div class="player-deck-area player-bottom-deck-area">
-                <div class="player-deck player-bottom-deck">
+                  <div class="player-deck player-bottom-deck">
                     <div class="deck-count">20</div>
-                </div>
+                </div>  
                 <div class="player-discard player-bottom-discard"></div>
             </div>
             <!-- Área Central - Baralho Central -->
@@ -242,10 +242,26 @@
                     <!-- Cartas do deck (20 cartas em 2 linhas de 10) -->
                     <div class="deck-cards">
                         <div class="deck-row">
-                            <!--<div class="deck-icon"></div>-->
+                            <% for(let i = 1; i <= 10; i++) { %>
+                                <% const card = deckCards.find(c => c.deck_card_id === i); %>
+                                <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
+                                     data-index="<%= card.deck_card_id %>"
+                                     data-type="deck"
+                                     style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
+                                     title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
+                                </div>
+                            <% } %>
                         </div>
                         <div class="deck-row">
-                            <!--<div class="deck-icon"></div>-->
+                            <% for(let i = 11; i <= 20; i++) { %>
+                                <% const card = deckCards.find(c => c.deck_card_id === i); %>
+                                <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
+                                     data-index="<%= i %>"
+                                     data-type="deck"
+                                     style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
+                                     title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="deck-type">

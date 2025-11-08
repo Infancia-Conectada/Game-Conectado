@@ -247,6 +247,7 @@
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
                                      data-index="<%= card.deck_card_id %>"
                                      data-type="deck"
+                                     data-image="<%= card.img_url %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
@@ -258,6 +259,7 @@
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
                                      data-index="<%= i %>"
                                      data-type="deck"
+                                     data-image="<%= card.img_url %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
@@ -304,10 +306,11 @@
                                 <div class="inventory-row">
                                     <% inventoryWithCards.forEach((card, index) => { %>
                                         <div class="inventory-icon"
-                                             data-index="<%= index %>"
-                                             data-type="inventory"
-                                             style="background-image: url('<%= card.ico_url %>')"
-                                             title="<%= `${card.nome} (${card.elemento} - ${card.raridade})` %>">
+                                            data-index="<%= index %>"
+                                            data-type="inventory"
+                                            data-image="<%= card.img_url %>"
+                                            style="background-image: url('<%= card.ico_url %>')"
+                                            title="<%= `${card.nome} (${card.elemento} - ${card.raridade})` %>">
                                         </div>
                                     <% }); %>
                                 </div>

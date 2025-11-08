@@ -1,84 +1,10 @@
-
-const InventarioModel = require('../models/inventarioModel');
-
 // Estado do jogo
 let currentDeck = 1;
 let selectedCard = null;
 let selectedType = null; // 'deck' ou 'inventory'
-let inventoryData = [];
-let deckData = [];
-// manter essa linha de comando 
-// let userId = null;
 let userId = 1
 let inventoryScrollPosition = 0;
 const CARDS_PER_PAGE = 24;
-
-// Inicializar interface do inventário
-async function initializeInventoryInterface(userId) {
-    try {
-        // Definir usuário atual
-        this.userId = userId;
-
-        // Buscar dados do banco
-        await refreshData();
-
-        // Inicializar interface
-        initializeDeckCards();
-        initializeInventoryGrid();
-        
-        // Renderizar dados
-        renderDeck();
-        renderInventory();
-        updateButtons();
-
-    } catch (error) {
-        console.error('Erro ao inicializar inventário:', error);
-    }
-}
-
-// Adicionar/Remover carta
-btnAddRemove.addEventListener('click', async () => {
-    if (!selectedCard) return;
-
-    try {
-        if (selectedType === 'deck') {
-            // Remover carta do deck
-            const card = deckData[selectedCard];
-            await InventarioModel.removeCartaFromDeck(currentDeck, card.id);
-
-            // Atualizar quantidade no inventário
-            const inventarioCard = inventoryData.find(c => c.id === card.id);
-            if (inventarioCard) {
-                await InventarioModel.updateInventarioQuantidade(inventarioCard.id, inventarioCard.quantidade + 1);
-            } else {
-                // Adicionar nova entrada no inventário
-                await db.query('INSERT INTO inventario (id_user, id_carta, quantidade) VALUES (?, ?, 1)', [userId, card.id]);
-            }
-        } else {
-            // Adicionar carta ao deck
-            const card = inventoryData[selectedCard];
-            if (deckData.length < 20) {
-                await InventarioModel.addCartaToDeck(currentDeck, card.id);
-
-                // Atualizar quantidade no inventário
-                if (card.quantidade > 1) {
-                    await InventarioModel.updateInventarioQuantidade(card.id, card.quantidade - 1);
-                } else {
-                    // Remover do inventário se última carta
-                    await db.query('DELETE FROM inventario WHERE id = ?', [card.id]);
-                }
-            }
-        }
-        
-        // Atualizar interface
-        await refreshData();
-        renderDeck();
-        renderInventory();
-        resetSelection();
-    } catch (error) {
-        console.error('Erro ao adicionar/remover carta:', error);
-    }
-});
 
 // Reciclar carta
 btnRecycle.addEventListener('click', () => {
@@ -124,34 +50,30 @@ btnBack.addEventListener('click', () => {
     changeScreen(inventoryScreen, menuScreen);
 });
 
-// Funções utilitárias
-async function refreshData() {
-    try {
-        console.log('Buscando dados para usuário:', userId);
-        inventoryData = await InventarioModel.getInventarioByUser(userId);
-        console.log('Dados do inventário:', inventoryData);
-        
-        const deckAtivo = await InventarioModel.getDeckAtivo(userId);
-        console.log('Deck ativo:', deckAtivo);
-        
-        if (deckAtivo) {
-            deckData = await InventarioModel.getCartasDeck(deckAtivo.id);
-            console.log('Cartas do deck:', deckData);
-        }
-    } catch (error) {
-        console.error('Erro ao atualizar dados:', error);
-    }
-}
-
 // Inicializar quando a tela de inventário for mostrada
 document.addEventListener('DOMContentLoaded', () => {
     const menuInventarioOption = document.querySelector('.menu-option-inventario');
     if (menuInventarioOption) {
         menuInventarioOption.addEventListener('click', async () => {
-            await initializeInventoryInterface(userId);
             // Mudar para a tela de inventário
             menuScreen.classList.remove('active');
             inventoryScreen.classList.add('active');
+            
+            // Adicionar event listeners para as cartas
+            document.querySelectorAll('.deck-icon').forEach(icon => {
+                icon.addEventListener('click', () => {
+                    if (icon.dataset.image) {
+                        document.getElementById('preview-image').src = icon.dataset.image;
+                    }
+                });
+            });
+            document.querySelectorAll('.inventory-icon').forEach(icon => {
+                icon.addEventListener('click', () => {
+                    if (icon.dataset.image) {
+                        document.getElementById('preview-image').src = icon.dataset.image;
+                    }
+                });
+            });
         });
     }
 });
@@ -172,8 +94,6 @@ deckSelectors.forEach((selector, index) => {
         const deckNum = index + 1;
         if (currentDeck !== deckNum) {
             currentDeck = deckNum;
-            await refreshData();
-            renderDeck();
             resetSelection();
             
             // Atualizar visual dos seletores

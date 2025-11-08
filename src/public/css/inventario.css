@@ -110,8 +110,8 @@
     height: 430px;
 }
 /* Botões */
-#btn-add-remove {
-    width: 73px;
+#btn-add-remove #btn-add-adicionar {
+    max-width: 70px;
 }
 
 #btn-recycle {
@@ -140,27 +140,26 @@
     gap: 15px;
     display: flex;
     position: relative;
-    justify-content: left;
+    justify-content: space-between;
     height: 100%;
-    width: 255px;
-}
-
-.action-buttons-2 {
-    gap: 15px;
-    display: flex;
-    position: relative;
-    justify-content: right;
-    height: 100%;
-    width: 340px;
+    width: 100%;
 }
 
 .action-btn {
     cursor: pointer;
     border-radius: 16px;
     display: flex;
-    width: 160px;
+    min-width: 70px;
     background: none;
     border: none;
+}
+
+.action-btn2 {
+    max-width: 70px;
+}
+
+.action-btn img, .action-btn img{
+    width: 100%;
 }
 
 /* Barra de scroll */
@@ -199,9 +198,8 @@
 
 /* Inventário*/
 .inventory-grid {
-    flex: 1;
     display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(7, 1fr);
     gap: 22px;
     padding: 7px;
     border-radius: 10px;
@@ -209,20 +207,17 @@
 }
 
 .inventory-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     height: 68px;
-    display: flex;
     justify-content: center;
-    gap: 22px;
+    gap: 35px;
 }
 
 .inventory-icon {
     width: 68px;
     height: 68px;
     background: url("../img/icones/NENHUM.png") center/cover;
-}
-
-.inventory-slot.empty {
-    opacity: 0.3;
 }
 
 .inventory-slot:hover {

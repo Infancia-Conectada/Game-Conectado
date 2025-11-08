@@ -47,7 +47,7 @@ const gameModel = {
                 FROM inventarios i
                 INNER JOIN todas_cartas tc ON i.id_carta = tc.id
                 WHERE i.id_usuario = ?
-                ORDER BY tc.elemento, tc.raridade, tc.nome
+                ORDER BY tc.tipo, tc.elemento, tc.nome
             `, [userId]);
             return inventory;
         } catch (error) {
@@ -60,29 +60,6 @@ const gameModel = {
      * Busca todas as cartas de cenário disponíveis
      * @returns {Promise<Array>} Array com os cenários
      */
-    // getScenarioCards: async () => {
-    //     try {
-    //         const [scenarios] = await database.query('SELECT * FROM deck_cenario ORDER BY elemento1, elemento2');
-    //         return scenarios;
-    //     } catch (error) {
-    //         console.error('Erro ao buscar cenários:', error);
-    //         throw new Error('Falha ao buscar cenários');
-    //     }
-    // },
-
-    // /**
-    //  * Busca todas as cartas disponíveis no jogo
-    //  * @returns {Promise<Array>} Array com todas as cartas
-    //  */
-    // getAllCards: async () => {
-    //     try {
-    //         const [cards] = await database.query('SELECT * FROM all_cards ORDER BY elemento, raridade, nome');
-    //         return cards;
-    //     } catch (error) {
-    //         console.error('Erro ao buscar cartas:', error);
-    //         throw new Error('Falha ao buscar cartas');
-    //     }
-    // }
 };
 
 module.exports = gameModel;

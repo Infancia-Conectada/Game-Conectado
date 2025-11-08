@@ -6,6 +6,7 @@
 }
 
 body {
+    /*cursor: url('../img/icones/AGA-1-Aquavor.png'), pointer;*/
     width: 100vw;
     height: 100vh;
     display: flex;

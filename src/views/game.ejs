@@ -247,6 +247,7 @@
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
                                      data-index="<%= card.deck_card_id %>"
                                      data-type="deck"
+                                     data-image="<%= card.img_url %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
@@ -258,6 +259,7 @@
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
                                      data-index="<%= i %>"
                                      data-type="deck"
+                                     data-image="<%= card.img_url %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
@@ -285,10 +287,9 @@
                         <!-- Botões de ação -->
                         <div class="action-buttons">
                             <div class="action-buttons-1">
-                                <button id="btn-add-remove" class="action-btn"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar/Remover"></button>
+                                <button id="btn-add-adicionar" class="action-btn action-btn2"><img src="../img/inputs/botao-adicionar.png" alt="Adicionar"></button>
+                                <button id="btn-add-remove" class="action-btn action-btn2"><img src="../img/inputs/botao-remover.png" alt="Remover"></button>
                                 <button id="btn-recycle" class="action-btn"><img src="../img/inputs/botao-reciclar.png" alt="Reciclar"></button>
-                            </div>
-                            <div class="action-buttons-2">
                                 <button id="btn-amuleto" class="action-btn"><img src="../img/inputs/botao-amuleto.png" alt="Menu de Amuletos"></button>
                                 <button id="btn-loja" class="action-btn"><img src="../img/inputs/botao-loja.png" alt="Loja"></button>
                             </div>
@@ -303,19 +304,15 @@
                             <!-- Inventário de cartas) -->
                             <div class="inventory-grid">
                                 <div class="inventory-row">
-                                    <!--<div class="deck-icon"></div>-->
-                                </div>
-                                <div class="inventory-row">
-                                    <!--<div class="deck-icon"></div>-->
-                                </div>
-                                <div class="inventory-row">
-                                    <!--<div class="deck-icon"></div>-->
-                                </div>
-                                <div class="inventory-row">
-                                    <!--<div class="deck-icon"></div>-->
-                                </div>
-                                <div class="inventory-row">
-                                    <!--<div class="deck-icon"></div>-->
+                                    <% inventoryWithCards.forEach((card, index) => { %>
+                                        <div class="inventory-icon"
+                                            data-index="<%= index %>"
+                                            data-type="inventory"
+                                            data-image="<%= card.img_url %>"
+                                            style="background-image: url('<%= card.ico_url %>')"
+                                            title="<%= `${card.nome} (${card.elemento} - ${card.raridade})` %>">
+                                        </div>
+                                    <% }); %>
                                 </div>
                             </div>
                         </div>

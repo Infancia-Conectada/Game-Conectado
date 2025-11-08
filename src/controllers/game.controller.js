@@ -7,10 +7,13 @@ const gameController = {
             const userId = 1; // TODO: Pegar o userId da sessão
             const deckId = 1; // TODO: Permitir selecionar diferentes decks
 
+            // Buscar cartas do inventario
+            const inventoryWithCards = await gameModel.getInventoryWithCards(userId);
             // Buscar cartas do deck selecionado
             const deckCards = await gameModel.getDeckCards(userId, deckId);
             // Renderizar a view com os dados
             res.render('game', {
+                inventoryWithCards: inventoryWithCards || [], // Garantir que sempre seja um array
                 deckCards: deckCards || [], // Garantir que sempre seja um array
             });
         } catch (error) {

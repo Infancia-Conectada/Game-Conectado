@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS todas_cartas (
     nome VARCHAR(100) NOT NULL,
     tipo ENUM('monstro', 'item') NOT NULL,
     raridade ENUM('comum', 'incomum', 'raro') NOT NULL,
+    -- valor (moedas) int
+    -- nivel (poder) int
     elemento VARCHAR(50) NOT NULL,
     img_url VARCHAR(255) NOT NULL,
     ico_url VARCHAR(255) NOT NULL
@@ -67,8 +69,13 @@ INSERT INTO deck_cenarios (nome, elemento1, elemento2, img_url) VALUES
 ("Neblina", "neutro", null, "img/cenarios/2-NEBLINA.png");
 
 -- Inserção dos monstros na tabela todas_cartas
-INSERT INTO todas_cartas (nome, tipo, raridade, elemento, img_url, ico_url) VALUES
+INSERT INTO todas_cartas (nome, tipo, raridade, elemento, valor, nivel, img_url, ico_url) VALUES
 -- Monstros de Água
+
+
+-- valor = todos 0
+-- nivel (mnstros) comum = 2, incomum = 4, raro = 6.
+-- nivel (item) comum = 1, raro = 3
 ("Aquavor", "monstro", 'comum', "agua", "img/monstros/aga-1-Aquavor.png", "img/icones/aga-1-Aquavor.png"),
 ("Tydrill", "monstro", 'comum', "agua", "img/monstros/aga-1-Tydrill.png", "img/icones/aga-1-Tydrill.png"),
 ("Hidralisk", "monstro", 'incomum', "agua", "img/monstros/aga-2-Hidralisk.png", "img/icones/aga-2-Hidralisk.png"),
@@ -171,3 +178,28 @@ INSERT INTO decks_individuais (id_carta, id_deck) VALUES
 (6, 1),
 (11, 1),
 (16, 1);
+
+INSERT INTO decks (id_inventario, ativo) VALUES
+(1, true);
+
+INSERT INTO decks_individuais (id_carta, id_deck) VALUES
+(1, 2),
+(2, 2),
+(6, 2),
+(7, 2),
+(11, 2),
+(12, 2),
+(16, 2),
+(17, 2),
+(21, 2),
+(23, 2),
+(25, 2),
+(27, 2),
+(29, 2),
+(31, 2),
+(33, 2),
+(35, 2),
+(1, 2),
+(6, 2),
+(11, 2),
+(16, 2);

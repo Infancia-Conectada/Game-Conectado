@@ -1,7 +1,6 @@
 CREATE SCHEMA icomon;
-USE icomon;
-
--- PERFIL DO USUÁRIO
+use icomon;
+ 
 CREATE TABLE IF NOT EXISTS perfil_usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     apelido VARCHAR(200) NOT NULL default 'Pequeno Gafanhoto',

@@ -13,7 +13,7 @@
     padding-top: 64px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 
 /* Área do Deck  */
@@ -95,19 +95,19 @@
 .bottom-container-left {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 .bottom-container-right {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     width: 100%;
 }
 .bottom-container-down {
     display: flex;
     flex-direction: row;
     gap: 12px;
-    height: 430px;
+    height: 420px;
 }
 /* Botões */
 #btn-add-remove #btn-add-adicionar {
@@ -162,6 +162,24 @@
     width: 100%;
 }
 
+/* Botão de voltar ao menu - específico */
+.card-preview-buttons {
+    gap: 0;
+    padding: 0;
+}
+
+#btn-back {
+    width: 270px;  /* Ajuste este valor para o tamanho desejado */
+    max-width: 270px;
+    min-width: 270px;
+}
+
+#btn-back img {
+    margin: auto;
+    width: 80%;
+    height: 105%;
+}
+
 /* Barra de scroll */
 .inventory-scroll {
     display: flex;
@@ -199,7 +217,7 @@
 /* Inventário*/
 .inventory-grid {
     display: flex;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 22px;
     padding: 7px;
     border-radius: 10px;
@@ -208,10 +226,10 @@
 
 .inventory-row {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     height: 68px;
     justify-content: center;
-    gap: 35px;
+    gap: 22px;
 }
 
 .inventory-icon {

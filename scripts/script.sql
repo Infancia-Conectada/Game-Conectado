@@ -14,10 +14,10 @@ CREATE TABLE IF NOT EXISTS perfil_usuario (
 CREATE TABLE IF NOT EXISTS todas_cartas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
-    tipo ENUM('monstro', 'item') NOT NULL,
-    raridade ENUM('comum', 'incomum', 'raro') NOT NULL,
-    -- valor (moedas) int
-    -- nivel (poder) int
+    tipo VARCHAR(100) NOT NULL,
+    raridade VARCHAR(100) NOT NULL,
+    valor INT DEFAULT 0,
+    nivel INT NOT NULL,
     elemento VARCHAR(50) NOT NULL,
     img_url VARCHAR(255) NOT NULL,
     ico_url VARCHAR(255) NOT NULL
@@ -69,63 +69,58 @@ INSERT INTO deck_cenarios (nome, elemento1, elemento2, img_url) VALUES
 ("Neblina", "neutro", null, "img/cenarios/2-NEBLINA.png");
 
 -- Inserção dos monstros na tabela todas_cartas
-INSERT INTO todas_cartas (nome, tipo, raridade, elemento, valor, nivel, img_url, ico_url) VALUES
+INSERT INTO todas_cartas (nome, tipo, raridade, elemento, nivel, img_url, ico_url) VALUES
 -- Monstros de Água
-
-
--- valor = todos 0
--- nivel (mnstros) comum = 2, incomum = 4, raro = 6.
--- nivel (item) comum = 1, raro = 3
-("Aquavor", "monstro", 'comum', "agua", "img/monstros/aga-1-Aquavor.png", "img/icones/aga-1-Aquavor.png"),
-("Tydrill", "monstro", 'comum', "agua", "img/monstros/aga-1-Tydrill.png", "img/icones/aga-1-Tydrill.png"),
-("Hidralisk", "monstro", 'incomum', "agua", "img/monstros/aga-2-Hidralisk.png", "img/icones/aga-2-Hidralisk.png"),
-("Rainscour", "monstro", 'incomum', "agua", "img/monstros/aga-2-Rainscour.png", "img/icones/aga-2-Rainscour.png"),
-("Ocearion", "monstro", 'raro', "agua", "img/monstros/aga-3-Ocearion.png", "img/icones/aga-3-Ocearion.png"),
+("Aquavor", "monstro", 'comum', "agua", 2,"img/monstros/aga-1-Aquavor.png", "img/icones/aga-1-Aquavor.png"),
+("Tydrill", "monstro", 'comum', "agua", 2,"img/monstros/aga-1-Tydrill.png", "img/icones/aga-1-Tydrill.png"),
+("Hidralisk", "monstro", 'incomum', "agua", 4,"img/monstros/aga-2-Hidralisk.png", "img/icones/aga-2-Hidralisk.png"),
+("Rainscour", "monstro", 'incomum', "agua", 4,"img/monstros/aga-2-Rainscour.png", "img/icones/aga-2-Rainscour.png"),
+("Ocearion", "monstro", 'raro', "agua", 6,"img/monstros/aga-3-Ocearion.png", "img/icones/aga-3-Ocearion.png"),
 
 -- Monstros de Eletricidade
-("Thundril", "monstro", 'comum', "eletricidade", "img/monstros/elt-1-Thundril.png", "img/icones/elt-1-Thundril.png"),
-("Voltrik", "monstro", 'comum', "eletricidade", "img/monstros/elt-1-Voltrik.png", "img/icones/elt-1-Voltrik.png"),
-("Joltriss", "monstro", 'incomum', "eletricidade", "img/monstros/elt-2-Joltriss.png", "img/icones/elt-2-Joltriss.png"),
-("Sparkon", "monstro", 'incomum', "eletricidade", "img/monstros/elt-2-Sparkon.png", "img/icones/elt-2-Sparkon.png"),
-("Zaptron", "monstro", 'raro', "eletricidade", "img/monstros/elt-3-Zaptron.png", "img/icones/elt-3-Zaptron.png"),
+("Thundril", "monstro", 'comum', "eletricidade", 2, "img/monstros/elt-1-Thundril.png", "img/icones/elt-1-Thundril.png"),
+("Voltrik", "monstro", 'comum', "eletricidade", 2, "img/monstros/elt-1-Voltrik.png", "img/icones/elt-1-Voltrik.png"),
+("Joltriss", "monstro", 'incomum', "eletricidade", 4, "img/monstros/elt-2-Joltriss.png", "img/icones/elt-2-Joltriss.png"),
+("Sparkon", "monstro", 'incomum', "eletricidade", 4, "img/monstros/elt-2-Sparkon.png", "img/icones/elt-2-Sparkon.png"),
+("Zaptron", "monstro", 'raro', "eletricidade", 6, "img/monstros/elt-3-Zaptron.png", "img/icones/elt-3-Zaptron.png"),
 
 -- Monstros de Fogo
-("Ashgrim", "monstro", 'comum', "fogo", "img/monstros/fgo-1-Ashgrim.png", "img/icones/fgo-1-Ashgrim.png"),
-("Volkris", "monstro", 'comum', "fogo", "img/monstros/fgo-1-Volkris.png", "img/icones/fgo-1-Volkris.png"),
-("Pyrrak", "monstro", 'incomum', "fogo", "img/monstros/fgo-2-Pyrrak.png", "img/icones/fgo-2-Pyrrak.png"),
-("Flarehorn", "monstro", 'raro', "fogo", "img/monstros/fgo-2-Flarehorn.png", "img/icones/fgo-2-Flarehorn.png"),
-("Scaldrix", "monstro", 'raro', "fogo", "img/monstros/fgo-3-Scaldrix.png", "img/icones/fgo-3-Scaldrix.png"),
+("Ashgrim", "monstro", 'comum', "fogo", 2, "img/monstros/fgo-1-Ashgrim.png", "img/icones/fgo-1-Ashgrim.png"),
+("Volkris", "monstro", 'comum', "fogo", 2, "img/monstros/fgo-1-Volkris.png", "img/icones/fgo-1-Volkris.png"),
+("Pyrrak", "monstro", 'incomum', "fogo", 4, "img/monstros/fgo-2-Pyrrak.png", "img/icones/fgo-2-Pyrrak.png"),
+("Flarehorn", "monstro", 'raro', "fogo", 6, "img/monstros/fgo-2-Flarehorn.png", "img/icones/fgo-2-Flarehorn.png"),
+("Scaldrix", "monstro", 'raro', "fogo", 6, "img/monstros/fgo-3-Scaldrix.png", "img/icones/fgo-3-Scaldrix.png"),
 
 -- Monstros de Terra
-("Mudrak", "monstro", 'comum', "terra", "img/monstros/ter-1-Mudrak.png", "img/icones/ter-1-Mudrak.png"),
-("Oritur", "monstro", 'comum', "terra", "img/monstros/ter-1-Oritur.png", "img/icones/ter-1-Oritur.png"),
-("Crustorr", "monstro", 'incomum', "terra", "img/monstros/ter-2-Crustorr.png", "img/icones/ter-2-Crustorr.png"),
-("Terradom", "monstro", 'incomum', "terra", "img/monstros/ter-2-Terradom.png", "img/icones/ter-2-Terradom.png"),
-("Quakmor", "monstro", 'raro', "terra", "img/monstros/ter-3-Quakmor.png", "img/icones/ter-3-Quakmor.png"),
+("Mudrak", "monstro", 'comum', "terra", 2, "img/monstros/ter-1-Mudrak.png", "img/icones/ter-1-Mudrak.png"),
+("Oritur", "monstro", 'comum', "terra", 2, "img/monstros/ter-1-Oritur.png", "img/icones/ter-1-Oritur.png"),
+("Crustorr", "monstro", 'incomum', "terra", 4, "img/monstros/ter-2-Crustorr.png", "img/icones/ter-2-Crustorr.png"),
+("Terradom", "monstro", 'incomum', "terra", 4, "img/monstros/ter-2-Terradom.png", "img/icones/ter-2-Terradom.png"),
+("Quakmor", "monstro", 'raro', "terra", 6, "img/monstros/ter-3-Quakmor.png", "img/icones/ter-3-Quakmor.png"),
 
 -- Itens de Dano e Vida - Água
-("Ico Suplemento Azul nível 1", "item", 'comum', "agua", "img/itens/aga-dano+1.png", "img/icones/aga-D1.png"),
-("Ico Suplemento Azul nível 2", "item", 'raro', "agua", "img/itens/aga-dano+2.png", "img/icones/aga-D2.png"),
-("Ico-Esfera de Proteção Azul nível 1", "item", 'comum', "agua", "img/itens/aga-vida+1.png", "img/icones/aga-V1.png"),
-("Ico-Esfera de Proteção Azul nível 2", "item", 'raro', "agua", "img/itens/aga-vida+2.png", "img/icones/aga-V2.png"),
+("Ico Suplemento Azul nível 1", "item", 'comum', "agua", 1, "img/itens/aga-dano+1.png", "img/icones/aga-D1.png"),
+("Ico Suplemento Azul nível 2", "item", 'raro', "agua", 3, "img/itens/aga-dano+2.png", "img/icones/aga-D2.png"),
+("Ico-Esfera de Proteção Azul nível 1", "item", 'comum', "agua", 1, "img/itens/aga-vida+1.png", "img/icones/aga-V1.png"),
+("Ico-Esfera de Proteção Azul nível 2", "item", 'raro', "agua", 3, "img/itens/aga-vida+2.png", "img/icones/aga-V2.png"),
 
 -- Itens de Dano e Vida - Eletricidade
-("Ico Suplemento Amarelo nível 1", "item", 'comum', "eletricidade", "img/itens/elt-dano+1.png", "img/icones/elt-D1.png"),
-("Ico Suplemento Amarelo nível 2", "item", 'raro', "eletricidade", "img/itens/elt-dano+2.png", "img/icones/elt-D2.png"),
-("Ico-Esfera de Proteção Amarela  nível 1", "item", 'comum', "eletricidade", "img/itens/elt-vida+1.png", "img/icones/elt-V1.png"),
-("Ico-Esfera de Proteção Amarela nível 2", "item", 'raro', "eletricidade", "img/itens/elt-vida+2.png", "img/icones/elt-V2.png"),
+("Ico Suplemento Amarelo nível 1", "item", 'comum', "eletricidade", 1, "img/itens/elt-dano+1.png", "img/icones/elt-D1.png"),
+("Ico Suplemento Amarelo nível 2", "item", 'raro', "eletricidade", 3, "img/itens/elt-dano+2.png", "img/icones/elt-D2.png"),
+("Ico-Esfera de Proteção Amarela  nível 1", "item", 'comum', "eletricidade", 1, "img/itens/elt-vida+1.png", "img/icones/elt-V1.png"),
+("Ico-Esfera de Proteção Amarela nível 2", "item", 'raro', "eletricidade", 3, "img/itens/elt-vida+2.png", "img/icones/elt-V2.png"),
 
 -- Itens de Dano e Vida - Fogo
-("Ico Suplemento Vermelho nível 1", "item", 'comum', "fogo", "img/itens/fgo-dano+1.png", "img/icones/fgo-D1.png"),
-("Ico Suplemento Vermelho nível 2", "item", 'raro', "fogo", "img/itens/fgo-dano+2.png", "img/icones/fgo-D2.png"),
-("Ico-Esfera de Proteção Vermelha nível 1", "item", 'comum', "fogo", "img/itens/fgo-vida+1.png", "img/icones/fgo-V1.png"),
-("Ico-Esfera de Proteção Vermelha nível 2", "item", 'raro', "fogo", "img/itens/fgo-vida+2.png", "img/icones/fgo-V2.png"),
+("Ico Suplemento Vermelho nível 1", "item", 'comum', "fogo", 1, "img/itens/fgo-dano+1.png", "img/icones/fgo-D1.png"),
+("Ico Suplemento Vermelho nível 2", "item", 'raro', "fogo", 3, "img/itens/fgo-dano+2.png", "img/icones/fgo-D2.png"),
+("Ico-Esfera de Proteção Vermelha nível 1", "item", 'comum', "fogo", 1, "img/itens/fgo-vida+1.png", "img/icones/fgo-V1.png"),
+("Ico-Esfera de Proteção Vermelha nível 2", "item", 'raro', "fogo", 3, "img/itens/fgo-vida+2.png", "img/icones/fgo-V2.png"),
 
 -- Itens de Dano e Vida - Terra
-("Ico Suplemento Verde nível 1", "item", 'comum', "terra", "img/itens/ter-dano+1.png", "img/icones/ter-D1.png"),
-("Ico Suplemento Verde nível 2", "item", 'raro', "terra", "img/itens/ter-dano+2.png", "img/icones/ter-D2.png"),
-("Ico-Esfera de Proteção Verde nível 1", "item", 'comum', "terra", "img/itens/ter-vida+1.png", "img/icones/ter-V1.png"),
-("Ico-Esfera de Proteção Verde nível 2", "item", 'raro', "terra", "img/itens/ter-vida+2.png", "img/icones/ter-V2.png");
+("Ico Suplemento Verde nível 1", "item", 'comum', "terra", 1, "img/itens/ter-dano+1.png", "img/icones/ter-D1.png"),
+("Ico Suplemento Verde nível 2", "item", 'raro', "terra", 3, "img/itens/ter-dano+2.png", "img/icones/ter-D2.png"),
+("Ico-Esfera de Proteção Verde nível 1", "item", 'comum', "terra", 1, "img/itens/ter-vida+1.png", "img/icones/ter-V1.png"),
+("Ico-Esfera de Proteção Verde nível 2", "item", 'raro', "terra", 3, "img/itens/ter-vida+2.png", "img/icones/ter-V2.png");
 
 -- usuario fake para teste
 INSERT INTO perfil_usuario (moedas, qtd_batalhas, qtd_vitorias, img_avatar) VALUES
@@ -202,7 +197,7 @@ INSERT INTO decks (id_inventario, ativo) VALUES
 (3, false);
 
 INSERT INTO decks_individuais (id_carta, id_deck) VALUES
---deck1
+-- deck1
 (1, 1),
 (2, 1),
 (6, 1),
@@ -223,7 +218,7 @@ INSERT INTO decks_individuais (id_carta, id_deck) VALUES
 (6, 1),
 (11, 1),
 (16, 1),
---deck2
+-- deck2
 (3, 2),
 (4, 2),
 (8, 2),
@@ -244,7 +239,7 @@ INSERT INTO decks_individuais (id_carta, id_deck) VALUES
 (31, 2),
 (33, 2),
 (35, 2),
---deck3
+-- deck3
 (1, 3),
 (5, 3),
 (6, 3),

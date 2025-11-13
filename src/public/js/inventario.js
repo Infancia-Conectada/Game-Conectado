@@ -50,32 +50,45 @@ btnBack.addEventListener('click', () => {
     changeScreen(inventoryScreen, menuScreen);
 });
 
-// Inicializar quando a tela de inventário for mostrada
-document.addEventListener('DOMContentLoaded', () => {
-    const menuInventarioOption = document.querySelector('.menu-option-inventario');
-    if (menuInventarioOption) {
-        menuInventarioOption.addEventListener('click', async () => {
-            // Mudar para a tela de inventário
-            menuScreen.classList.remove('active');
-            inventoryScreen.classList.add('active');
-            
-            // Adicionar event listeners para as cartas
-            document.querySelectorAll('.deck-icon').forEach(icon => {
-                icon.addEventListener('click', () => {
-                    if (icon.dataset.image) {
-                        document.getElementById('preview-image').src = icon.dataset.image;
-                    }
-                });
-            });
-            document.querySelectorAll('.inventory-icon').forEach(icon => {
-                icon.addEventListener('click', () => {
-                    if (icon.dataset.image) {
-                        document.getElementById('preview-image').src = icon.dataset.image;
-                    }
-                });
-            });
+// Função para inicializar os event listeners das cartas
+function initializeCardListeners() {
+    // Adicionar event listeners para as cartas do deck
+    document.querySelectorAll('.deck-icon').forEach(icon => {
+        icon.addEventListener('click', () => {
+            if (icon.dataset.image) {
+                document.getElementById('preview-image').src = icon.dataset.image;
+            }
         });
-    }
+    });
+    
+    // Adicionar event listeners para as cartas do inventário
+    document.querySelectorAll('.inventory-icon').forEach(icon => {
+        icon.addEventListener('click', () => {
+            if (icon.dataset.image) {
+                document.getElementById('preview-image').src = icon.dataset.image;
+            }
+        });
+    });
+}
+
+// Observar quando a tela de inventário se torna ativa
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            if (inventoryScreen.classList.contains('active')) {
+                // Aguardar um pouco para garantir que os elementos foram renderizados
+                setTimeout(() => {
+                    initializeCardListeners();
+                }, 100);
+            }
+        }
+    });
+});
+
+// Iniciar observação da tela de inventário
+observer.observe(inventoryScreen, {
+    attributes: true,
+    attributeFilter: ['class']
 });
 
 function resetSelection() {

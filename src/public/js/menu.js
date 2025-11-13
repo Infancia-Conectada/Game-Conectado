@@ -70,16 +70,16 @@ menuOptions.forEach(option => {
                 });
                 break;
             case 'inventario':
-                changeScreen(menuScreen, inventoryScreen);
+                await changeScreen(menuScreen, inventoryScreen);
                 break;
             case 'loja':
-                changeScreen(menuScreen, storeScreen); // Tela da loja
+                await changeScreen(menuScreen, storeScreen); // Tela da loja
                 break;
             case 'perfil':
-                changeScreen(menuScreen, profileScreen); // Tela do perfil
+                await changeScreen(menuScreen, profileScreen); // Tela do perfil
                 break;
             case 'tutorial':
-                changeScreen(menuScreen, tutorialScreen); // Tela do tutorial
+                await changeScreen(menuScreen, tutorialScreen); // Tela do tutorial
                 break;
         }
     });

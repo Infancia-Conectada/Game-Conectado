@@ -31,18 +31,19 @@ btnCancelRecycle.addEventListener('click', () => {
 
 // Scroll do inventário
 document.querySelector('.scroll-up').addEventListener('click', () => {
-    if (inventoryScrollPosition > 0) {
-        inventoryScrollPosition = Math.max(0, inventoryScrollPosition - 6);
-        renderInventory();
-    }
+    const gridContainer = document.querySelector('.inventory-grid');
+    gridContainer.scrollBy({
+        top: -90,
+        behavior: 'smooth'
+    });
 });
 
 document.querySelector('.scroll-down').addEventListener('click', () => {
-    const maxScroll = Math.max(0, inventory.length - 24);
-    if (inventoryScrollPosition < maxScroll) {
-        inventoryScrollPosition = Math.min(maxScroll, inventoryScrollPosition + 6);
-        renderInventory();
-    }
+    const gridContainer = document.querySelector('.inventory-grid');
+    gridContainer.scrollBy({
+        top: 90,
+        behavior: 'smooth'
+    });
 });
 
 // Voltar ao menu

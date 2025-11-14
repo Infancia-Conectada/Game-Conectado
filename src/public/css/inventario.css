@@ -217,11 +217,18 @@
 /* Inventário*/
 .inventory-grid {
     display: flex;
-    grid-template-columns: repeat(8, 1fr);
+    flex-direction: column;
     gap: 22px;
     padding: 7px;
     border-radius: 10px;
-    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+.inventory-grid::-webkit-scrollbar {
+    width: 0px;
 }
 
 .inventory-row {
@@ -230,6 +237,7 @@
     height: 68px;
     justify-content: center;
     gap: 22px;
+    flex-shrink: 0;
 }
 
 .inventory-icon {

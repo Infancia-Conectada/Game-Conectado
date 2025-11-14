@@ -88,7 +88,7 @@ INSERT INTO todas_cartas (nome, tipo, raridade, elemento, nivel, img_url, ico_ur
 ("Ashgrim", "monstro", 'comum', "fogo", 2, "img/monstros/fgo-1-Ashgrim.png", "img/icones/fgo-1-Ashgrim.png"),
 ("Volkris", "monstro", 'comum', "fogo", 2, "img/monstros/fgo-1-Volkris.png", "img/icones/fgo-1-Volkris.png"),
 ("Pyrrak", "monstro", 'incomum', "fogo", 4, "img/monstros/fgo-2-Pyrrak.png", "img/icones/fgo-2-Pyrrak.png"),
-("Flarehorn", "monstro", 'raro', "fogo", 6, "img/monstros/fgo-2-Flarehorn.png", "img/icones/fgo-2-Flarehorn.png"),
+("Flarehorn", "monstro", 'raro', "fogo", 6, "img/monstros/fgo-3-Flarehorn.png", "img/icones/fgo-3-Flarehorn.png"),
 ("Scaldrix", "monstro", 'raro', "fogo", 6, "img/monstros/fgo-3-Scaldrix.png", "img/icones/fgo-3-Scaldrix.png"),
 
 -- Monstros de Terra

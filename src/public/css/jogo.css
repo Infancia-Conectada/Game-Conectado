@@ -60,12 +60,11 @@
 }
 
 .player-avatar {
-    width: 80px;
-    height: 80px;
+    width: 16px;
+    height: 160px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #2dd4bf;
-    background-color: rgba(45, 212, 191, 0.1);
+    border: 3px solid #000000;
     display: flex;
     justify-content: center;
     align-items: center;

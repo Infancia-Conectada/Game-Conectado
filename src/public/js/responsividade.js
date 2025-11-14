@@ -9,7 +9,7 @@ function verificarTamanhoTela() {
   const gameContainer = document.getElementById("game-container");
   const aviso = document.getElementById("aviso");
 
-  if (largura < 1200 || altura < 800) {
+  if (largura < 1200 || altura < 890) {
     // Mostra aviso e esconde o jogo
     if (gameContainer) gameContainer.style.display = "none";
     if (aviso) aviso.style.display = "flex";

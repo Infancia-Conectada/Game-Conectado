@@ -17,6 +17,12 @@ app.use(express.static(path.join(__dirname, 'src/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Simulação de sessão (temporário - apenas para desenvolvimento)
+app.use((req, res, next) => {
+    req.session = req.session || { userId: 1 };
+    next();
+});
+
 // Usar as rotas
 app.use('/', routes);
 

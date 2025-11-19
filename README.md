@@ -1,4 +1,235 @@
-# 🎮 Game Conectado - Icomon
+# Game Conectado 🎮
+
+Um card game de batalha por turnos desenvolvido com Node.js, Express e MySQL.
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- Node.js instalado
+- MySQL instalado e rodando
+- Porta 3000 disponível
+
+### Instalação
+
+1. Clone o repositório
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Configure o banco de dados:
+   - Execute o script SQL em `scripts/script.sql`
+   - Configure as credenciais em `src/config/database.js`
+
+4. Inicie o servidor:
+```bash
+npm run dev
+```
+
+5. Acesse no navegador:
+```
+http://localhost:3000
+```
+
+## 📁 Estrutura do Projeto
+
+```
+Game-Conectado/
+├── app.js                      # Servidor principal Express
+├── package.json
+├── scripts/
+│   └── script.sql             # Script de criação do banco de dados
+├── src/
+│   ├── config/
+│   │   └── database.js        # Configuração do MySQL
+│   ├── controllers/
+│   │   └── game.controller.js # Controlador do jogo
+│   ├── models/
+│   │   └── game.model.js      # Model de acesso aos dados
+│   ├── routes/
+│   │   ├── index.js           # Rotas principais
+│   │   └── api.js             # Rotas da API REST
+│   ├── views/
+│   │   ├── game.ejs           # Template principal
+│   │   └── 404.ejs            # Página de erro
+│   └── public/
+│       ├── js/
+│       │   ├── gameEngine.js  # ⭐ Motor do jogo (lógica completa)
+│       │   ├── jogo.js        # Interface do jogo
+│       │   ├── menu.js        # Sistema de menu
+│       │   ├── inventario.js  # Gerenciamento de inventário
+│       │   ├── variables.js   # Variáveis globais
+│       │   └── responsividade.js
+│       ├── css/
+│       │   ├── jogo.css       # Estilos do jogo e animações
+│       │   ├── menu.css
+│       │   ├── inventario.css
+│       │   ├── modal.css
+│       │   └── header-infancia.css
+│       └── img/               # Imagens das cartas e cenários
+```
+
+## 🎯 Arquivos Principais Implementados
+
+### 1. `gameEngine.js` - Motor do Jogo
+Classe `GameEngine` que gerencia toda a lógica do jogo:
+- ✅ Inicialização de decks (jogador, oponente, cenários)
+- ✅ Sistema de turnos
+- ✅ Cálculo de combate (dano, vida, vantagens elementares)
+- ✅ Bônus de cenário
+- ✅ Sistema de pontuação
+- ✅ Detecção de vitória/derrota
+- ✅ Reembaralhamento de cartas
+
+### 2. `jogo.js` - Interface do Jogo
+Conecta o motor do jogo com a interface:
+- ✅ Modal de seleção de deck
+- ✅ Integração com API para buscar dados do banco
+- ✅ Exibição da mão do jogador
+- ✅ Sistema de seleção de cartas
+- ✅ Animações de batalha
+- ✅ Tela de resultados
+- ✅ Tela de fim de jogo
+
+### 3. `api.js` - API REST
+Endpoints para comunicação com o banco:
+- `GET /api/deck/:deckId` - Busca cartas do deck
+
+### 4. `jogo.css` - Estilos e Animações
+- ✅ Animações de batalha
+- ✅ Overlay de resultados
+- ✅ Tela de fim de jogo
+- ✅ Pontuação visual
+- ✅ Efeitos visuais (pulso, fade, slide)
+
+## 🎲 Regras do Jogo
+
+Consulte o arquivo [COMO-JOGAR.md](COMO-JOGAR.md) para instruções detalhadas.
+
+### Resumo
+1. Cada jogador começa com 5 cartas
+2. A cada turno, um cenário é revelado
+3. Selecione 1 monstro (obrigatório) e 1 item (opcional)
+4. Batalha: cartas são reveladas e danos calculados
+5. Primeiro a fazer 3 pontos vence!
+
+## 🧮 Sistema de Combate
+
+### Cálculo de Dano
+```javascript
+Dano Final = Dano do Monstro 
+           + Bônus do Item 
+           + Bônus do Cenário 
+           + Vantagem Elemental (+2 se tiver vantagem)
+```
+
+### Vantagens Elementares
+- Água > Fogo
+- Fogo > Terra
+- Terra > Eletricidade
+- Eletricidade > Água
+
+### Tipos de Cartas
+- **Monstros**: Possuem Vida, Dano e Elemento
+  - Comum (Nível 2): 4 Vida, 2 Dano
+  - Incomum (Nível 4): 6 Vida, 4 Dano
+  - Raro (Nível 6): 8 Vida, 6 Dano
+
+- **Itens**: Aumentam Dano ou Vida
+  - Nível 1: +1
+  - Nível 3: +2
+
+- **Cenários**: Fornecem bônus para elementos específicos
+
+## 🔧 Tecnologias Utilizadas
+
+- **Backend**: Node.js, Express.js
+- **Template Engine**: EJS
+- **Banco de Dados**: MySQL2
+- **Frontend**: JavaScript Vanilla, CSS3
+- **Dev Tools**: Nodemon
+
+## 🎨 Funcionalidades Implementadas
+
+### ✅ Sistema de Jogo Completo
+- [x] Seleção de deck do banco de dados
+- [x] Inicialização do jogo com embaralhamento
+- [x] Sistema de turnos automático
+- [x] Combate com cálculos complexos
+- [x] Vantagens elementares
+- [x] Bônus de cenário
+- [x] Sistema de pontuação
+- [x] Detecção de fim de jogo
+- [x] Reembaralhamento automático
+
+### ✅ Interface
+- [x] Modal de seleção de deck
+- [x] Exibição da mão do jogador
+- [x] Seleção visual de cartas
+- [x] Animações de compra de cartas
+- [x] Animações de batalha
+- [x] Feedback visual de resultados
+- [x] Placar em tempo real
+- [x] Tela de vitória/derrota
+
+### ✅ Integração com Banco de Dados
+- [x] Carregamento de decks personalizados
+- [x] Dados de monstros e itens
+- [x] Sistema de inventário
+
+## 🚧 Melhorias Futuras
+
+- [ ] IA mais inteligente para o oponente
+- [ ] Modo multiplayer online
+- [ ] Sistema de amuletos
+- [ ] Mais cenários e cartas
+- [ ] Sistema de conquistas
+- [ ] Loja de cartas
+- [ ] Efeitos sonoros
+- [ ] Animações mais elaboradas
+- [ ] Tutorial interativo
+
+## 🐛 Debug
+
+Para ver os logs do jogo no console do navegador:
+```javascript
+// Abra o console (F12) e veja:
+// - Estado do jogo
+// - Cálculos de combate
+// - Seleções de cartas
+// - Resultados de turnos
+```
+
+## 📝 Notas de Desenvolvimento
+
+### Arquitetura
+- **MVC Pattern**: Model-View-Controller
+- **API RESTful**: Comunicação assíncrona com o servidor
+- **Game Engine**: Lógica isolada e reutilizável
+- **Event-Driven**: Interface reativa baseada em eventos
+
+### Decisões de Design
+1. **Game Engine Separado**: Facilita manutenção e testes
+2. **Dados no Banco**: Flexibilidade para adicionar conteúdo
+3. **Animações CSS**: Performance superior ao JavaScript
+4. **Estado Centralizado**: Um único objeto controla o jogo
+
+## 👥 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se livre para:
+- Reportar bugs
+- Sugerir novas funcionalidades
+- Melhorar documentação
+- Otimizar código
+
+## 📄 Licença
+
+Este projeto foi desenvolvido para fins educacionais.
+
+---
+
+**Desenvolvido com ❤️ para o projeto Infância Conectada**
+
 
 <div align="center">
 

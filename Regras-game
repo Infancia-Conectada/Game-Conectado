@@ -1,0 +1,12 @@
+
+-- funcionamento do jogo:
+0) preparacao:
+cada jogador tem seu deck com 20 cartas, compram 5 cartas. existem um deck central com 14 cartas de cenario.
+1) turno:
+1.1) a carta do topo do deck de cenario é revelada. cada cenario adiciona buff/debuff (alteracoes nos danos e vidas dos monstros)
+1.2) os jogadores escolhem 1 monstro (obrigatorio) e 1 item (opcional).
+1.3) quandos ambos escolherem suas cartas, elas sao reveladas e calcula-se os danos (dano do monstro + item + cenario + vantagem do elemento, se houver). ambos os monstros recebem o dano do outro e se a vida for menor, eles morrem.
+1.4) se houver apenas 1 monstro vivo, o jogador dele ganha 1 ponto. se ambos ficarem vivos ou ambos morrerem, ninguem pontua.
+1.5) a mesa é limpa, os jogadores compram cartas ate ficarem com 5 novamente e o turno reinicia
+2) o jogo acaba quando o primeiro jogador fizer 3 pontos. Como podem dar empates, tem a chances dos decks, tanto individuais quanto de cenarios, acabarem. Ai reembaralhas as cartas descartadas
+3) no final, ganham-se moedinhas, sendo que quem ganhar, ganha mais.

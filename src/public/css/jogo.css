@@ -60,7 +60,7 @@
 }
 
 .player-avatar {
-    width: 16px;
+    width: 160px;
     height: 160px;
     border-radius: 50%;
     overflow: hidden;
@@ -476,4 +476,286 @@
 
 .modal-content::-webkit-scrollbar-thumb:hover {
     background: #22d3ee;
+}
+
+/* ========== PONTUAÇÃO ========== */
+.score-display {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fbbf24;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #fbbf24;
+    margin-top: 10px;
+}
+
+/* ========== ANIMAÇÕES DE BATALHA ========== */
+.battle-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.battle-animation {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    animation: slideIn 0.5s ease;
+}
+
+.battle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    animation: cardPulse 0.5s ease infinite alternate;
+}
+
+.battle-card img {
+    width: 150px;
+    height: 210px;
+    border-radius: 10px;
+    border: 3px solid #2dd4bf;
+    box-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
+}
+
+.player-battle-card img {
+    border-color: #3b82f6;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.opponent-battle-card img {
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+.battle-stats {
+    display: flex;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.battle-vs {
+    font-size: 48px;
+    font-weight: bold;
+    color: #fbbf24;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+    animation: vsGlow 1s ease infinite;
+}
+
+/* ========== RESULTADO DA BATALHA ========== */
+.battle-result-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 110;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.battle-result {
+    text-align: center;
+    padding: 40px;
+    border-radius: 20px;
+    animation: resultSlideIn 0.5s ease;
+}
+
+.battle-result h2 {
+    font-size: 48px;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 20px currentColor;
+}
+
+.battle-result.victory h2 {
+    color: #10b981;
+}
+
+.battle-result.defeat h2 {
+    color: #ef4444;
+}
+
+.battle-result.draw h2 {
+    color: #fbbf24;
+}
+
+.score-update {
+    font-size: 28px;
+    color: #fff;
+    margin-top: 15px;
+}
+
+/* ========== FIM DE JOGO ========== */
+.game-end-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 120;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.game-end-screen {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 60px;
+    border-radius: 30px;
+    text-align: center;
+    border: 3px solid #2dd4bf;
+    box-shadow: 0 0 40px rgba(45, 212, 191, 0.5);
+    animation: endScreenSlideIn 0.7s ease;
+}
+
+.game-end-screen h1 {
+    font-size: 56px;
+    margin: 0 0 20px 0;
+    color: #2dd4bf;
+    text-shadow: 0 0 30px rgba(45, 212, 191, 0.8);
+}
+
+.game-end-screen p {
+    font-size: 24px;
+    color: #cbd5e1;
+    margin-bottom: 30px;
+}
+
+.coins-earned {
+    background: rgba(251, 191, 36, 0.2);
+    border: 2px solid #fbbf24;
+    border-radius: 15px;
+    padding: 20px 40px;
+    margin: 30px 0;
+    display: inline-block;
+}
+
+.coins-earned span {
+    font-size: 32px;
+    color: #fbbf24;
+    font-weight: bold;
+}
+
+.end-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.btn-play-again,
+.btn-back-menu {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-play-again {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.btn-play-again:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+.btn-back-menu {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(100, 116, 139, 0.4);
+}
+
+.btn-back-menu:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(100, 116, 139, 0.6);
+}
+
+/* ========== ANIMAÇÕES ========== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes cardPulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes vsGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(251, 191, 36, 1);
+    }
+}
+
+@keyframes resultSlideIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes endScreenSlideIn {
+    from {
+        transform: translateY(-100px) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }

@@ -1,50 +1,16 @@
-// ========== ELEMENTOS DO DOM ==========
-//let gameScreen = document.getElementById('game-screen');
-//let menuScreen = document.getElementById('menu-screen');
+// ========== SISTEMA DE JOGO COMPLETO ==========
 
-// ========== ESTADO DO JOGO ==========
-let gameState = {
-    selectedDeck: null,
-    // selectedAmulet: null, // Comentado temporariamente
-    playerHand: [],
-    playerSelectedCards: [],
-    playerDeck: [],
-    opponentDeck: [],
-    centralDeck: [],
-    revealedCard: null,
-    gameStarted: false
-};
+// Instância do motor do jogo
+let gameEngine = null;
+let selectedDeckNumber = null;
+let currentBattleResult = null;
 
-// ========== FUNÇÕES AUXILIARES ==========
-
-// Embaralhar array
-function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-
-// Criar um baralho com cartas genéricas
-function createDeck(deckNumber, cardCount = 20) {
-    const deck = [];
-    for (let i = 0; i < cardCount; i++) {
-        deck.push({
-            id: `${deckNumber}-${i}`,
-            name: `Carta ${i + 1}`,
-            image: `../img/cards/card-${i + 1}.png`
-        });
-    }
-    return deck;
-}
+// ========== MODAL DE SELEÇÃO DE DECK ==========
 
 // Abrir modal de seleção
 function openDeckSelectionModal() {
     deckSelectionModal.classList.add('active');
-    gameState.selectedDeck = null;
-    // gameState.selectedAmulet = null; // Comentado temporariamente
+    selectedDeckNumber = null;
     resetModalSelections();
 }
 
@@ -58,10 +24,6 @@ function resetModalSelections() {
     document.querySelectorAll('.deck-option').forEach(option => {
         option.classList.remove('selected');
     });
-    // Comentado temporariamente
-    /*document.querySelectorAll('.amulet-option').forEach(option => {
-        option.classList.remove('selected');
-    });*/
 }
 
 // Selecionar deck
@@ -70,212 +32,412 @@ function selectDeck(deckNumber) {
         option.classList.remove('selected');
     });
     document.querySelector(`[data-deck="${deckNumber}"]`).classList.add('selected');
-    gameState.selectedDeck = deckNumber;
+    selectedDeckNumber = deckNumber;
+    console.log('Deck selecionado:', deckNumber);
 }
+
+// ========== INICIALIZAÇÃO DO JOGO ==========
+
+// Inicializar o jogo
+async function initializeGame() {
+    if (!selectedDeckNumber) {
+        alert('Por favor, selecione um deck!');
+        return;
+    }
+
+    console.log('Iniciando jogo com deck:', selectedDeckNumber);
+    closeDeckSelectionModal();
+
+    // Buscar dados do deck do servidor
+    try {
+        const response = await fetch(`/api/deck/${selectedDeckNumber}`);
+        const data = await response.json();
+        
+        console.log('Dados do deck recebidos:', data);
+
+        // Criar nova instância do motor do jogo
+        gameEngine = new GameEngine();
+        
+        // Transição para tela de jogo
+        await changeScreen(menuScreen, gameScreen);
+
+        // Espera a transição das portas terminar
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Inicializar o jogo com os dados do deck
+        gameEngine.initializeGame(data.deckCards);
+
+        // Atualizar interface inicial
+        updateGameUI();
+        
+        // Comprar cartas iniciais com animação
+        await animateInitialDraw();
+
+    } catch (error) {
+        console.error('Erro ao inicializar jogo:', error);
+        alert('Erro ao carregar o deck. Tente novamente.');
+    }
+}
+
+// Animar compra inicial de cartas
+async function animateInitialDraw() {
+    const state = gameEngine.getGameState();
+    
+    for (let i = 0; i < state.playerHand.length; i++) {
+        await animateDrawCard(playerDeckElement, playerHandContainer, i * 100);
+    }
+    
+    // Atualizar mão após animações
+    displayPlayerHand();
+}
+
+// ========== ANIMAÇÕES ==========
 
 // Animação de compra de carta
 async function animateDrawCard(from, to, delay = 0) {
     return new Promise(resolve => {
-        const card = document.createElement('div');
-        card.className = 'card-animation';
-        
-        // Posição inicial
-        const fromRect = from.getBoundingClientRect();
-        const toRect = to.getBoundingClientRect();
-        
-        // Calcular o ponto médio para o arco da animação
-        const midX = (fromRect.left + toRect.left) / 2;
-        const midY = Math.min(fromRect.top, toRect.top) - 100; // Arco para cima
-        console.log("inicio");
-        card.style.top = `${fromRect.top}px`;
-        card.style.left = `${fromRect.left}px`;
-        card.style.transition = 'none';
-        
-        document.body.appendChild(card);
-        
-        // Força um reflow para garantir que a transição inicial seja aplicada
-        card.getBoundingClientRect();
-        
-        // Adiciona um pequeno delay aleatório para tornar a animação mais natural
         setTimeout(() => {
-            card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-            console.log("settimeout");
+            const card = document.createElement('div');
+            card.className = 'card-animation';
             
-            // Primeira parte da animação - subindo em arco
-            card.style.transform = `translate(${midX - fromRect.left}px, ${midY - fromRect.top}px) rotate(180deg)`;
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+            
+            const midX = (fromRect.left + toRect.left) / 2;
+            const midY = Math.min(fromRect.top, toRect.top) - 100;
+            
+            card.style.top = `${fromRect.top}px`;
+            card.style.left = `${fromRect.left}px`;
+            card.style.transition = 'none';
+            
+            document.body.appendChild(card);
+            card.getBoundingClientRect();
             
             setTimeout(() => {
-                // Segunda parte da animação - descendo para a posição final
-                card.style.transform = `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top + 70}px) rotate(360deg)`;
+                card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                card.style.transform = `translate(${midX - fromRect.left}px, ${midY - fromRect.top}px) rotate(180deg)`;
                 
-                card.addEventListener('transitionend', () => {
-                    card.remove();
-                    resolve();
-                }, { once: true });
-            }, 250);
+                setTimeout(() => {
+                    card.style.transform = `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top + 70}px) rotate(360deg)`;
+                    
+                    card.addEventListener('transitionend', () => {
+                        card.remove();
+                        resolve();
+                    }, { once: true });
+                }, 250);
+            }, 50);
         }, delay);
     });
 }
 
-// Função para comprar cartas até ter 5 na mão
-async function drawCardsUntilFull() {
-        console.log("drawCardsUntilFull");
-    const cardsNeeded = 5 - gameState.playerHand.length;
-    
-    if (cardsNeeded <= 0) return;
-    
-    for (let i = 0; i < cardsNeeded; i++) {
-        if (gameState.playerDeck.length > 0) {
-            const card = gameState.playerDeck.shift();
-            gameState.playerHand.push(card);
-            await animateDrawCard(playerDeckElement, playerHandContainer, 1);
-        }
-    }
+// ========== INTERFACE DO JOGO ==========
+
+// Atualizar toda a UI do jogo
+function updateGameUI() {
+    const state = gameEngine.getGameState();
     
     updateDeckCounts();
-    displayPlayerHand();
-}
-
-// Inicializar o jogo
-async function initializeGame() {
-    if (!gameState.selectedDeck) {
-        alert('Por favor, selecione um deck!');
-        return;
-    }
-    // Verificação do amuleto comentada temporariamente
-    /*if (!gameState.selectedAmulet) {
-        alert('Por favor, selecione um amuleto!');
-        return;
-    }*/
-
-    closeDeckSelectionModal();
-
-    // Criar os baralhos
-    gameState.playerDeck = shuffleArray(createDeck(gameState.selectedDeck));
-    gameState.opponentDeck = shuffleArray(createDeck('opponent'));
-    gameState.centralDeck = shuffleArray(createDeck('central'));
-
-    // Atualizar contadores dos decks
-    updateDeckCounts();
-
-    // Transição para tela de jogo
-    changeScreen(menuScreen, gameScreen);
-
-    // Espera a transição das portas terminar (3 segundos) + 2 segundos adicionais
-    await new Promise(resolve => setTimeout(resolve, 5000));
-
-    // Revelar primeira carta do baralho central
-    gameState.revealedCard = gameState.centralDeck.shift();
+    updateScoreDisplay();
     displayCentralBoard();
-
-    // Inicia o jogo
-    gameState.gameStarted = true;
-    
-    // Compra as cartas iniciais com animação
-    await drawCardsUntilFull();
-    
-    // Adiciona listener para auto-compra quando necessário
-    setInterval(() => {
-        if (gameState.gameStarted && gameState.playerHand.length < 5) {
-            drawCardsUntilFull();
-        }
-    }, 1000);
+    displayPlayerHand();
+    updateConfirmButton();
 }
 
-// ========== EXIBIÇÃO ==========
-
-// Exibir baralho central
+// Exibir baralho central (cenário)
 function displayCentralBoard() {
-    // Carta revelada
-    if (gameState.revealedCard) {
-        revealedCardSlot.textContent = 'Revelada';
-        revealedCardSlot.style.backgroundImage = `url(${gameState.revealedCard.image})`;
+    const state = gameEngine.getGameState();
+    
+    if (state.currentScenario) {
+        // Mapear ID do cenário para imagem
+        const scenarioImages = {
+            1: '../img/cenarios/1-AGA.png',
+            2: '../img/cenarios/1-ELT.png',
+            3: '../img/cenarios/1-FGO.png',
+            4: '../img/cenarios/1-TER.png',
+            5: '../img/cenarios/2-AGA+TER.png',
+            6: '../img/cenarios/2-FGO+ELT.png',
+            7: '../img/cenarios/2-NEBLINA.png'
+        };
+        
+        revealedCardSlot.style.backgroundImage = `url(${scenarioImages[state.currentScenario.id]})`;
+        revealedCardSlot.textContent = '';
     }
 
-    // Baralho para compra
-    if (gameState.centralDeck.length > 0) {
-        deckPileSlot.textContent = `${gameState.centralDeck.length}`;
-    }
-
-    // Pilha de descarte
-    discardPileSlot.textContent = '0';
+    // Atualizar contador do deck de cenários
+    deckPileSlot.textContent = state.scenarioDeckCount > 0 ? state.scenarioDeckCount : '';
 }
 
 // Exibir mão do jogador
 function displayPlayerHand() {
+    const state = gameEngine.getGameState();
     playerHandContainer.innerHTML = '';
     
-    gameState.playerHand.forEach((card, index) => {
+    state.playerHand.forEach((card, index) => {
         const cardElement = document.createElement('div');
         cardElement.classList.add('hand-card');
         cardElement.dataset.index = index;
-        cardElement.style.backgroundImage = `url(${card.image})`;
-        cardElement.title = card.name;
+        cardElement.dataset.cardId = card.id || card.id_carta;
+        cardElement.dataset.cardType = card.cardType;
         
-        // Adiciona a carta já selecionada se estiver no array de selecionadas
-        if (gameState.playerSelectedCards.includes(index)) {
+        // Usar a imagem da carta
+        cardElement.style.backgroundImage = `url(${card.img_url})`;
+        cardElement.title = `${card.nome} (${card.elemento})`;
+        
+        // Verificar se a carta está selecionada
+        const isMonsterSelected = state.playerSelection.monster === card;
+        const isItemSelected = state.playerSelection.item === card;
+        
+        if (isMonsterSelected || isItemSelected) {
             cardElement.classList.add('selected');
         }
         
-        cardElement.addEventListener('click', () => toggleCardSelection(index, cardElement));
+        cardElement.addEventListener('click', () => handleCardClick(index, card));
         
-        // Adiciona um pequeno delay na entrada de cada carta
-        setTimeout(() => {
-            playerHandContainer.appendChild(cardElement);
-        }, index * 50);
+        playerHandContainer.appendChild(cardElement);
     });
 }
 
-// Alternar seleção de carta
-function toggleCardSelection(index, cardElement) {
-    const cardIndex = gameState.playerSelectedCards.indexOf(index);
+// Manipular clique em carta
+function handleCardClick(index, card) {
+    const state = gameEngine.getGameState();
     
-    // Limitar a 2 cartas selecionadas
-    if (cardIndex === -1) {
-        if (gameState.playerSelectedCards.length < 2) {
-            gameState.playerSelectedCards.push(index);
-            cardElement.classList.add('selected');
-            
-            // Adiciona som de seleção (opcional)
-            // playCardSelectSound();
-        }
-    } else {
-        gameState.playerSelectedCards.splice(cardIndex, 1);
-        cardElement.classList.remove('selected');
+    if (state.turnPhase !== 'selecting') {
+        console.log('Aguarde o próximo turno');
+        return;
     }
     
+    // Se a carta já está selecionada, desselecionar
+    if (state.playerSelection.monster === card) {
+        gameEngine.deselectCard('monster');
+    } else if (state.playerSelection.item === card) {
+        gameEngine.deselectCard('item');
+    } else {
+        // Selecionar a carta
+        gameEngine.selectCard(index);
+    }
+    
+    // Atualizar interface
+    displayPlayerHand();
     updateConfirmButton();
 }
 
 // Atualizar contadores dos decks
 function updateDeckCounts() {
-    // Atualizar contador do deck do jogador
+    const state = gameEngine.getGameState();
+    
     const playerDeckCount = document.querySelector('.player-bottom-deck .deck-count');
     if (playerDeckCount) {
-        playerDeckCount.textContent = gameState.playerDeck.length;
+        playerDeckCount.textContent = state.playerDeckCount;
     }
 
-    // Atualizar contador do deck do oponente
     const opponentDeckCount = document.querySelector('.opponent-deck .deck-count');
     if (opponentDeckCount) {
-        opponentDeckCount.textContent = gameState.opponentDeck.length;
+        opponentDeckCount.textContent = state.opponentDeckCount;
     }
 }
 
-// Atualizar estado do botão confirmar
+// Atualizar exibição de pontuação
+function updateScoreDisplay() {
+    const state = gameEngine.getGameState();
+    
+    // Criar elementos de pontuação se não existirem
+    let playerScoreEl = document.getElementById('player-score');
+    let opponentScoreEl = document.getElementById('opponent-score');
+    
+    if (!playerScoreEl) {
+        playerScoreEl = document.createElement('div');
+        playerScoreEl.id = 'player-score';
+        playerScoreEl.className = 'score-display player-score';
+        document.querySelector('.player-info-bottom').appendChild(playerScoreEl);
+    }
+    
+    if (!opponentScoreEl) {
+        opponentScoreEl = document.createElement('div');
+        opponentScoreEl.id = 'opponent-score';
+        opponentScoreEl.className = 'score-display opponent-score';
+        document.querySelector('.opponent-info').appendChild(opponentScoreEl);
+    }
+    
+    playerScoreEl.textContent = `⭐ ${state.playerScore}`;
+    opponentScoreEl.textContent = `⭐ ${state.opponentScore}`;
+}
+
+// Atualizar botão de confirmação
 function updateConfirmButton() {
-    if (gameState.playerSelectedCards.length > 0) {
+    if (gameEngine && gameEngine.canConfirmPlay()) {
         confirmPlayButton.classList.remove('hidden');
     } else {
         confirmPlayButton.classList.add('hidden');
     }
 }
 
+// ========== SISTEMA DE BATALHA ==========
+
+// Confirmar jogada e iniciar batalha
+async function confirmPlay() {
+    if (!gameEngine || !gameEngine.canConfirmPlay()) {
+        return;
+    }
+    
+    // Esconder botão de confirmação
+    confirmPlayButton.classList.add('hidden');
+    
+    // Resolver batalha
+    currentBattleResult = gameEngine.confirmPlay();
+    
+    console.log('Resultado da batalha:', currentBattleResult);
+    
+    // Mostrar animação de batalha
+    await showBattleAnimation(currentBattleResult);
+    
+    // Mostrar resultado
+    await showBattleResult(currentBattleResult);
+    
+    // Limpar mesa e preparar próximo turno
+    gameEngine.endTurn();
+    
+    // Verificar se o jogo acabou
+    if (currentBattleResult.gameWinner) {
+        await showGameEndScreen(currentBattleResult.gameWinner);
+    } else {
+        // Atualizar interface para o próximo turno
+        updateGameUI();
+        
+        // Animar compra de novas cartas
+        await animateDrawNewCards();
+    }
+}
+
+// Mostrar animação de batalha
+async function showBattleAnimation(result) {
+    // Criar overlay de batalha
+    const battleOverlay = document.createElement('div');
+    battleOverlay.className = 'battle-overlay';
+    
+    // Buscar cartas selecionadas
+    const playerMonster = gameEngine.playerSelection.monster;
+    const opponentMonster = gameEngine.opponentSelection.monster;
+    
+    battleOverlay.innerHTML = `
+        <div class="battle-animation">
+            <div class="battle-card player-battle-card">
+                <img src="${playerMonster.img_url}" alt="${playerMonster.nome}">
+                <div class="battle-stats">
+                    <div>⚔️ ${result.playerStats.dano}</div>
+                    <div>❤️ ${result.playerStats.vida}</div>
+                </div>
+            </div>
+            <div class="battle-vs">VS</div>
+            <div class="battle-card opponent-battle-card">
+                <img src="${opponentMonster.img_url}" alt="${opponentMonster.nome}">
+                <div class="battle-stats">
+                    <div>⚔️ ${result.opponentStats.dano}</div>
+                    <div>❤️ ${result.opponentStats.vida}</div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('game-screen').appendChild(battleOverlay);
+    
+    // Esperar animação
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    battleOverlay.remove();
+}
+
+// Mostrar resultado da batalha
+async function showBattleResult(result) {
+    const resultOverlay = document.createElement('div');
+    resultOverlay.className = 'battle-result-overlay';
+    
+    let resultText = '';
+    let resultClass = '';
+    
+    if (result.roundWinner === 'player') {
+        resultText = '🏆 VOCÊ VENCEU O TURNO!';
+        resultClass = 'victory';
+    } else if (result.roundWinner === 'opponent') {
+        resultText = '💀 OPONENTE VENCEU O TURNO!';
+        resultClass = 'defeat';
+    } else {
+        resultText = '⚖️ EMPATE!';
+        resultClass = 'draw';
+    }
+    
+    resultOverlay.innerHTML = `
+        <div class="battle-result ${resultClass}">
+            <h2>${resultText}</h2>
+            <div class="score-update">
+                Placar: ${result.playerScore} x ${result.opponentScore}
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('game-screen').appendChild(resultOverlay);
+    
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    
+    resultOverlay.remove();
+}
+
+// Animar compra de novas cartas
+async function animateDrawNewCards() {
+    const state = gameEngine.getGameState();
+    const previousHandSize = state.playerHand.length;
+    
+    // Se comprou cartas novas, animar
+    if (state.playerHand.length > previousHandSize) {
+        for (let i = previousHandSize; i < state.playerHand.length; i++) {
+            await animateDrawCard(playerDeckElement, playerHandContainer, 100);
+        }
+    }
+    
+    displayPlayerHand();
+}
+
+// Mostrar tela de fim de jogo
+async function showGameEndScreen(winner) {
+    const endOverlay = document.createElement('div');
+    endOverlay.className = 'game-end-overlay';
+    
+    const isVictory = winner === 'player';
+    const title = isVictory ? '🎉 VITÓRIA! 🎉' : '😢 DERROTA 😢';
+    const message = isVictory ? 'Parabéns! Você venceu o jogo!' : 'Não desista! Tente novamente!';
+    const coins = isVictory ? 100 : 50;
+    
+    endOverlay.innerHTML = `
+        <div class="game-end-screen">
+            <h1>${title}</h1>
+            <p>${message}</p>
+            <div class="coins-earned">
+                <span>🪙 +${coins} moedas</span>
+            </div>
+            <div class="end-buttons">
+                <button onclick="playAgain()" class="btn-play-again">Jogar Novamente</button>
+                <button onclick="backToMenu()" class="btn-back-menu">Voltar ao Menu</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('game-screen').appendChild(endOverlay);
+}
+
+// Jogar novamente
+function playAgain() {
+    location.reload();
+}
+
+// Voltar ao menu
+async function backToMenu() {
+    gameEngine = null;
+    await changeScreen(gameScreen, menuScreen);
+}
+
 // ========== EVENT LISTENERS ==========
 
 // Botão Jogar no menu
 jogarOption.addEventListener('click', () => {
-    console.log("clickar abre modal");
     openDeckSelectionModal();
 });
 
@@ -286,9 +448,7 @@ document.querySelectorAll('.deck-option').forEach(option => {
     });
 });
 
-
-
-// Confirmar seleção (deck + amuleto)
+// Confirmar seleção de deck
 btnConfirmSelection.addEventListener('click', () => {
     initializeGame();
 });
@@ -300,12 +460,5 @@ btnCancelSelection.addEventListener('click', () => {
 
 // Confirmar jogada
 confirmPlayButton.addEventListener('click', () => {
-    console.log('Cartas selecionadas:', gameState.playerSelectedCards);
-    // Aqui você implementará a lógica da jogada
-    // Por ora, apenas limpa a seleção
-    gameState.playerSelectedCards = [];
-    document.querySelectorAll('.hand-card').forEach(card => {
-        card.classList.remove('selected');
-    });
-    updateConfirmButton();
+    confirmPlay();
 });

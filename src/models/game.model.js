@@ -42,12 +42,13 @@ const gameModel = {
                     tc.tipo,
                     tc.raridade,
                     tc.elemento,
+                    tc.nivel,
                     tc.img_url,
                     tc.ico_url
                 FROM inventarios i
                 INNER JOIN todas_cartas tc ON i.id_carta = tc.id
                 WHERE i.id_usuario = ?
-                ORDER BY tc.tipo, tc.elemento, tc.nome
+                ORDER BY tc.elemento, tc.tipo DESC, tc.nivel DESC
             `, [userId]);
             return inventory;
         } catch (error) {

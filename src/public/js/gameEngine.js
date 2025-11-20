@@ -63,10 +63,10 @@ const CARD_DATA = {
 
 // Cenários
 const SCENARIOS = [
-    { id: 1, nome: "Ilha", elemento1: "agua", elemento2: null, buffs: { agua: { dano: 2, vida: 2 } } },
-    { id: 2, nome: "Deserto Estático", elemento1: "eletricidade", elemento2: null, buffs: { eletricidade: { dano: 2, vida: 2 } } },
-    { id: 3, nome: "Vale Vulcânico", elemento1: "fogo", elemento2: null, buffs: { fogo: { dano: 2, vida: 2 } } },
-    { id: 4, nome: "Floresta", elemento1: "terra", elemento2: null, buffs: { terra: { dano: 2, vida: 2 } } },
+    { id: 1, nome: "Ilha", elemento1: "agua", elemento2: null, buffs: { agua: { dano: 1, vida: 1 } } },
+    { id: 2, nome: "Deserto Estático", elemento1: "eletricidade", elemento2: null, buffs: { eletricidade: { dano: 1, vida: 1 } } },
+    { id: 3, nome: "Vale Vulcânico", elemento1: "fogo", elemento2: null, buffs: { fogo: { dano: 1, vida: 1 } } },
+    { id: 4, nome: "Floresta", elemento1: "terra", elemento2: null, buffs: { terra: { dano: 1, vida: 1 } } },
     { id: 5, nome: "Pântano", elemento1: "agua", elemento2: "terra", buffs: { agua: { dano: 1, vida: 1 }, terra: { dano: 1, vida: 1 } } },
     { id: 6, nome: "Cerrado Vulcânico", elemento1: "eletricidade", elemento2: "fogo", buffs: { eletricidade: { dano: 1, vida: 1 }, fogo: { dano: 1, vida: 1 } } },
     { id: 7, nome: "Neblina", elemento1: "neutro", elemento2: null, buffs: {} }
@@ -134,9 +134,6 @@ class GameEngine {
         console.log('Jogo inicializado!');
         console.log('Mão do jogador:', this.playerHand);
         console.log('Mão do oponente:', this.opponentHand);
-        
-        // Iniciar primeiro turno
-        this.startNewTurn();
     }
 
     // Converter dados do banco para formato do jogo
@@ -205,15 +202,9 @@ class GameEngine {
         this.roundNumber++;
         console.log(`\n=== TURNO ${this.roundNumber} ===`);
         
-        // Revelar carta de cenário
-        if (this.scenarioDeck.length === 0) {
-            // Reembaralhar descarte de cenários
-            this.scenarioDeck.push(...this.scenarioDiscard);
-            this.scenarioDiscard.length = 0;
-            this.shuffleDeck(this.scenarioDeck);
-        }
-        
-        this.currentScenario = this.scenarioDeck.shift();
+        // Sortear cenário aleatório
+        const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
+        this.currentScenario = SCENARIOS[randomIndex];
         console.log('Cenário revelado:', this.currentScenario.nome);
         
         // Resetar seleções

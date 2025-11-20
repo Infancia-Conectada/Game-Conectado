@@ -33,7 +33,6 @@ function selectDeck(deckNumber) {
     });
     document.querySelector(`[data-deck="${deckNumber}"]`).classList.add('selected');
     selectedDeckNumber = deckNumber;
-    console.log('Deck selecionado:', deckNumber);
 }
 
 // ========== INICIALIZAÇÃO DO JOGO ==========
@@ -72,6 +71,10 @@ async function initializeGame() {
         
         // Comprar cartas iniciais com animação
         await animateInitialDraw();
+        
+        // Iniciar o primeiro turno após compra de cartas
+        gameEngine.startNewTurn();
+        updateGameUI();
 
     } catch (error) {
         console.error('Erro ao inicializar jogo:', error);
@@ -136,7 +139,6 @@ async function animateDrawCard(from, to, delay = 0) {
 function updateGameUI() {
     const state = gameEngine.getGameState();
     
-    updateDeckCounts();
     updateScoreDisplay();
     displayCentralBoard();
     displayPlayerHand();
@@ -154,17 +156,46 @@ function displayCentralBoard() {
             2: '../img/cenarios/1-ELT.png',
             3: '../img/cenarios/1-FGO.png',
             4: '../img/cenarios/1-TER.png',
-            5: '../img/cenarios/2-AGA+TER.png',
-            6: '../img/cenarios/2-FGO+ELT.png',
-            7: '../img/cenarios/2-NEBLINA.png'
+            5: '../img/cenarios/1-AGA.png',
+            6: '../img/cenarios/1-ELT.png',
+            7: '../img/cenarios/1-FGO.png',
+            8: '../img/cenarios/1-TER.png',
+            9: '../img/cenarios/2-AGA+TER.png',
+            10: '../img/cenarios/2-FGO+ELT.png',
+            11: '../img/cenarios/2-NEBLINA.png',
+            12: '../img/cenarios/2-NEBLINA.png'
         };
         
         revealedCardSlot.style.backgroundImage = `url(${scenarioImages[state.currentScenario.id]})`;
         revealedCardSlot.textContent = '';
+        
+        // Atualizar background do jogo conforme o cenário
+        updateGameBackground(state.currentScenario.id);
     }
+}
 
-    // Atualizar contador do deck de cenários
-    deckPileSlot.textContent = state.scenarioDeckCount > 0 ? state.scenarioDeckCount : '';
+// Atualizar background do jogo conforme cenário
+function updateGameBackground(scenarioId) {
+    // Mapear ID do cenário para imagem de background
+    const backgroundImages = {
+        1: '../img/background/JOGAR-AGUA.png',           // Ilha
+        2: '../img/background/JOGAR-RAIO.png',           // Deserto Estático
+        3: '../img/background/JOGAR-FOGO.png',           // Vale Vulcânico
+        4: '../img/background/JOGAR-TERRA.png',          // Floresta
+        5: '../img/background/JOGAR-AGUA.png',           // Ilha
+        6: '../img/background/JOGAR-RAIO.png',           // Deserto Estático
+        7: '../img/background/JOGAR-FOGO.png',           // Vale Vulcânico
+        8: '../img/background/JOGAR-TERRA.png',          // Floresta
+        9: '../img/background/JOGAR-AGUA-TERRA.png',     // Pântano
+        10: '../img/background/JOGAR-FOGO-RAIO.png',      // Cerrado Vulcânico
+        11: '../img/background/JOGAR-NEBLINA.png',         // Neblina
+        12: '../img/background/JOGAR-NEBLINA.png'         // Neblina
+    };
+    
+    const bgImage = document.querySelector('.bg-image');
+    if (bgImage && backgroundImages[scenarioId]) {
+        bgImage.src = backgroundImages[scenarioId];
+    }
 }
 
 // Exibir mão do jogador
@@ -219,21 +250,6 @@ function handleCardClick(index, card) {
     // Atualizar interface
     displayPlayerHand();
     updateConfirmButton();
-}
-
-// Atualizar contadores dos decks
-function updateDeckCounts() {
-    const state = gameEngine.getGameState();
-    
-    const playerDeckCount = document.querySelector('.player-bottom-deck .deck-count');
-    if (playerDeckCount) {
-        playerDeckCount.textContent = state.playerDeckCount;
-    }
-
-    const opponentDeckCount = document.querySelector('.opponent-deck .deck-count');
-    if (opponentDeckCount) {
-        opponentDeckCount.textContent = state.opponentDeckCount;
-    }
 }
 
 // Atualizar exibição de pontuação

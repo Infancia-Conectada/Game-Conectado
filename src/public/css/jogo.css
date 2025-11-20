@@ -44,19 +44,19 @@
     position: absolute;
     z-index: 10;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 .opponent-info {
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
 }
 
 .player-info-bottom {
-    bottom: 20px;
-    left: 20px;
+    bottom: 10px;
+    left: 10px;
 }
 
 .player-avatar {
@@ -108,22 +108,6 @@
     transform: scale(1.05);
 }
 
-.deck-count {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: #2dd4bf;
-    color: #0F172A;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    font-weight: bold;
-}
-
 .card-animation {
     position: fixed;
     width: 100px;
@@ -151,9 +135,7 @@
 /* Área Central - Baralho Central */
 .central-board {
     position: absolute;
-    top: 50%;
-    right: -3%;
-    transform: translate(-50%, -50%);
+    right: 13%;
     z-index: 5;
     display: flex;
     gap: 20px;
@@ -174,21 +156,16 @@
 .card-stack {
     width: 100%;
     height: 100%;
-    background-color: rgba(45, 212, 191, 0.3);
     border: 2px solid #2dd4bf;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
-    color: #2dd4bf;
-    font-weight: bold;
     background-size: cover;
     background-position: center;
 }
 
 .revealed-card .card-stack {
-    background: url('../img/cenarios/1-AGA.png') center/cover;
     border: none;
 }
 
@@ -197,21 +174,14 @@
     border: none;
 }
 
-.discard-pile .card-stack {
-    background: url('../img/cenarios/1-FGO.png') center/cover;
-    border: none;
-}
-
 /* Mão do Jogador */
 .player-hand {
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     z-index: 15;
     width: 90%;
     max-width: 1000px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 .hand-cards {
@@ -234,35 +204,19 @@
     position: relative;
     flex-shrink: 0;
     transform-origin: bottom center;
-    transform: translateY(70px);
+    background-size: 100% 100%;
 }
 
 .hand-card:hover:not(.selected) {
-    transform: translateY(60px) scale(1.05);
+    transform: translateY(-20px) scale(1.3);
     box-shadow: 0 5px 20px rgba(45, 212, 191, 0.4);
 }
 
 .hand-card.selected {
     border-color: #fbbf24;
     box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-    transform: translateY(0) scale(1.05);
+    transform: translateY(-20px) scale(1.3);
     z-index: 20;
-}
-
-.hand-card.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
-    background-color: #fbbf24;
-    color: #0f172a;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
 }
 
 /* Botão de Confirmação */
@@ -365,13 +319,11 @@
 }
 
 .deck-option:hover {
-    background-color: rgba(45, 212, 191, 0.2);
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(45, 212, 191, 0.3);
 }
 
 .deck-option.selected {
-    border-color: #fbbf24;
+    border-radius: 45px;
     box-shadow: 0px 0px 20px 9px rgb(255 255 255 / 60%);
 }
 
@@ -486,9 +438,13 @@
     border-radius: 20px;
     font-size: 24px;
     font-weight: bold;
-    text-align: center;
     border: 2px solid #fbbf24;
-    margin-top: 10px;
+    position: relative;
+    bottom: -50px;
+}
+
+.opponent-score {
+    top: -50px;
 }
 
 /* ========== ANIMAÇÕES DE BATALHA ========== */

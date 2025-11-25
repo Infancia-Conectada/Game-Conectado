@@ -137,13 +137,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// Inicialização do jogo
-function initGame() {
-    setTimeout(() => {
-       changeScreen(loadingScreen,menuScreen);
-    }, 3000);
+// Inicialização do jogo com pré-carregamento de imagens
+async function initGame() {
+    // Inicia o pré-carregamento de todas as imagens
+    const preloadingComplete = await imagePreloader.loadAll();
+    
+    if (preloadingComplete) {
+        console.log('Todas as imagens foram carregadas com sucesso!');
+    } else {
+        console.warn('Algumas imagens não foram carregadas, mas continuando...');
+    }
+    
+    // Transiciona da tela de loading para o menu
+    changeScreen(loadingScreen, menuScreen);
 }
+
 // Inicia o jogo quando a página carregar
-// window.addEventListener('load', initGame);
-initGame();
-// a gente fez isso pra ignorar o tempo de loading mas devemos ajustar depois (remover)
+window.addEventListener('load', initGame);

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
@@ -35,9 +36,10 @@ app.use((req, res) => {
 });
 
 // Inicializar servidor
-app.listen(3000, () => {
-    console.log(`Servidor rodando na porta 3000`);
-    console.log(`Acesse: http://localhost:3000`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Acesse: http://localhost:${PORT}`);
 });
 
 module.exports = app;

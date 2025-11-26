@@ -49,6 +49,22 @@
     width: 68px;
     height: 68px;
     background: url("../img/icones/NENHUM.png") center/cover;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.deck-icon:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+.deck-icon.selected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+    transform: scale(1.08);
 }
 
 .deck-type {
@@ -64,7 +80,23 @@
     position: relative;
     display: flex;
     justify-content: right;
-    margin-bottom: 27px;
+    margin-bottom: 10px;
+}
+
+.deck-type-row input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #fbbf24;
+    transition: transform 0.2s ease;
+}
+
+.deck-type-row input[type="radio"]:hover {
+    transform: scale(1.15);
+}
+
+.deck-type-row input[type="radio"]:checked {
+    transform: scale(1.2);
 }
 /* Container inferior */
 .bottom-container {
@@ -244,6 +276,22 @@
     width: 68px;
     height: 68px;
     background: url("../img/icones/NENHUM.png") center/cover;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.inventory-icon:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+.inventory-icon.selected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+    transform: scale(1.08);
 }
 
 .inventory-slot:hover {

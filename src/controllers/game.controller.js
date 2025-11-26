@@ -5,16 +5,18 @@ const gameController = {
         try {
             // Por enquanto, vamos usar um userId fixo para teste
             const userId = 1; // TODO: Pegar o userId da sessão
-            const deckId = 1; // TODO: Permitir selecionar diferentes decks
 
             // Buscar cartas do inventario
             const inventoryWithCards = await gameModel.getInventoryWithCards(userId);
-            // Buscar cartas do deck selecionado
-            const deckCards = await gameModel.getDeckCards(userId, deckId);
+            // Buscar todos os 3 decks
+            const allDecks = await gameModel.getAllDecksWithCards(userId);
+            
             // Renderizar a view com os dados
             res.render('game', {
                 inventoryWithCards: inventoryWithCards || [], // Garantir que sempre seja um array
-                deckCards: deckCards || [], // Garantir que sempre seja um array
+                deck1Cards: allDecks.deck1 || [],
+                deck2Cards: allDecks.deck2 || [],
+                deck3Cards: allDecks.deck3 || [],
             });
         } catch (error) {
             console.error('Erro ao carregar dados do jogo:', error);

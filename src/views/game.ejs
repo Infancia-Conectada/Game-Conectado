@@ -240,29 +240,42 @@
         </div>
         <!-- Tela de Inventário -->
         <div id="inventory-screen" class="screen">
+            <!-- Dados dos decks (hidden) -->
+            <script type="application/json" id="deck1-data">
+                <%- JSON.stringify(deck1Cards) %>
+            </script>
+            <script type="application/json" id="deck2-data">
+                <%- JSON.stringify(deck2Cards) %>
+            </script>
+            <script type="application/json" id="deck3-data">
+                <%- JSON.stringify(deck3Cards) %>
+            </script>
+            
             <div class="inventory-container">
                 <div class="deck-area">
                     <!-- Cartas do deck (20 cartas em 2 linhas de 10) -->
                     <div class="deck-cards">
                         <div class="deck-row">
-                            <% for(let i = 1; i <= 10; i++) { %>
-                                <% const card = deckCards.find(c => c.deck_card_id === i); %>
+                            <% for(let i = 0; i < 10; i++) { %>
+                                <% const card = deck1Cards[i]; %>
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
-                                     data-index="<%= card.deck_card_id %>"
+                                     data-index="<%= i %>"
                                      data-type="deck"
-                                     data-image="<%= card.img_url %>"
+                                     data-image="<%= card ? card.img_url : '' %>"
+                                     data-card-id="<%= card ? card.id_carta : '' %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
                             <% } %>
                         </div>
                         <div class="deck-row">
-                            <% for(let i = 11; i <= 20; i++) { %>
-                                <% const card = deckCards.find(c => c.deck_card_id === i); %>
+                            <% for(let i = 10; i < 20; i++) { %>
+                                <% const card = deck1Cards[i]; %>
                                 <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
                                      data-index="<%= i %>"
                                      data-type="deck"
-                                     data-image="<%= card.img_url %>"
+                                     data-image="<%= card ? card.img_url : '' %>"
+                                     data-card-id="<%= card ? card.id_carta : '' %>"
                                      style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
                                      title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
                                 </div>
@@ -270,9 +283,9 @@
                         </div>
                     </div>
                     <div class="deck-type">
-                        <div class="deck-type-row"><input type="radio"></div>
-                        <div class="deck-type-row"><input type="radio"></div>
-                        <div class="deck-type-row"><input type="radio"></div>
+                        <div class="deck-type-row"><input type="radio" name="deck-selection" value="1" checked></div>
+                        <div class="deck-type-row"><input type="radio" name="deck-selection" value="2"></div>
+                        <div class="deck-type-row"><input type="radio" name="deck-selection" value="3"></div>
                     </div>
                 </div>
                 <!-- Container inferior: Visualização + Inventário + Botões -->

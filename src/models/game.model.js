@@ -61,6 +61,40 @@ const gameModel = {
      * Busca todas as cartas de cenário disponíveis
      * @returns {Promise<Array>} Array com os cenários
      */
+
+    /**
+     * Busca todos os decks do usuário com suas cartas
+     * @param {number} userId - ID do usuário
+     * @returns {Promise<Object>} Objeto com os 3 decks
+     */
+    getAllDecksWithCards: async (userId) => {
+        try {
+            const decks = {};
+            
+            // Buscar os 3 decks
+            for (let deckId = 1; deckId <= 3; deckId++) {
+                const [deckCards] = await database.query(`
+                    SELECT 
+                        di.id as deck_card_id,
+                        di.id_carta,
+                        tc.*
+                    FROM decks_individuais di
+                    INNER JOIN decks d ON di.id_deck = d.id
+                    INNER JOIN inventarios i ON d.id_inventario = i.id
+                    INNER JOIN todas_cartas tc ON di.id_carta = tc.id
+                    WHERE i.id_usuario = ? AND d.id = ?
+                    ORDER BY di.id
+                `, [userId, deckId]);
+                
+                decks[`deck${deckId}`] = deckCards;
+            }
+            
+            return decks;
+        } catch (error) {
+            console.error('Erro ao buscar todos os decks:', error);
+            throw new Error('Falha ao buscar todos os decks');
+        }
+    }
 };
 
 module.exports = gameModel;

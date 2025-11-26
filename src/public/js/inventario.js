@@ -208,20 +208,61 @@ function updateInventoryCardStates() {
     const deckData = allDecksData[`deck${currentDeck}`] || [];
     const inventoryIcons = document.querySelectorAll('.inventory-icon');
     
-    // Criar set com IDs das cartas no deck atual
-    const cardsInDeck = new Set(deckData.map(card => card.id_carta.toString()));
+    // Contar quantas vezes cada carta aparece no deck atual
+    const deckCounts = {};
+    deckData.forEach(card => {
+        const cardId = card.id_carta.toString();
+        deckCounts[cardId] = (deckCounts[cardId] || 0) + 1;
+    });
     
+    // Atualizar visual de cada carta
     inventoryIcons.forEach(icon => {
         const cardId = icon.getAttribute('data-card-id');
+        if (!cardId) return;
         
-        if (cardsInDeck.has(cardId)) {
-            // Carta está no deck atual - adicionar classe e reduzir opacidade
-            icon.classList.add('in-current-deck');
-            icon.style.opacity = '0.5';
+        // Pegar quantidade total do atributo data-quantity
+        const totalInInventory = parseInt(icon.getAttribute('data-quantity')) || 1;
+        const usedInDeck = deckCounts[cardId] || 0;
+        const available = totalInInventory - usedInDeck;
+        
+        // Remover badges antigos
+        const oldBadge = icon.querySelector('.copy-counter-badge');
+        if (oldBadge) oldBadge.remove();
+        
+        if (available <= 0) {
+            // Todas as cópias estão sendo usadas
+            icon.classList.add('all-copies-used');
+            icon.classList.remove('partially-used');
+            icon.style.opacity = '0.3';
+            
+            // Adicionar badge vermelho
+            const badge = document.createElement('div');
+            badge.className = 'copy-counter-badge all-used';
+            badge.textContent = `0/${totalInInventory}`;
+            icon.appendChild(badge);
+        } else if (usedInDeck > 0) {
+            // Algumas cópias estão sendo usadas
+            icon.classList.add('partially-used');
+            icon.classList.remove('all-copies-used');
+            icon.style.opacity = '0.7';
+            
+            // Adicionar badge amarelo
+            const badge = document.createElement('div');
+            badge.className = 'copy-counter-badge partial-used';
+            badge.textContent = `${available}/${totalInInventory}`;
+            icon.appendChild(badge);
         } else {
-            // Carta não está no deck atual - remover classe e restaurar opacidade
-            icon.classList.remove('in-current-deck');
+            // Nenhuma cópia está sendo usada
+            icon.classList.remove('in-current-deck', 'all-copies-used', 'partially-used');
             icon.style.opacity = '1';
+            
+            // Se tiver múltiplas cópias, mostrar contador
+            if (totalInInventory > 1) {
+                const badge = document.createElement('div');
+                badge.className = 'copy-counter-badge available';
+                badge.textContent = `x${totalInInventory}`;
+                icon.appendChild(badge);
+            }
         }
     });
 }
@@ -351,6 +392,23 @@ async function addCardToDeck() {
     
     const cardId = selectedIcon.getAttribute('data-card-id');
     console.log('Card ID encontrado:', cardId);
+    
+    // Verificar se ainda há cópias disponíveis desta carta
+    const totalInInventory = parseInt(selectedIcon.getAttribute('data-quantity')) || 1;
+    
+    const usedInDeck = deckData.filter(card => 
+        card.id_carta.toString() === cardId
+    ).length;
+    
+    const availableCopies = totalInInventory - usedInDeck;
+    
+    console.log(`Carta ${cardId}: ${availableCopies} de ${totalInInventory} disponíveis`);
+    
+    if (availableCopies <= 0) {
+        console.log('Todas as cópias desta carta já estão no deck');
+        alert('Todas as cópias desta carta já estão sendo usadas neste deck!');
+        return;
+    }
     
     if (!cardId) {
         console.log('ID da carta não encontrado');

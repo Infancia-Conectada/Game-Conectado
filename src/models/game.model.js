@@ -36,7 +36,7 @@ const gameModel = {
         try {
             const [inventory] = await database.query(`
                 SELECT 
-                    i.id as inventory_id,
+                    MIN(i.id) as inventory_id,
                     i.id_carta,
                     tc.nome,
                     tc.tipo,
@@ -44,10 +44,12 @@ const gameModel = {
                     tc.elemento,
                     tc.nivel,
                     tc.img_url,
-                    tc.ico_url
+                    tc.ico_url,
+                    COUNT(*) as quantity
                 FROM inventarios i
                 INNER JOIN todas_cartas tc ON i.id_carta = tc.id
                 WHERE i.id_usuario = ?
+                GROUP BY i.id_carta, tc.nome, tc.tipo, tc.raridade, tc.elemento, tc.nivel, tc.img_url, tc.ico_url
                 ORDER BY tc.elemento, tc.tipo DESC, tc.nivel DESC
             `, [userId]);
             return inventory;

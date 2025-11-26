@@ -66,13 +66,16 @@ function initializeCardListeners() {
         const newIcon = icon.cloneNode(true);
         icon.parentNode.replaceChild(newIcon, icon);
         
+        // Click para selecionar e preview
         newIcon.addEventListener('click', () => {
-            if (newIcon.dataset.image && newIcon.dataset.image !== '') {
-                // Remover seleção anterior
-                document.querySelectorAll('.deck-icon.selected').forEach(el => {
-                    el.classList.remove('selected');
-                });
-                
+            const hasCard = newIcon.dataset.image && newIcon.dataset.image !== '';
+            
+            // Remover seleção anterior
+            document.querySelectorAll('.deck-icon.selected, .inventory-icon.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            if (hasCard) {
                 // Adicionar seleção à carta clicada
                 newIcon.classList.add('selected');
                 
@@ -80,20 +83,21 @@ function initializeCardListeners() {
                 document.getElementById('preview-image').src = newIcon.dataset.image;
                 selectedCard = index;
                 selectedType = 'deck';
+            } else {
+                resetSelection();
             }
         });
     });
     
     // Adicionar event listeners para as cartas do inventário
     document.querySelectorAll('.inventory-icon').forEach((icon, index) => {
-        // Remover listeners antigos clonando o elemento
         const newIcon = icon.cloneNode(true);
         icon.parentNode.replaceChild(newIcon, icon);
         
         newIcon.addEventListener('click', () => {
             if (newIcon.dataset.image && newIcon.dataset.image !== '') {
                 // Remover seleção anterior
-                document.querySelectorAll('.inventory-icon.selected').forEach(el => {
+                document.querySelectorAll('.deck-icon.selected, .inventory-icon.selected').forEach(el => {
                     el.classList.remove('selected');
                 });
                 
@@ -136,7 +140,7 @@ function resetSelection() {
     selectedCard = null;
     selectedType = null;
     cardPreview.src = 'img/costas-individual-semcor.png';
-    document.querySelectorAll('.deck-icon.selected, .inventory-slot.selected').forEach(el => {
+    document.querySelectorAll('.deck-icon.selected, .inventory-icon.selected').forEach(el => {
         el.classList.remove('selected');
     });
 }
@@ -154,6 +158,7 @@ function renderDeck(deckNumber) {
             icon.style.backgroundImage = `url('${card.ico_url}')`;
             icon.setAttribute('data-image', card.img_url);
             icon.setAttribute('data-card-id', card.id_carta);
+            icon.setAttribute('data-deck-card-id', card.deck_card_id);
             icon.setAttribute('title', `${card.nome} (${card.elemento} - ${card.raridade})`);
             icon.className = `deck-icon ${card.elemento}`;
         } else {
@@ -161,6 +166,7 @@ function renderDeck(deckNumber) {
             icon.style.backgroundImage = "url('../img/icones/NENHUM.png')";
             icon.setAttribute('data-image', '');
             icon.setAttribute('data-card-id', '');
+            icon.setAttribute('data-deck-card-id', '');
             icon.setAttribute('title', '');
             icon.className = 'deck-icon empty';
         }
@@ -168,6 +174,8 @@ function renderDeck(deckNumber) {
     
     // Reinicializar event listeners
     initializeCardListeners();
+    
+    console.log(`Deck ${deckNumber}: ${deckData.length}/20 cartas`);
 }
 
 // Função para inicializar os dados dos decks da página
@@ -190,10 +198,9 @@ function initializeDeckRadios() {
     
     radioButtons.forEach((radio, index) => {
         const deckNum = index + 1;
-        radio.name = 'deck-selection'; // Garantir que todos tenham o mesmo name
+        radio.name = 'deck-selection';
         radio.value = deckNum;
         
-        // Marcar o primeiro como selecionado por padrão
         if (deckNum === 1) {
             radio.checked = true;
         }
@@ -207,4 +214,54 @@ function initializeDeckRadios() {
             }
         });
     });
+}
+
+// Função para remover carta do deck (em tempo real)
+async function removeCardFromDeck() {
+    // Verificar se há uma carta do deck selecionada
+    if (selectedType !== 'deck' || selectedCard === null) {
+        console.log('Nenhuma carta do deck selecionada');
+        return;
+    }
+    
+    const deckData = allDecksData[`deck${currentDeck}`];
+    const card = deckData[selectedCard];
+    
+    if (!card) {
+        console.log('Carta não encontrada');
+        return;
+    }
+    
+    const deckCardId = card.deck_card_id;
+    
+    try {
+        const response = await fetch(`/api/deck/card/${deckCardId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Remover carta dos dados locais
+            allDecksData[`deck${currentDeck}`].splice(selectedCard, 1);
+            
+            // Renderizar deck atualizado
+            renderDeck(currentDeck);
+            resetSelection();
+            
+            console.log('Carta removida com sucesso!');
+        } else {
+            console.error('Erro ao remover carta:', data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao remover carta:', error);
+    }
+}
+
+// Event listener para o botão de remover
+if (btnAddRemove) {
+    btnAddRemove.addEventListener('click', removeCardFromDeck);
 }

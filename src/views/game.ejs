@@ -257,27 +257,27 @@
                     <div class="deck-cards">
                         <div class="deck-row">
                             <% for(let i = 0; i < 10; i++) { %>
-                                <% const card = deck1Cards[i]; %>
-                                <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
+                                <div class="deck-icon empty"
                                      data-index="<%= i %>"
                                      data-type="deck"
-                                     data-image="<%= card ? card.img_url : '' %>"
-                                     data-card-id="<%= card ? card.id_carta : '' %>"
-                                     style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
-                                     title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
+                                     data-image=""
+                                     data-card-id=""
+                                     data-deck-card-id=""
+                                     style="background-image: url('../img/icones/NENHUM.png')"
+                                     title="">
                                 </div>
                             <% } %>
                         </div>
                         <div class="deck-row">
                             <% for(let i = 10; i < 20; i++) { %>
-                                <% const card = deck1Cards[i]; %>
-                                <div class="deck-icon <%= card ? card.elemento : 'empty' %>"
+                                <div class="deck-icon empty"
                                      data-index="<%= i %>"
                                      data-type="deck"
-                                     data-image="<%= card ? card.img_url : '' %>"
-                                     data-card-id="<%= card ? card.id_carta : '' %>"
-                                     style="background-image: url('<%= card ? card.ico_url : "../img/icones/NENHUM.png" %>')"
-                                     title="<%= card ? `${card.nome} (${card.elemento} - ${card.raridade})` : '' %>">
+                                     data-image=""
+                                     data-card-id=""
+                                     data-deck-card-id=""
+                                     style="background-image: url('../img/icones/NENHUM.png')"
+                                     title="">
                                 </div>
                             <% } %>
                         </div>

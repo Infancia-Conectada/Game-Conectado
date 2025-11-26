@@ -63,6 +63,25 @@ const gameModel = {
      */
 
     /**
+     * Remove uma carta do deck individual
+     * @param {number} deckCardId - ID da entrada em decks_individuais
+     * @returns {Promise<Object>} Resultado da operação
+     */
+    removeCardFromDeck: async (deckCardId) => {
+        try {
+            // Remover carta do deck_individual
+            await database.query(`
+                DELETE FROM decks_individuais WHERE id = ?
+            `, [deckCardId]);
+            
+            return { success: true, message: 'Carta removida do deck com sucesso' };
+        } catch (error) {
+            console.error('Erro ao remover carta do deck:', error);
+            throw new Error('Falha ao remover carta do deck');
+        }
+    },
+
+    /**
      * Busca todos os decks do usuário com suas cartas
      * @param {number} userId - ID do usuário
      * @returns {Promise<Object>} Objeto com os 3 decks

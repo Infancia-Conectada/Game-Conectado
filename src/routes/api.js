@@ -24,35 +24,19 @@ router.get('/deck/:deckId', async (req, res) => {
     }
 });
 
-// Rota para adicionar carta ao deck
-router.post('/deck/:deckId/card', async (req, res) => {
-    try {
-        const userId = req.session.userId || 1; // TODO: Usar sessão real
-        const deckId = parseInt(req.params.deckId);
-        const { cardId, position } = req.body;
-
-        // TODO: Implementar adição de carta ao deck
-        
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Erro ao adicionar carta ao deck:', error);
-        res.status(500).json({ error: 'Erro ao adicionar carta ao deck' });
-    }
-});
-
 // Rota para remover carta do deck
-router.delete('/deck/:deckId/card/:cardId', async (req, res) => {
+router.delete('/deck/card/:deckCardId', async (req, res) => {
     try {
-        const userId = req.session.userId || 1; // TODO: Usar sessão real
-        const deckId = parseInt(req.params.deckId);
-        const cardId = parseInt(req.params.cardId);
-
-        // TODO: Implementar remoção de carta do deck
+        const deckCardId = parseInt(req.params.deckCardId);
+        const result = await gameModel.removeCardFromDeck(deckCardId);
         
-        res.json({ success: true });
+        res.json({ 
+            success: true, 
+            message: result.message
+        });
     } catch (error) {
         console.error('Erro ao remover carta do deck:', error);
-        res.status(500).json({ error: 'Erro ao remover carta do deck' });
+        res.status(500).json({ success: false, error: 'Erro ao remover carta do deck' });
     }
 });
 

@@ -5,6 +5,30 @@ let selectedType = null; // 'deck' ou 'inventory'
 let userId = 1
 let inventoryScrollPosition = 0;
 const CARDS_PER_PAGE = 24;
+let isLoading = false;
+
+// Funções de loading
+function showLoading() {
+    isLoading = true;
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('active');
+    }
+    // Desabilitar botões durante operação
+    if (btnAddAdicionar) btnAddAdicionar.disabled = true;
+    if (btnAddRemove) btnAddRemove.disabled = true;
+    if (btnRecycle) btnRecycle.disabled = true;
+}
+
+function hideLoading() {
+    isLoading = false;
+    if (loadingOverlay) {
+        loadingOverlay.classList.remove('active');
+    }
+    // Reabilitar botões
+    if (btnAddAdicionar) btnAddAdicionar.disabled = false;
+    if (btnAddRemove) btnAddRemove.disabled = false;
+    if (btnRecycle) btnRecycle.disabled = false;
+}
 
 // Armazenar os dados dos 3 decks
 let allDecksData = {
@@ -123,6 +147,7 @@ const observer = new MutationObserver((mutations) => {
                     initializeDecksData();
                     initializeDeckRadios();
                     renderDeck(currentDeck);
+                    updateInventoryCardStates();
                     initializeCardListeners();
                 }, 100);
             }
@@ -178,6 +203,29 @@ function renderDeck(deckNumber) {
     console.log(`Deck ${deckNumber}: ${deckData.length}/20 cartas`);
 }
 
+// Função para atualizar o estado visual das cartas do inventário
+function updateInventoryCardStates() {
+    const deckData = allDecksData[`deck${currentDeck}`] || [];
+    const inventoryIcons = document.querySelectorAll('.inventory-icon');
+    
+    // Criar set com IDs das cartas no deck atual
+    const cardsInDeck = new Set(deckData.map(card => card.id_carta.toString()));
+    
+    inventoryIcons.forEach(icon => {
+        const cardId = icon.getAttribute('data-card-id');
+        
+        if (cardsInDeck.has(cardId)) {
+            // Carta está no deck atual - adicionar classe e reduzir opacidade
+            icon.classList.add('in-current-deck');
+            icon.style.opacity = '0.5';
+        } else {
+            // Carta não está no deck atual - remover classe e restaurar opacidade
+            icon.classList.remove('in-current-deck');
+            icon.style.opacity = '1';
+        }
+    });
+}
+
 // Função para inicializar os dados dos decks da página
 function initializeDecksData() {
     // Os dados são passados pelo EJS e armazenados em elementos hidden
@@ -210,6 +258,7 @@ function initializeDeckRadios() {
                 currentDeck = deckNum;
                 resetSelection();
                 renderDeck(deckNum);
+                updateInventoryCardStates();
                 console.log(`Deck ${deckNum} selecionado`);
             }
         });
@@ -218,6 +267,9 @@ function initializeDeckRadios() {
 
 // Função para remover carta do deck (em tempo real)
 async function removeCardFromDeck() {
+    // Verificar se já está processando
+    if (isLoading) return;
+    
     // Verificar se há uma carta do deck selecionada
     if (selectedType !== 'deck' || selectedCard === null) {
         console.log('Nenhuma carta do deck selecionada');
@@ -233,6 +285,8 @@ async function removeCardFromDeck() {
     }
     
     const deckCardId = card.deck_card_id;
+    
+    showLoading();
     
     try {
         const response = await fetch(`/api/deck/card/${deckCardId}`, {
@@ -250,6 +304,7 @@ async function removeCardFromDeck() {
             
             // Renderizar deck atualizado
             renderDeck(currentDeck);
+            updateInventoryCardStates();
             resetSelection();
             
             console.log('Carta removida com sucesso!');
@@ -258,10 +313,102 @@ async function removeCardFromDeck() {
         }
     } catch (error) {
         console.error('Erro ao remover carta:', error);
+    } finally {
+        hideLoading();
+    }
+}
+
+// Função para adicionar carta do inventário ao deck (em tempo real)
+async function addCardToDeck() {
+    console.log('addCardToDeck chamada - selectedType:', selectedType, 'selectedCard:', selectedCard);
+    
+    // Verificar se já está processando
+    if (isLoading) return;
+    
+    // Verificar se há uma carta do inventário selecionada
+    if (selectedType !== 'inventory' || selectedCard === null) {
+        console.log('Nenhuma carta do inventário selecionada');
+        return;
+    }
+    
+    const deckData = allDecksData[`deck${currentDeck}`];
+    
+    // Verificar se o deck já tem 20 cartas
+    if (deckData.length >= 20) {
+        console.log('Deck já possui 20 cartas');
+        alert('Deck já possui o máximo de 20 cartas!');
+        return;
+    }
+    
+    // Pegar a carta selecionada do inventário
+    const inventoryIcons = document.querySelectorAll('.inventory-icon');
+    const selectedIcon = inventoryIcons[selectedCard];
+    
+    if (!selectedIcon) {
+        console.log('Carta do inventário não encontrada');
+        return;
+    }
+    
+    const cardId = selectedIcon.getAttribute('data-card-id');
+    console.log('Card ID encontrado:', cardId);
+    
+    if (!cardId) {
+        console.log('ID da carta não encontrado');
+        return;
+    }
+    
+    console.log('Enviando requisição para adicionar carta:', {
+        userId: userId,
+        deckId: currentDeck,
+        cardId: parseInt(cardId)
+    });
+    
+    showLoading();
+    
+    try {
+        const response = await fetch('/api/deck/card', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId,
+                deckId: currentDeck,
+                cardId: parseInt(cardId)
+            })
+        });
+        
+        const data = await response.json();
+        console.log('Resposta da API:', data);
+        
+        if (data.success) {
+            // Adicionar carta aos dados locais
+            allDecksData[`deck${currentDeck}`].push(data.card);
+            
+            // Renderizar deck atualizado
+            renderDeck(currentDeck);
+            updateInventoryCardStates();
+            resetSelection();
+            
+            console.log('Carta adicionada com sucesso!');
+        } else {
+            console.error('Erro ao adicionar carta:', data.message);
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao adicionar carta:', error);
+        alert('Erro ao adicionar carta. Verifique o console para mais detalhes.');
+    } finally {
+        hideLoading();
     }
 }
 
 // Event listener para o botão de remover
 if (btnAddRemove) {
     btnAddRemove.addEventListener('click', removeCardFromDeck);
+}
+
+// Event listener para o botão de adicionar
+if (btnAddAdicionar) {
+    btnAddAdicionar.addEventListener('click', addCardToDeck);
 }

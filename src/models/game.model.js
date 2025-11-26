@@ -63,6 +63,68 @@ const gameModel = {
      */
 
     /**
+     * Adiciona uma carta ao deck individual
+     * @param {number} userId - ID do usuário
+     * @param {number} deckId - ID do deck (1, 2 ou 3)
+     * @param {number} cardId - ID da carta
+     * @returns {Promise<Object>} Resultado da operação com dados da carta
+     */
+    addCardToDeck: async (userId, deckId, cardId) => {
+        try {
+            // Verificar número de cartas no deck
+            const [deckCards] = await database.query(`
+                SELECT COUNT(*) as total
+                FROM decks_individuais di
+                INNER JOIN decks d ON di.id_deck = d.id
+                INNER JOIN inventarios i ON d.id_inventario = i.id
+                WHERE i.id_usuario = ? AND d.id = ?
+            `, [userId, deckId]);
+            
+            if (deckCards[0].total >= 20) {
+                return { success: false, message: 'Deck já possui 20 cartas' };
+            }
+            
+            // Buscar o id correto do deck baseado no userId e deckId
+            const [deckInfo] = await database.query(`
+                SELECT d.id
+                FROM decks d
+                INNER JOIN inventarios i ON d.id_inventario = i.id
+                WHERE i.id_usuario = ? AND d.id = ?
+            `, [userId, deckId]);
+            
+            if (!deckInfo || deckInfo.length === 0) {
+                return { success: false, message: 'Deck não encontrado' };
+            }
+            
+            // Inserir carta no deck
+            const [result] = await database.query(`
+                INSERT INTO decks_individuais (id_deck, id_carta)
+                VALUES (?, ?)
+            `, [deckInfo[0].id, cardId]);
+            
+            // Buscar dados da carta adicionada
+            const [cardData] = await database.query(`
+                SELECT 
+                    di.id as deck_card_id,
+                    di.id_carta,
+                    tc.*
+                FROM decks_individuais di
+                INNER JOIN todas_cartas tc ON di.id_carta = tc.id
+                WHERE di.id = ?
+            `, [result.insertId]);
+            
+            return { 
+                success: true, 
+                message: 'Carta adicionada ao deck com sucesso',
+                card: cardData[0]
+            };
+        } catch (error) {
+            console.error('Erro ao adicionar carta ao deck:', error);
+            throw new Error('Falha ao adicionar carta ao deck');
+        }
+    },
+
+    /**
      * Remove uma carta do deck individual
      * @param {number} deckCardId - ID da entrada em decks_individuais
      * @returns {Promise<Object>} Resultado da operação

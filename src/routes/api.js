@@ -24,6 +24,33 @@ router.get('/deck/:deckId', async (req, res) => {
     }
 });
 
+// Rota para adicionar carta ao deck
+router.post('/deck/card', async (req, res) => {
+    try {
+        const { userId, deckId, cardId } = req.body;
+        
+        console.log('POST /api/deck/card recebido:', { userId, deckId, cardId });
+        
+        if (!userId || !deckId || !cardId) {
+            console.log('Dados incompletos recebidos');
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Dados incompletos' 
+            });
+        }
+        
+        const result = await gameModel.addCardToDeck(userId, deckId, cardId);
+        console.log('Resultado do addCardToDeck:', result);
+        res.json(result);
+    } catch (error) {
+        console.error('Erro ao adicionar carta ao deck:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
+    }
+});
+
 // Rota para remover carta do deck
 router.delete('/deck/card/:deckCardId', async (req, res) => {
     try {

@@ -240,6 +240,11 @@
         </div>
         <!-- Tela de Inventário -->
         <div id="inventory-screen" class="screen">
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+            
             <!-- Dados dos decks (hidden) -->
             <script type="application/json" id="deck1-data">
                 <%- JSON.stringify(deck1Cards) %>
@@ -325,6 +330,7 @@
                                             data-index="<%= index %>"
                                             data-type="inventory"
                                             data-image="<%= card.img_url %>"
+                                            data-card-id="<%= card.id_carta %>"
                                             style="background-image: url('<%= card.ico_url %>')"
                                             title="<%= `${card.nome} (${card.elemento} - ${card.raridade})` %>">
                                         </div>

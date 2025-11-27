@@ -586,6 +586,62 @@ function closeBattleLog() {
     }
 }
 
+// ========== SISTEMA DE CANCELAMENTO DE PARTIDA ==========
+
+// Abrir modal de confirmação para cancelar partida
+function openCancelGameModal() {
+    const cancelModal = document.createElement('div');
+    cancelModal.className = 'cancel-game-modal';
+    cancelModal.id = 'cancel-game-modal';
+    
+    cancelModal.innerHTML = `
+        <div class="cancel-modal-content">
+            <h2>⚠️ CANCELAR PARTIDA?</h2>
+            <p>Tem certeza que deseja cancelar a partida?</p>
+            <p class="warning-text">Isso será contado como uma <strong>DERROTA</strong>.</p>
+            <div class="cancel-modal-buttons">
+                <button onclick="confirmCancelGame()" class="btn-confirm-cancel">Sim, Cancelar</button>
+                <button onclick="closeCancelGameModal()" class="btn-reject-cancel">Voltar ao Jogo</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('game-screen').appendChild(cancelModal);
+}
+
+// Fechar modal de cancelamento
+function closeCancelGameModal() {
+    const cancelModal = document.getElementById('cancel-game-modal');
+    if (cancelModal) {
+        cancelModal.classList.add('fade-out');
+        setTimeout(() => {
+            cancelModal.remove();
+        }, 300);
+    }
+}
+
+// Confirmar cancelamento - marca como derrota e vai para tela final
+function confirmCancelGame() {
+    if (!gameEngine) return;
+    
+    // Fechar o modal de confirmação
+    closeCancelGameModal();
+    
+    // Marcar como derrota - o oponente ganha 3 pontos (vitória automática)
+    gameEngine.opponentScore = 3;
+    currentBattleResult = {
+        roundWinner: 'opponent',
+        playerScore: gameEngine.playerScore,
+        opponentScore: 3,
+        gameWinner: 'opponent',
+        playerStats: {},
+        opponentStats: {}
+    };
+    
+    // Mostrar tela de fim de jogo
+    showGameEndScreen(currentBattleResult.gameWinner);
+}
+
 // ========== EVENT LISTENERS ==========
 
 // Botão Jogar no menu
@@ -614,3 +670,11 @@ btnCancelSelection.addEventListener('click', () => {
 confirmPlayButton.addEventListener('click', () => {
     confirmPlay();
 });
+
+// Botão de cancelar partida
+const cancelGameButton = document.getElementById('btn-cancel-game');
+if (cancelGameButton) {
+    cancelGameButton.addEventListener('click', () => {
+        openCancelGameModal();
+    });
+}

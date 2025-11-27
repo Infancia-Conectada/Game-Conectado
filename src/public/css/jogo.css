@@ -715,3 +715,158 @@
         opacity: 1;
     }
 }
+
+/* ========== BOTÃO DE CANCELAR PARTIDA ========== */
+
+.cancel-game-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff0040, #ff4080);
+    border: 2px solid #ff006e;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+}
+
+.cancel-game-button:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.8), inset 0 0 20px rgba(255, 0, 110, 0.3);
+    background: linear-gradient(135deg, #ff1050, #ff5090);
+}
+
+.cancel-game-button:active {
+    transform: scale(1.05);
+}
+
+/* ========== MODAL DE CONFIRMAÇÃO DE CANCELAMENTO ========== */
+
+.cancel-game-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.cancel-game-modal.fade-out {
+    animation: fadeOut 0.3s ease-out;
+}
+
+.cancel-modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 3px solid #ff006e;
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 0, 110, 0.5);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.8) translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.cancel-modal-content h2 {
+    color: #ff006e;
+    font-size: 28px;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.7);
+}
+
+.cancel-modal-content p {
+    color: #aaa;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.warning-text {
+    color: #ff6b6b;
+    font-size: 14px;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid #ff0000;
+}
+
+.warning-text strong {
+    color: #ff0000;
+}
+
+.cancel-modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.btn-confirm-cancel,
+.btn-reject-cancel {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Robotech GP', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn-confirm-cancel {
+    background: linear-gradient(135deg, #ff0040, #ff4080);
+    color: white;
+    border: 2px solid #ff006e;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.5);
+}
+
+.btn-confirm-cancel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(255, 0, 110, 0.8);
+    background: linear-gradient(135deg, #ff1050, #ff5090);
+}
+
+.btn-confirm-cancel:active {
+    transform: translateY(-1px);
+}
+
+.btn-reject-cancel {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    color: white;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.btn-reject-cancel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
+    background: linear-gradient(135deg, #0077dd, #00aaff);
+}
+
+.btn-reject-cancel:active {
+    transform: translateY(-1px);
+}

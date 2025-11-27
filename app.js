@@ -38,8 +38,6 @@ app.use((req, res) => {
 // Inicializar servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-    console.log(`Acesse: http://localhost:${PORT}`);
 });
 
 module.exports = app;

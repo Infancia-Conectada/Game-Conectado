@@ -44,15 +44,12 @@ async function initializeGame() {
         return;
     }
 
-    console.log('Iniciando jogo com deck:', selectedDeckNumber);
     closeDeckSelectionModal();
 
     // Buscar dados do deck do servidor
     try {
         const response = await fetch(`/api/deck/${selectedDeckNumber}`);
         const data = await response.json();
-        
-        console.log('Dados do deck recebidos:', data);
 
         // Criar nova instância do motor do jogo
         gameEngine = new GameEngine();
@@ -233,7 +230,6 @@ function handleCardClick(index, card) {
     const state = gameEngine.getGameState();
     
     if (state.turnPhase !== 'selecting') {
-        console.log('Aguarde o próximo turno');
         return;
     }
     
@@ -300,8 +296,6 @@ async function confirmPlay() {
     
     // Resolver batalha
     currentBattleResult = gameEngine.confirmPlay();
-    
-    console.log('Resultado da batalha:', currentBattleResult);
     
     // Mostrar animação de batalha
     await showBattleAnimation(currentBattleResult);

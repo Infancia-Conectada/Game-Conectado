@@ -199,8 +199,6 @@ function renderDeck(deckNumber) {
     
     // Reinicializar event listeners
     initializeCardListeners();
-    
-    console.log(`Deck ${deckNumber}: ${deckData.length}/20 cartas`);
 }
 
 // Função para atualizar o estado visual das cartas do inventário
@@ -277,8 +275,6 @@ function initializeDecksData() {
     if (deck1Element) allDecksData.deck1 = JSON.parse(deck1Element.textContent || '[]');
     if (deck2Element) allDecksData.deck2 = JSON.parse(deck2Element.textContent || '[]');
     if (deck3Element) allDecksData.deck3 = JSON.parse(deck3Element.textContent || '[]');
-    
-    console.log('Decks carregados:', allDecksData);
 }
 
 // Event Listeners para os radio buttons de seleção de deck
@@ -300,7 +296,6 @@ function initializeDeckRadios() {
                 resetSelection();
                 renderDeck(deckNum);
                 updateInventoryCardStates();
-                console.log(`Deck ${deckNum} selecionado`);
             }
         });
     });
@@ -313,7 +308,6 @@ async function removeCardFromDeck() {
     
     // Verificar se há uma carta do deck selecionada
     if (selectedType !== 'deck' || selectedCard === null) {
-        console.log('Nenhuma carta do deck selecionada');
         return;
     }
     
@@ -321,7 +315,6 @@ async function removeCardFromDeck() {
     const card = deckData[selectedCard];
     
     if (!card) {
-        console.log('Carta não encontrada');
         return;
     }
     
@@ -347,8 +340,6 @@ async function removeCardFromDeck() {
             renderDeck(currentDeck);
             updateInventoryCardStates();
             resetSelection();
-            
-            console.log('Carta removida com sucesso!');
         } else {
             console.error('Erro ao remover carta:', data.message);
         }
@@ -361,14 +352,12 @@ async function removeCardFromDeck() {
 
 // Função para adicionar carta do inventário ao deck (em tempo real)
 async function addCardToDeck() {
-    console.log('addCardToDeck chamada - selectedType:', selectedType, 'selectedCard:', selectedCard);
     
     // Verificar se já está processando
     if (isLoading) return;
     
     // Verificar se há uma carta do inventário selecionada
     if (selectedType !== 'inventory' || selectedCard === null) {
-        console.log('Nenhuma carta do inventário selecionada');
         return;
     }
     
@@ -376,7 +365,6 @@ async function addCardToDeck() {
     
     // Verificar se o deck já tem 20 cartas
     if (deckData.length >= 20) {
-        console.log('Deck já possui 20 cartas');
         alert('Deck já possui o máximo de 20 cartas!');
         return;
     }
@@ -386,12 +374,10 @@ async function addCardToDeck() {
     const selectedIcon = inventoryIcons[selectedCard];
     
     if (!selectedIcon) {
-        console.log('Carta do inventário não encontrada');
         return;
     }
     
     const cardId = selectedIcon.getAttribute('data-card-id');
-    console.log('Card ID encontrado:', cardId);
     
     // Verificar se ainda há cópias disponíveis desta carta
     const totalInInventory = parseInt(selectedIcon.getAttribute('data-quantity')) || 1;
@@ -402,24 +388,14 @@ async function addCardToDeck() {
     
     const availableCopies = totalInInventory - usedInDeck;
     
-    console.log(`Carta ${cardId}: ${availableCopies} de ${totalInInventory} disponíveis`);
-    
     if (availableCopies <= 0) {
-        console.log('Todas as cópias desta carta já estão no deck');
         alert('Todas as cópias desta carta já estão sendo usadas neste deck!');
         return;
     }
     
     if (!cardId) {
-        console.log('ID da carta não encontrado');
         return;
     }
-    
-    console.log('Enviando requisição para adicionar carta:', {
-        userId: userId,
-        deckId: currentDeck,
-        cardId: parseInt(cardId)
-    });
     
     showLoading();
     
@@ -437,7 +413,6 @@ async function addCardToDeck() {
         });
         
         const data = await response.json();
-        console.log('Resposta da API:', data);
         
         if (data.success) {
             // Adicionar carta aos dados locais
@@ -447,8 +422,6 @@ async function addCardToDeck() {
             renderDeck(currentDeck);
             updateInventoryCardStates();
             resetSelection();
-            
-            console.log('Carta adicionada com sucesso!');
         } else {
             console.error('Erro ao adicionar carta:', data.message);
             alert(data.message);

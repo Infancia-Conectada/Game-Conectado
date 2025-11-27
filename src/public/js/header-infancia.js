@@ -274,7 +274,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para simular login (para demonstração)
     window.simulateLogin = function(type) {
-        console.log(`Simulando login como: ${type}`);
         
         // Esconder botões de login
         const loginButtons = document.querySelector('.login-buttons');
@@ -357,8 +356,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Debug helper (remover em produção)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('🚀 Header JavaScript carregado com sucesso!');
-        console.log('📱 Menu mobile:', mobileMenuToggle ? 'Encontrado' : 'Não encontrado');
-        console.log('👤 Menu usuário:', userMenu ? 'Encontrado' : 'Não encontrado');
     }
 });

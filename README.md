@@ -676,13 +676,11 @@ Cliente (Navegador)
 ```javascript
 // Buscar todas as cartas
 fetch('/api/cards')
-    .then(res => res.json())
-    .then(cards => console.log(cards));
+    .then(res => res.json());
 
 // Buscar inventário do usuário
 fetch('/api/inventory/1')
-    .then(res => res.json())
-    .then(inventory => console.log(inventory));
+    .then(res => res.json());
 ```
 
 ---

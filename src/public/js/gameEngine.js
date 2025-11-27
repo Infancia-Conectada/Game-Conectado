@@ -103,7 +103,6 @@ class GameEngine {
 
     // Inicializar jogo com deck do jogador
     initializeGame(playerDeckData) {
-        console.log('Inicializando jogo com deck:', playerDeckData);
         
         // Converter dados do banco para formato do jogo
         this.playerDeck = this.convertDeckData(playerDeckData);
@@ -130,10 +129,6 @@ class GameEngine {
         
         // Ativar o jogo
         this.gameActive = true;
-        
-        console.log('Jogo inicializado!');
-        console.log('Mão do jogador:', this.playerHand);
-        console.log('Mão do oponente:', this.opponentHand);
     }
 
     // Converter dados do banco para formato do jogo
@@ -200,12 +195,10 @@ class GameEngine {
         if (!this.gameActive) return;
         
         this.roundNumber++;
-        console.log(`\n=== TURNO ${this.roundNumber} ===`);
         
         // Sortear cenário aleatório
         const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
         this.currentScenario = SCENARIOS[randomIndex];
-        console.log('Cenário revelado:', this.currentScenario.nome);
         
         // Resetar seleções
         this.playerSelection = { monster: null, item: null };
@@ -236,13 +229,11 @@ class GameEngine {
             }
         }
         
-        console.log('Oponente selecionou suas cartas');
     }
 
     // Jogador seleciona uma carta
     selectCard(cardIndex) {
         if (this.turnPhase !== 'selecting') {
-            console.log('Não é hora de selecionar cartas');
             return false;
         }
         
@@ -251,16 +242,13 @@ class GameEngine {
         
         if (card.cardType === 'monster') {
             this.playerSelection.monster = card;
-            console.log('Monstro selecionado:', card.nome);
             return true;
         } else if (card.cardType === 'item') {
             // Só pode selecionar item se já tiver monstro
             if (this.playerSelection.monster) {
                 this.playerSelection.item = card;
-                console.log('Item selecionado:', card.nome);
                 return true;
             } else {
-                console.log('Selecione um monstro primeiro!');
                 return false;
             }
         }
@@ -286,16 +274,11 @@ class GameEngine {
     // Confirmar jogada do jogador
     confirmPlay() {
         if (!this.canConfirmPlay()) {
-            console.log('Não é possível confirmar a jogada ainda');
             return null;
         }
         
         // Mudar para fase de revelação
         this.turnPhase = 'revealing';
-        
-        console.log('Jogador confirmou a jogada!');
-        console.log('Jogador:', this.playerSelection);
-        console.log('Oponente:', this.opponentSelection);
         
         // Calcular resultado da batalha
         const battleResult = this.resolveBattle();
@@ -311,10 +294,6 @@ class GameEngine {
         const playerStats = this.calculateFinalStats('player');
         const opponentStats = this.calculateFinalStats('opponent');
         
-        console.log('\n--- BATALHA ---');
-        console.log('Jogador:', playerStats);
-        console.log('Oponente:', opponentStats);
-        
         // Aplicar dano
         playerStats.vidaFinal = playerStats.vida - opponentStats.dano;
         opponentStats.vidaFinal = opponentStats.vida - playerStats.dano;
@@ -326,16 +305,13 @@ class GameEngine {
             // Jogador venceu
             roundWinner = 'player';
             this.playerScore++;
-            console.log('🏆 JOGADOR VENCEU O TURNO!');
         } else if (opponentStats.vidaFinal > 0 && playerStats.vidaFinal <= 0) {
             // Oponente venceu
             roundWinner = 'opponent';
             this.opponentScore++;
-            console.log('💀 OPONENTE VENCEU O TURNO!');
         } else {
             // Empate (ambos vivos ou ambos mortos)
             roundWinner = 'draw';
-            console.log('⚖️ EMPATE!');
         }
         
         const battleResult = {
@@ -351,11 +327,9 @@ class GameEngine {
         if (this.playerScore >= 3) {
             battleResult.gameWinner = 'player';
             this.gameActive = false;
-            console.log('\n🎉 JOGADOR VENCEU O JOGO! 🎉');
         } else if (this.opponentScore >= 3) {
             battleResult.gameWinner = 'opponent';
             this.gameActive = false;
-            console.log('\n😢 OPONENTE VENCEU O JOGO! 😢');
         }
         
         return battleResult;
@@ -450,9 +424,6 @@ class GameEngine {
         // Comprar até ter 5 cartas novamente
         this.drawCards('player', 5 - this.playerHand.length);
         this.drawCards('opponent', 5 - this.opponentHand.length);
-        
-        console.log('Mesa limpa. Cartas compradas.');
-        console.log(`Placar: Jogador ${this.playerScore} x ${this.opponentScore} Oponente`);
         
         // Se o jogo ainda está ativo, começar novo turno
         if (this.gameActive) {

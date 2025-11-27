@@ -143,7 +143,6 @@ async function initGame() {
     const preloadingComplete = await imagePreloader.loadAll();
     
     if (preloadingComplete) {
-        console.log('Todas as imagens foram carregadas com sucesso!');
     } else {
         console.warn('Algumas imagens não foram carregadas, mas continuando...');
     }

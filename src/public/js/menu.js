@@ -139,10 +139,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Inicialização do jogo com pré-carregamento de imagens
 async function initGame() {
-    // Inicia o pré-carregamento de todas as imagens
-    const preloadingComplete = await imagePreloader.loadAll();
+    // Define um tempo mínimo de 3 segundos para o preload
+    const minimumLoadTime = new Promise(resolve => setTimeout(resolve, 3000));
     
-    if (preloadingComplete) {
+    // Inicia o pré-carregamento de todas as imagens
+    const preloadingComplete = imagePreloader.loadAll();
+    
+    // Aguarda tanto o preload quanto o tempo mínimo
+    await Promise.all([preloadingComplete, minimumLoadTime]);
+    
+    if (await preloadingComplete) {
     } else {
         console.warn('Algumas imagens não foram carregadas, mas continuando...');
     }

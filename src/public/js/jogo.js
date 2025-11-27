@@ -365,7 +365,7 @@ async function showBattleResult(result) {
     let resultClass = '';
     
     if (result.roundWinner === 'player') {
-        resultText = '🏆 VOCÊ VENCEU O TURNO!';
+        resultText = '🏆 VOCE VENCEU O TURNO!';
         resultClass = 'victory';
     } else if (result.roundWinner === 'opponent') {
         resultText = '💀 OPONENTE VENCEU O TURNO!';
@@ -412,8 +412,8 @@ async function showGameEndScreen(winner) {
     endOverlay.className = 'game-end-overlay';
     
     const isVictory = winner === 'player';
-    const title = isVictory ? '🎉 VITÓRIA! 🎉' : '😢 DERROTA 😢';
-    const message = isVictory ? 'Parabéns! Você venceu o jogo!' : 'Não desista! Tente novamente!';
+    const title = isVictory ? '🎉 VITORIA! 🎉' : '😢 DERROTA 😢';
+    const message = isVictory ? 'Parabens! Voce venceu o jogo!' : 'Nao desista! Tente novamente!';
     const coins = isVictory ? 100 : 50;
     
     endOverlay.innerHTML = `
@@ -424,7 +424,7 @@ async function showGameEndScreen(winner) {
                 <span>🪙 +${coins} moedas</span>
             </div>
             <div class="end-buttons">
-                <button onclick="playAgain()" class="btn-play-again">Jogar Novamente</button>
+                <button onclick="log()" class="btn-log">Historico</button>
                 <button onclick="backToMenu()" class="btn-back-menu">Voltar ao Menu</button>
             </div>
         </div>
@@ -433,15 +433,157 @@ async function showGameEndScreen(winner) {
     document.getElementById('game-screen').appendChild(endOverlay);
 }
 
-// Jogar novamente
-function playAgain() {
-    location.reload();
-}
-
 // Voltar ao menu
 async function backToMenu() {
     gameEngine = null;
     await changeScreen(gameScreen, menuScreen);
+}
+
+// ========== HISTÓRICO DA PARTIDA ==========
+
+// Mostrar log/histórico da partida
+function log() {
+    if (!gameEngine || !gameEngine.battleLog || gameEngine.battleLog.length === 0) {
+        alert('Nenhum histórico de partida disponível');
+        return;
+    }
+    
+    const logModal = document.createElement('div');
+    logModal.className = 'battle-log-modal';
+    logModal.id = 'battle-log-modal';
+    
+    // Construir HTML do histórico
+    let logHTML = `
+        <div class="battle-log-content">
+            <div class="log-header">
+                <h2>📋 HISTORICO DA PARTIDA</h2>
+                <button class="log-close" onclick="closeBattleLog()">✕</button>
+            </div>
+            
+            <div class="log-summary">
+                <div class="final-score">
+                    <h3>RESULTADO FINAL</h3>
+                    <div class="score-display">
+                        <div class="score-player">
+                            <span class="score-label">VOCE</span>
+                            <span class="score-value">${gameEngine.playerScore}</span>
+                        </div>
+                        <div class="score-vs">vs</div>
+                        <div class="score-opponent">
+                            <span class="score-label">OPONENTE</span>
+                            <span class="score-value">${gameEngine.opponentScore}</span>
+                        </div>
+                    </div>
+                    <div class="winner-badge">
+                        ${gameEngine.playerScore > gameEngine.opponentScore ? '🏆 VITÓRIA' : gameEngine.opponentScore > gameEngine.playerScore ? '💀 DERROTA' : '⚖️ EMPATE'}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="log-turns">
+                <h3>DETALHES DOS TURNOS</h3>
+                <div class="turns-list">
+    `;
+    
+    // Adicionar cada turno
+    gameEngine.battleLog.forEach((turn, index) => {
+        const resultIcon = turn.vencedor === 'player' ? '✅' : turn.vencedor === 'opponent' ? '❌' : '⚖️';
+        const resultText = turn.vencedor === 'player' ? 'Vitória' : turn.vencedor === 'opponent' ? 'Derrota' : 'Empate';
+        
+        logHTML += `
+            <div class="turn-card">
+                <div class="turn-header">
+                    <span class="turn-number">TURNO ${turn.turno}</span>
+                    <span class="turn-result ${turn.vencedor}">${resultIcon} ${resultText}</span>
+                    <span class="turn-score">${turn.placar}</span>
+                </div>
+                
+                <div class="turn-scenario">
+                    <strong>🎪 Cenario:</strong> ${turn.cenario} (${turn.cenarioElementos})
+                </div>
+                
+                <div class="turn-battle">
+                    <div class="battle-side player-side">
+                        <h4>⚔️ VOCE</h4>
+                        <div class="turn-card-info">
+                            <div class="card-name">${turn.playerCartas.monstro}</div>
+                            <div class="card-element">🔹 ${turn.playerCartas.elemento}</div>
+                            ${turn.playerCartas.item !== 'Nenhum' ? `<div class="card-item">📦 ${turn.playerCartas.item}</div>` : ''}
+                        </div>
+                        
+                        <div class="turn-stats">
+                            <div class="stat-row">
+                                <span>Vida:</span>
+                                <span class="stat-value">${turn.playerCartas.vidaBase} → ${turn.playerCartas.vidaFinal}${turn.playerCartas.vantagem ? ` (+${turn.playerCartas.vantagem})` : ''}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Dano:</span>
+                                <span class="stat-value">${turn.playerCartas.danoBase} → ${turn.playerCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-row damage-taken">
+                                <span>Dano Recebido:</span>
+                                <span class="stat-value">-${turn.opponentCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-row final-hp">
+                                <span>Vida Final:</span>
+                                <span class="stat-value ${turn.playerCartas.vidaDepoisDano > 0 ? 'alive' : 'dead'}">${turn.playerCartas.vidaDepoisDano}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="battle-separator">⚡</div>
+                    
+                    <div class="battle-side opponent-side">
+                        <h4>⚔️ OPONENTE</h4>
+                        <div class="turn-card-info">
+                            <div class="card-name">${turn.opponentCartas.monstro}</div>
+                            <div class="card-element">🔹 ${turn.opponentCartas.elemento}</div>
+                            ${turn.opponentCartas.item !== 'Nenhum' ? `<div class="card-item">📦 ${turn.opponentCartas.item}</div>` : ''}
+                        </div>
+                        
+                        <div class="turn-stats">
+                            <div class="stat-row">
+                                <span>Vida:</span>
+                                <span class="stat-value">${turn.opponentCartas.vidaBase} → ${turn.opponentCartas.vidaFinal}${turn.opponentCartas.vantagem ? ` (+${turn.opponentCartas.vantagem})` : ''}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Dano:</span>
+                                <span class="stat-value">${turn.opponentCartas.danoBase} → ${turn.opponentCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-row damage-taken">
+                                <span>Dano Recebido:</span>
+                                <span class="stat-value">-${turn.playerCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-row final-hp">
+                                <span>Vida Final:</span>
+                                <span class="stat-value ${turn.opponentCartas.vidaDepoisDano > 0 ? 'alive' : 'dead'}">${turn.opponentCartas.vidaDepoisDano}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    logHTML += `
+                </div>
+            </div>
+        </div>
+    `;
+    
+    logModal.innerHTML = logHTML;
+    document.getElementById('game-screen').appendChild(logModal);
+}
+
+// Fechar modal do histórico
+function closeBattleLog() {
+    const logModal = document.getElementById('battle-log-modal');
+    if (logModal) {
+        logModal.classList.add('fade-out');
+        setTimeout(() => {
+            logModal.remove();
+        }, 300);
+    }
 }
 
 // ========== EVENT LISTENERS ==========

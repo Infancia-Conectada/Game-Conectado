@@ -99,6 +99,7 @@ class GameEngine {
         this.turnPhase = 'waiting'; // waiting, selecting, revealing, battling, scoring
         this.roundNumber = 0;
         this.gameActive = false;
+        this.battleLog = []; // Histórico de todos os turnos
     }
 
     // Inicializar jogo com deck do jogador
@@ -322,6 +323,37 @@ class GameEngine {
             opponentScore: this.opponentScore,
             scenario: this.currentScenario
         };
+        
+        // Registrar turno no histórico
+        this.battleLog.push({
+            turno: this.roundNumber,
+            cenario: this.currentScenario.nome,
+            cenarioElementos: `${this.currentScenario.elemento1}${this.currentScenario.elemento2 ? ' + ' + this.currentScenario.elemento2 : ''}`,
+            playerCartas: {
+                monstro: playerStats.monstro,
+                elemento: playerStats.elemento,
+                item: playerStats.item,
+                danoBase: this.playerSelection.monster.dano,
+                vidaBase: this.playerSelection.monster.vida,
+                danoFinal: playerStats.dano,
+                vidaFinal: playerStats.vida,
+                vidaDepoisDano: playerStats.vidaFinal,
+                vantagem: playerStats.vantagem
+            },
+            opponentCartas: {
+                monstro: opponentStats.monstro,
+                elemento: opponentStats.elemento,
+                item: opponentStats.item,
+                danoBase: this.opponentSelection.monster.dano,
+                vidaBase: this.opponentSelection.monster.vida,
+                danoFinal: opponentStats.dano,
+                vidaFinal: opponentStats.vida,
+                vidaDepoisDano: opponentStats.vidaFinal,
+                vantagem: opponentStats.vantagem
+            },
+            vencedor: roundWinner,
+            placar: `${this.playerScore} x ${this.opponentScore}`
+        });
         
         // Verificar se o jogo acabou
         if (this.playerScore >= 3) {

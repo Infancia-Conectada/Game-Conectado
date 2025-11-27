@@ -724,28 +724,11 @@
     right: 20px;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff0040, #ff4080);
-    border: 2px solid #ff006e;
-    color: white;
-    font-size: 28px;
     cursor: pointer;
     z-index: 15;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
-}
-
-.cancel-game-button:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 30px rgba(255, 0, 110, 0.8), inset 0 0 20px rgba(255, 0, 110, 0.3);
-    background: linear-gradient(135deg, #ff1050, #ff5090);
-}
-
-.cancel-game-button:active {
-    transform: scale(1.05);
 }
 
 /* ========== MODAL DE CONFIRMAÇÃO DE CANCELAMENTO ========== */

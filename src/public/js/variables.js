@@ -25,7 +25,6 @@ let discardPileSlot = document.getElementById('discard-pile-slot');
 let playerDeckElement = document.querySelector('.player-bottom-deck');
 let opponentDeckElement = document.querySelector('.opponent-deck');
 let playerDiscardElement = document.querySelector('.player-bottom-discard');
-let opponentDiscardElement = document.querySelector('.opponent-discard');
 let deckCards = document.querySelector('.deck-cards');
 let cardPreview = document.getElementById('preview-image');
 let deckNumber = document.getElementById('deck-number');

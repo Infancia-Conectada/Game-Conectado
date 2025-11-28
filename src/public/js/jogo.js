@@ -4,6 +4,7 @@
 let gameEngine = null;
 let selectedDeckNumber = null;
 let currentBattleResult = null;
+let isInitializingGame = false; // Flag para controlar timing da mão
 
 // ========== MODAL DE SELEÇÃO DE DECK ==========
 
@@ -66,20 +67,26 @@ async function initializeGame() {
         // Criar nova instância do motor do jogo
         gameEngine = new GameEngine();
         
+        // Ativar flag de inicialização
+        isInitializingGame = true;
+        
         // Transição para tela de jogo
         await changeScreen(menuScreen, gameScreen);
 
-        // Espera a transição das portas terminar
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        // Espera mínimo para transição das portas (500ms ao invés de 3s)
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Inicializar o jogo com os dados do deck
         gameEngine.initializeGame(data.deckCards);
 
-        // Atualizar interface inicial
+        // Atualizar interface (sem exibir mão ainda)
         updateGameUI();
         
         // Comprar cartas iniciais com animação
         await animateInitialDraw();
+        
+        // Desativar flag de inicialização
+        isInitializingGame = false;
         
         // Iniciar o primeiro turno após compra de cartas
         gameEngine.startNewTurn();
@@ -150,7 +157,11 @@ function updateGameUI() {
     
     updateScoreDisplay();
     displayCentralBoard();
-    displayPlayerHand();
+    // Exibir mão do jogador APENAS se não estiver inicializando
+    // (durante init, será feito após animateInitialDraw())
+    if (!isInitializingGame) {
+        displayPlayerHand();
+    }
     updateConfirmButton();
 }
 

@@ -393,6 +393,31 @@
     font-size: 24px;
 }
 
+/* Breakdown dos cálculos */
+.stat-breakdown {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    margin: 6px 0 12px 0;
+    border-radius: 5px;
+    border-left: 2px solid #ffbe0b;
+    font-size: 11px;
+}
+
+.breakdown-item {
+    color: #aaa;
+    padding: 2px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.breakdown-item:first-child {
+    color: #00d4ff;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
 /* Responsividade para mobile */
 @media (max-width: 768px) {
     .battle-log-content {

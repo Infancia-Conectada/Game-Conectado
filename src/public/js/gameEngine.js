@@ -138,24 +138,11 @@ class GameEngine {
             const cardId = card.id_carta || card.id;
             const tipo = card.tipo;
             
-            // Buscar informações completas da carta
-            if (tipo === 'monstro') {
-                const monsterData = CARD_DATA.monsters[cardId];
-                return {
-                    ...card,
-                    ...monsterData,
-                    cardType: 'monster'
-                };
-            } else if (tipo === 'item') {
-                const itemData = CARD_DATA.items[cardId];
-                return {
-                    ...card,
-                    ...itemData,
-                    cardType: 'item'
-                };
-            }
-            
-            return card;
+            // Retornar apenas os dados do banco (que já contêm todas as informações)
+            return {
+                ...card,
+                cardType: tipo === 'monstro' ? 'monster' : 'item'
+            };
         });
     }
 
@@ -335,7 +322,12 @@ class GameEngine {
                 item: playerStats.item,
                 danoBase: this.playerSelection.monster.dano,
                 vidaBase: this.playerSelection.monster.vida,
+                danoItem: playerStats.danoItem || 0,
+                danoCenario: playerStats.danoCenario || 0,
+                danoVantagem: playerStats.vantagem || 0,
                 danoFinal: playerStats.dano,
+                vidaItem: playerStats.vidaItem || 0,
+                vidaCenario: playerStats.vidaCenario || 0,
                 vidaFinal: playerStats.vida,
                 vidaDepoisDano: playerStats.vidaFinal,
                 vantagem: playerStats.vantagem
@@ -346,7 +338,12 @@ class GameEngine {
                 item: opponentStats.item,
                 danoBase: this.opponentSelection.monster.dano,
                 vidaBase: this.opponentSelection.monster.vida,
+                danoItem: opponentStats.danoItem || 0,
+                danoCenario: opponentStats.danoCenario || 0,
+                danoVantagem: opponentStats.vantagem || 0,
                 danoFinal: opponentStats.dano,
+                vidaItem: opponentStats.vidaItem || 0,
+                vidaCenario: opponentStats.vidaCenario || 0,
                 vidaFinal: opponentStats.vida,
                 vidaDepoisDano: opponentStats.vidaFinal,
                 vantagem: opponentStats.vantagem
@@ -375,22 +372,30 @@ class GameEngine {
         
         let dano = monster.dano;
         let vida = monster.vida;
+        let danoItem = 0;
+        let vidaItem = 0;
+        let danoCenario = 0;
+        let vidaCenario = 0;
         const elemento = monster.elemento;
         
-        // Aplicar bônus do item
-        if (item) {
+        // Aplicar bônus do item (APENAS se for do mesmo elemento)
+        if (item && item.elemento === elemento) {
             if (item.tipo === 'dano') {
-                dano += item.valor;
+                danoItem = item.valor;
+                dano += danoItem;
             } else if (item.tipo === 'vida') {
-                vida += item.valor;
+                vidaItem = item.valor;
+                vida += vidaItem;
             }
         }
         
         // Aplicar buffs do cenário
         if (this.currentScenario && this.currentScenario.buffs[elemento]) {
             const buff = this.currentScenario.buffs[elemento];
-            dano += buff.dano || 0;
-            vida += buff.vida || 0;
+            danoCenario = buff.dano || 0;
+            vidaCenario = buff.vida || 0;
+            dano += danoCenario;
+            vida += vidaCenario;
         }
         
         // Calcular vantagem elemental
@@ -410,6 +415,10 @@ class GameEngine {
             item: item ? item.nome : 'Nenhum',
             dano,
             vida,
+            danoItem,
+            vidaItem,
+            danoCenario,
+            vidaCenario,
             vantagem,
             cenarioBuff: this.currentScenario.buffs[elemento] || null
         };

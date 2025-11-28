@@ -45,6 +45,18 @@ async function initializeGame() {
     }
 
     closeDeckSelectionModal();
+    
+    // Limpar qualquer modal de cancelamento anterior
+    const cancelModal = document.getElementById('cancel-game-modal');
+    if (cancelModal) {
+        cancelModal.remove();
+    }
+    
+    // Limpar qualquer modal de histórico anterior
+    const logModal = document.getElementById('battle-log-modal');
+    if (logModal) {
+        logModal.remove();
+    }
 
     // Buscar dados do deck do servidor
     try {
@@ -436,6 +448,23 @@ async function showGameEndScreen(winner) {
 // Voltar ao menu
 async function backToMenu() {
     gameEngine = null;
+    
+    // Limpar qualquer modal que possa estar aberto
+    const cancelModal = document.getElementById('cancel-game-modal');
+    if (cancelModal) {
+        cancelModal.remove();
+    }
+    
+    const logModal = document.getElementById('battle-log-modal');
+    if (logModal) {
+        logModal.remove();
+    }
+    
+    const endOverlay = document.querySelector('.game-end-overlay');
+    if (endOverlay) {
+        endOverlay.remove();
+    }
+    
     await changeScreen(gameScreen, menuScreen);
 }
 
@@ -514,11 +543,22 @@ function log() {
                         <div class="turn-stats">
                             <div class="stat-row">
                                 <span>Vida:</span>
-                                <span class="stat-value">${turn.playerCartas.vidaBase} → ${turn.playerCartas.vidaFinal}${turn.playerCartas.vantagem ? ` (+${turn.playerCartas.vantagem})` : ''}</span>
+                                <span class="stat-value">${turn.playerCartas.vidaBase}${turn.playerCartas.vidaItem > 0 ? ` + ${turn.playerCartas.vidaItem}` : ''}${turn.playerCartas.vidaCenario > 0 ? ` + ${turn.playerCartas.vidaCenario}` : ''} = ${turn.playerCartas.vidaFinal}</span>
+                            </div>
+                            <div class="stat-breakdown">
+                                <div class="breakdown-item">Monstro: ${turn.playerCartas.vidaBase}</div>
+                                ${turn.playerCartas.vidaItem > 0 ? `<div class="breakdown-item">Item: +${turn.playerCartas.vidaItem}</div>` : ''}
+                                ${turn.playerCartas.vidaCenario > 0 ? `<div class="breakdown-item">Cenário: +${turn.playerCartas.vidaCenario}</div>` : ''}
                             </div>
                             <div class="stat-row">
                                 <span>Dano:</span>
-                                <span class="stat-value">${turn.playerCartas.danoBase} → ${turn.playerCartas.danoFinal}</span>
+                                <span class="stat-value">${turn.playerCartas.danoBase}${turn.playerCartas.danoItem > 0 ? ` + ${turn.playerCartas.danoItem}` : ''}${turn.playerCartas.danoCenario > 0 ? ` + ${turn.playerCartas.danoCenario}` : ''}${turn.playerCartas.danoVantagem > 0 ? ` + ${turn.playerCartas.danoVantagem}` : ''} = ${turn.playerCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-breakdown">
+                                <div class="breakdown-item">Monstro: ${turn.playerCartas.danoBase}</div>
+                                ${turn.playerCartas.danoItem > 0 ? `<div class="breakdown-item">Item: +${turn.playerCartas.danoItem}</div>` : ''}
+                                ${turn.playerCartas.danoCenario > 0 ? `<div class="breakdown-item">Cenário: +${turn.playerCartas.danoCenario}</div>` : ''}
+                                ${turn.playerCartas.danoVantagem > 0 ? `<div class="breakdown-item">Vantagem: +${turn.playerCartas.danoVantagem}</div>` : ''}
                             </div>
                             <div class="stat-row damage-taken">
                                 <span>Dano Recebido:</span>
@@ -544,11 +584,22 @@ function log() {
                         <div class="turn-stats">
                             <div class="stat-row">
                                 <span>Vida:</span>
-                                <span class="stat-value">${turn.opponentCartas.vidaBase} → ${turn.opponentCartas.vidaFinal}${turn.opponentCartas.vantagem ? ` (+${turn.opponentCartas.vantagem})` : ''}</span>
+                                <span class="stat-value">${turn.opponentCartas.vidaBase}${turn.opponentCartas.vidaItem > 0 ? ` + ${turn.opponentCartas.vidaItem}` : ''}${turn.opponentCartas.vidaCenario > 0 ? ` + ${turn.opponentCartas.vidaCenario}` : ''} = ${turn.opponentCartas.vidaFinal}</span>
+                            </div>
+                            <div class="stat-breakdown">
+                                <div class="breakdown-item">Monstro: ${turn.opponentCartas.vidaBase}</div>
+                                ${turn.opponentCartas.vidaItem > 0 ? `<div class="breakdown-item">Item: +${turn.opponentCartas.vidaItem}</div>` : ''}
+                                ${turn.opponentCartas.vidaCenario > 0 ? `<div class="breakdown-item">Cenário: +${turn.opponentCartas.vidaCenario}</div>` : ''}
                             </div>
                             <div class="stat-row">
                                 <span>Dano:</span>
-                                <span class="stat-value">${turn.opponentCartas.danoBase} → ${turn.opponentCartas.danoFinal}</span>
+                                <span class="stat-value">${turn.opponentCartas.danoBase}${turn.opponentCartas.danoItem > 0 ? ` + ${turn.opponentCartas.danoItem}` : ''}${turn.opponentCartas.danoCenario > 0 ? ` + ${turn.opponentCartas.danoCenario}` : ''}${turn.opponentCartas.danoVantagem > 0 ? ` + ${turn.opponentCartas.danoVantagem}` : ''} = ${turn.opponentCartas.danoFinal}</span>
+                            </div>
+                            <div class="stat-breakdown">
+                                <div class="breakdown-item">Monstro: ${turn.opponentCartas.danoBase}</div>
+                                ${turn.opponentCartas.danoItem > 0 ? `<div class="breakdown-item">Item: +${turn.opponentCartas.danoItem}</div>` : ''}
+                                ${turn.opponentCartas.danoCenario > 0 ? `<div class="breakdown-item">Cenário: +${turn.opponentCartas.danoCenario}</div>` : ''}
+                                ${turn.opponentCartas.danoVantagem > 0 ? `<div class="breakdown-item">Vantagem: +${turn.opponentCartas.danoVantagem}</div>` : ''}
                             </div>
                             <div class="stat-row damage-taken">
                                 <span>Dano Recebido:</span>

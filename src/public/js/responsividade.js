@@ -21,8 +21,11 @@ function verificarTamanhoTela() {
 }
 
 // Verifica quando a página carregar
+// TEMPORARIAMENTE DESATIVADO
+/*
 window.addEventListener("DOMContentLoaded", () => {
   verificarTamanhoTela();
   // Verifica novamente ao redimensionar
   window.addEventListener("resize", verificarTamanhoTela);
 });
+*/
